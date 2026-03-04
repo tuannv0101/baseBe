@@ -3,8 +3,6 @@ package com.company.base.service.impl;
 import com.company.base.dto.request.AuthRequest;
 import com.company.base.dto.response.AuthResponse;
 import com.company.base.entity.User;
-import com.company.base.repository.UserRepository;
-import com.company.base.security.JwtService;
 import com.company.base.entity.Role;
 import com.company.base.repository.RoleRepository;
 import com.company.base.repository.UserRepository;
@@ -32,7 +30,14 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthResponse register(AuthRequest request) {
-        Role userRole = roleRepository.findByName("ROLE_USER")
+        String roleName = request.getRole();
+        if (roleName == null || roleName.isEmpty()) {
+            roleName = "ROLE_USER";
+        } else if (!roleName.startsWith("ROLE_")) {
+            roleName = "ROLE_" + roleName.toUpperCase();
+        }
+
+        Role userRole = roleRepository.findByName(roleName)
                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
 
         var user = User.builder()
