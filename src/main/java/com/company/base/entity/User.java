@@ -14,17 +14,25 @@ import java.util.stream.Collectors;
 @Entity @Table(name = "users")
 @Getter @Setter @Builder @NoArgsConstructor @AllArgsConstructor
 public class User extends BaseEntity implements UserDetails {
+    // ID duy nhất của người dùng.
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long id;
+    // Tên đăng nhập (duy nhất).
     @Column(unique = true, nullable = false) private String username;
+    // Mật khẩu đã mã hóa.
     @Column(nullable = false) private String password;
+    // Email người dùng.
     private String email;
+    // Họ và tên hiển thị.
     private String fullName;
+    // URL ảnh đại diện.
     private String avatarUrl;
 
+    // Nguồn tài khoản: tạo nội bộ hoặc đăng nhập OAuth.
     @Enumerated(EnumType.STRING)
     @Builder.Default
     private Provider provider = Provider.LOCAL;
 
+    // Danh sách vai trò của người dùng.
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "user_roles",

@@ -10,6 +10,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+/**
+ * REST controller that exposes API endpoints for this module.
+ */
 
 @RestController
 @RequestMapping("/api/v1/files")

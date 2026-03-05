@@ -9,8 +9,12 @@ import java.time.LocalDateTime;
 
 @Getter @Setter @MappedSuperclass @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseEntity {
+    // Thời điểm bản ghi được tạo.
     @CreatedDate @Column(updatable = false) private LocalDateTime createdAt;
+    // Thời điểm bản ghi được cập nhật gần nhất.
     @LastModifiedDate private LocalDateTime updatedAt;
+    // Định danh người tạo bản ghi.
     @CreatedBy @Column(updatable = false) private String createdBy;
+    // Định danh người cập nhật bản ghi gần nhất.
     @LastModifiedBy private String updatedBy;
 }

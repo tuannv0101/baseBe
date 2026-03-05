@@ -5,6 +5,9 @@ import com.company.base.dto.request.ProductRequest;
 import com.company.base.dto.response.ProductResponse;
 import org.springframework.data.domain.Pageable;
 import java.util.List;
+/**
+ * Service contract defining operations for this module.
+ */
 
 public interface ProductService {
     ProductResponse create(ProductRequest request);
