@@ -14,4 +14,8 @@ public interface PaymentReceiptRepository extends JpaRepository<PaymentReceipt, 
     List<PaymentReceipt> findAllByOrderByPaymentTimeDescIdDesc();
 
     List<PaymentReceipt> findByPaymentTimeBetweenOrderByPaymentTimeAscIdAsc(LocalDateTime fromDateTime, LocalDateTime toDateTime);
+
+    List<PaymentReceipt> findByRoomIdOrderByPaymentTimeDescIdDesc(String roomId);
+
+    List<PaymentReceipt> findByInvoiceIdOrderByPaymentTimeDescIdDesc(Long invoiceId);
 }

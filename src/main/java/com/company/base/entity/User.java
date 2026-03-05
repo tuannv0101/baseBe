@@ -1,7 +1,21 @@
 package com.company.base.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,30 +33,33 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User extends BaseEntity implements UserDetails {
-    // ID duy nhất của người dùng.
+    // Unique user ID.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    // Tên đăng nhập (duy nhất).
+    // Unique username for login.
     @Column(unique = true, nullable = false)
     private String username;
-    // Mật khẩu đã mã hóa.
+    // Encoded password.
     @Column(nullable = false)
     private String password;
-    // Email người dùng.
+    // Contact email.
     private String email;
-    // Họ và tên hiển thị.
+    // Display name.
     private String fullName;
-    // URL ảnh đại diện.
+    // Avatar URL.
     private String avatarUrl;
+    // Flag used by Super Admin to lock/unlock accounts.
+    @Builder.Default
+    private Boolean enabled = Boolean.TRUE;
 
-    // Nguồn tài khoản: tạo nội bộ hoặc đăng nhập OAuth.
+    // Account provider.
     @Enumerated(EnumType.STRING)
     @Builder.Default
     private Provider provider = Provider.LOCAL;
 
-    // Danh sách vai trò của người dùng.
-    @ManyToMany(fetch = FetchType.EAGER)
+    // User roles.
+    @ManyToMany(fetch = jakarta.persistence.FetchType.EAGER)
     @JoinTable(
             name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -85,8 +102,10 @@ public class User extends BaseEntity implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return !Boolean.FALSE.equals(enabled);
     }
 
-    public enum Provider {LOCAL, GOOGLE}
+    public enum Provider {
+        LOCAL, GOOGLE
+    }
 }

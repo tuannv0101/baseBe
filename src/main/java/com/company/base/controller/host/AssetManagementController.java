@@ -25,7 +25,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/api/v1/property-management/assets")
+@RequestMapping("/api/v1/host/property-management/assets")
 @RequiredArgsConstructor
 public class AssetManagementController {
 

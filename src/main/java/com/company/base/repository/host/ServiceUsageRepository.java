@@ -16,4 +16,6 @@ public interface ServiceUsageRepository extends JpaRepository<ServiceUsage, Long
     List<ServiceUsage> findByMonthAndYearOrderByRoomIdAsc(Integer month, Integer year);
 
     List<ServiceUsage> findByServiceIdAndMonthAndYearOrderByRoomIdAsc(String serviceId, Integer month, Integer year);
+
+    List<ServiceUsage> findByRoomIdAndMonthAndYearOrderByServiceIdAsc(String roomId, Integer month, Integer year);
 }

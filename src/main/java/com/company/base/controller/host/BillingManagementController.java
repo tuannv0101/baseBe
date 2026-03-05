@@ -20,7 +20,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/api/v1/billing")
+@RequestMapping("/api/v1/host/billing")
 @RequiredArgsConstructor
 public class BillingManagementController {
 

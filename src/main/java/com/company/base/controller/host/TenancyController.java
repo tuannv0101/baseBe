@@ -18,7 +18,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/api/v1/tenancy")
+@RequestMapping("/api/v1/host/tenancy")
 @RequiredArgsConstructor
 public class TenancyController {
 

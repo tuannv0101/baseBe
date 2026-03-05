@@ -17,4 +17,8 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
     List<Invoice> findByStatusInAndDueDateBeforeOrderByDueDateAscIdDesc(Collection<String> statuses, LocalDate dueDate);
 
     List<Invoice> findByStatusInOrderByDueDateAscIdDesc(Collection<String> statuses);
+
+    List<Invoice> findByContractIdOrderByDueDateDescIdDesc(String contractId);
+
+    List<Invoice> findByContractIdInOrderByDueDateDescIdDesc(Collection<String> contractIds);
 }

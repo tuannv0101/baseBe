@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Repository for data access operations.
@@ -17,4 +18,8 @@ public interface ContractRepository extends JpaRepository<Contract, Long> {
     List<Contract> findByStatusInOrderByStartDateDescIdDesc(Collection<String> statuses);
 
     List<Contract> findByEndDateBetweenAndStatusIgnoreCaseOrderByEndDateAscIdDesc(LocalDate fromDate, LocalDate toDate, String status);
+
+    List<Contract> findByTenantIdOrderByStartDateDescIdDesc(String tenantId);
+
+    Optional<Contract> findFirstByTenantIdAndStatusIgnoreCaseOrderByStartDateDescIdDesc(String tenantId, String status);
 }

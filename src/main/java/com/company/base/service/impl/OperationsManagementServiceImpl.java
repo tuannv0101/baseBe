@@ -250,7 +250,7 @@ public class OperationsManagementServiceImpl implements OperationsManagementServ
                 .title(entity.getTitle())
                 .documentType(entity.getDocumentType())
                 .fileId(entity.getFileId())
-                .fileUrl(entity.getFileId() != null ? "/api/v1/files/" + entity.getFileId() : null)
+                .fileUrl(entity.getFileId() != null ? "/api/v1/host/files/" + entity.getFileId() : null)
                 .active(entity.getActive())
                 .note(entity.getNote())
                 .build();

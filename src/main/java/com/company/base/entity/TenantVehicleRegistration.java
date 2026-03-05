@@ -7,24 +7,22 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
-@Table(name = "maintenance_requests")
+@Table(name = "tenant_vehicle_registrations")
 @Data
-public class MaintenanceRequest extends BaseEntity {
+public class TenantVehicleRegistration extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String roomId;
     private String tenantId;
-    private String title;
-    private String description;
-    private String priority;
+    private String roomId;
+    // MOTORBIKE, CAR...
+    private String vehicleType;
+    private String plateNumber;
+    private LocalDate registeredDate;
+    // PENDING, APPROVED, REJECTED
     private String status;
-    private String assignedTechnician;
-    private Long attachmentFileId;
-    private LocalDateTime requestedAt;
-    private LocalDateTime completedAt;
     private String note;
 }

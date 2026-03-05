@@ -210,7 +210,7 @@ public class TenancyServiceImpl implements TenancyService {
                 .email(entity.getEmail())
                 .idCardNumber(entity.getIdCardNumber())
                 .portraitImageId(entity.getPortraitImageId())
-                .portraitImageUrl(entity.getPortraitImageId() != null ? "/api/v1/files/" + entity.getPortraitImageId() : null)
+                .portraitImageUrl(entity.getPortraitImageId() != null ? "/api/v1/host/files/" + entity.getPortraitImageId() : null)
                 .temporaryResidenceDeclared(Boolean.TRUE.equals(entity.getTemporaryResidenceDeclared()))
                 .temporaryResidenceDeclaredAt(entity.getTemporaryResidenceDeclaredAt())
                 .build();

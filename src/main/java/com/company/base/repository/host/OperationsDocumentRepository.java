@@ -13,4 +13,6 @@ public interface OperationsDocumentRepository extends JpaRepository<OperationsDo
     List<OperationsDocument> findAllByOrderByDocumentTypeAscTitleAsc();
 
     List<OperationsDocument> findByDocumentTypeIgnoreCaseOrderByTitleAsc(String documentType);
+
+    List<OperationsDocument> findByDocumentTypeIgnoreCaseAndActiveTrueOrderByTitleAsc(String documentType);
 }

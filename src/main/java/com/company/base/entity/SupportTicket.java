@@ -7,24 +7,20 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
 
-import java.time.LocalDateTime;
-
 @Entity
-@Table(name = "maintenance_requests")
+@Table(name = "support_tickets")
 @Data
-public class MaintenanceRequest extends BaseEntity {
+public class SupportTicket extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String roomId;
-    private String tenantId;
+    private Long landlordProfileId;
     private String title;
     private String description;
-    private String priority;
+    // OPEN, IN_PROGRESS, RESOLVED, CLOSED
     private String status;
-    private String assignedTechnician;
-    private Long attachmentFileId;
-    private LocalDateTime requestedAt;
-    private LocalDateTime completedAt;
-    private String note;
+    // LOW, MEDIUM, HIGH
+    private String priority;
+    private String assignedTo;
+    private String resolutionNote;
 }

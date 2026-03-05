@@ -17,7 +17,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/api/v1/dashboard")
+@RequestMapping("/api/v1/host/dashboard")
 @RequiredArgsConstructor
 public class DashboardController {
 

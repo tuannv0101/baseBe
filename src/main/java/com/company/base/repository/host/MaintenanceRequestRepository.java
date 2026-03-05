@@ -16,4 +16,6 @@ public interface MaintenanceRequestRepository extends JpaRepository<MaintenanceR
     List<MaintenanceRequest> findByStatusIgnoreCaseOrderByRequestedAtDescIdDesc(String status);
 
     List<MaintenanceRequest> findTop20ByStatusInOrderByRequestedAtDescIdDesc(Collection<String> statuses);
+
+    List<MaintenanceRequest> findByTenantIdOrderByRequestedAtDescIdDesc(String tenantId);
 }

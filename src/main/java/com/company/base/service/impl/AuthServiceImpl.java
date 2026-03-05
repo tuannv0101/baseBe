@@ -3,17 +3,20 @@ package com.company.base.service.impl;
 import com.company.base.dto.request.admin.AuthRequest;
 import com.company.base.dto.response.admin.AuthResponse;
 import com.company.base.entity.User;
+import com.company.base.entity.LandlordProfile;
 import com.company.base.entity.Role;
+import com.company.base.exception.AppException;
+import com.company.base.repository.admin.LandlordProfileRepository;
 import com.company.base.repository.admin.RoleRepository;
 import com.company.base.repository.admin.UserRepository;
 import com.company.base.security.JwtService;
-import com.company.base.common.mapper.UserMapper;
 import com.company.base.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.http.HttpStatus;
 
 import java.util.Collections;
 
@@ -29,7 +32,7 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-    private final UserMapper userMapper;
+    private final LandlordProfileRepository landlordProfileRepository;
 
     @Override
     public AuthResponse register(AuthRequest request) {
@@ -41,15 +44,26 @@ public class AuthServiceImpl implements AuthService {
         }
 
         Role userRole = roleRepository.findByName(roleName)
-                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                .orElseThrow(() -> new AppException(HttpStatus.BAD_REQUEST.value(), "Role is not found"));
+
+        boolean isLandlordRole = "ROLE_MANAGER".equals(roleName);
 
         var user = User.builder()
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .roles(Collections.singleton(userRole))
                 .provider(User.Provider.LOCAL)
+                .enabled(!isLandlordRole)
                 .build();
-        userRepository.save(user);
+        User savedUser = userRepository.save(user);
+
+        if (isLandlordRole) {
+            LandlordProfile profile = new LandlordProfile();
+            profile.setUserId(savedUser.getId());
+            profile.setBusinessName(savedUser.getUsername());
+            profile.setStatus("PENDING");
+            landlordProfileRepository.save(profile);
+        }
 
         return AuthResponse.builder().token(jwtService.generateToken(user)).build();
     }

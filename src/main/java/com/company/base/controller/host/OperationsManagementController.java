@@ -19,7 +19,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/api/v1/operations")
+@RequestMapping("/api/v1/host/operations")
 @RequiredArgsConstructor
 public class OperationsManagementController {
 
