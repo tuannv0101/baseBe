@@ -1,13 +1,13 @@
 package com.company.base.service.impl;
 
-import com.company.base.dto.request.PropertyRequest;
-import com.company.base.dto.response.PropertyResponse;
-import com.company.base.dto.response.RoomMatrixResponse;
+import com.company.base.dto.request.host.PropertyRequest;
+import com.company.base.dto.response.host.PropertyResponse;
+import com.company.base.dto.response.host.RoomMatrixResponse;
 import com.company.base.entity.Properties;
 import com.company.base.entity.Room;
 import com.company.base.exception.AppException;
-import com.company.base.repository.PropertiesRepository;
-import com.company.base.repository.RoomRepository;
+import com.company.base.repository.host.PropertiesRepository;
+import com.company.base.repository.host.RoomRepository;
 import com.company.base.service.PropertyManagementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
+
 /**
  * Service implementation containing business logic for this module.
  */

@@ -1,18 +1,18 @@
 package com.company.base.service.impl;
 
-import com.company.base.dto.response.DashboardOverviewResponse;
-import com.company.base.dto.response.SystemNotificationResponse;
+import com.company.base.dto.response.host.DashboardOverviewResponse;
+import com.company.base.dto.response.host.SystemNotificationResponse;
 import com.company.base.entity.Contract;
 import com.company.base.entity.ExpenseRecord;
 import com.company.base.entity.Invoice;
 import com.company.base.entity.MaintenanceRequest;
 import com.company.base.entity.PaymentReceipt;
-import com.company.base.repository.ContractRepository;
-import com.company.base.repository.ExpenseRecordRepository;
-import com.company.base.repository.InvoiceRepository;
-import com.company.base.repository.MaintenanceRequestRepository;
-import com.company.base.repository.PaymentReceiptRepository;
-import com.company.base.repository.RoomRepository;
+import com.company.base.repository.host.ContractRepository;
+import com.company.base.repository.host.ExpenseRecordRepository;
+import com.company.base.repository.host.InvoiceRepository;
+import com.company.base.repository.host.MaintenanceRequestRepository;
+import com.company.base.repository.host.PaymentReceiptRepository;
+import com.company.base.repository.host.RoomRepository;
 import com.company.base.service.DashboardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+
 /**
  * Service implementation containing business logic for this module.
  */

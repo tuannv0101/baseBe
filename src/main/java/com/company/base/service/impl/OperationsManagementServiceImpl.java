@@ -1,20 +1,20 @@
 package com.company.base.service.impl;
 
-import com.company.base.dto.request.ExpenseRecordRequest;
-import com.company.base.dto.request.MaintenanceAssignmentRequest;
-import com.company.base.dto.request.MaintenanceRequestCreateRequest;
-import com.company.base.dto.request.OperationsDocumentRequest;
-import com.company.base.dto.response.ExpenseRecordResponse;
-import com.company.base.dto.response.MaintenanceRequestResponse;
-import com.company.base.dto.response.OperationsDocumentResponse;
+import com.company.base.dto.request.host.ExpenseRecordRequest;
+import com.company.base.dto.request.host.MaintenanceAssignmentRequest;
+import com.company.base.dto.request.host.MaintenanceRequestCreateRequest;
+import com.company.base.dto.request.host.OperationsDocumentRequest;
+import com.company.base.dto.response.host.ExpenseRecordResponse;
+import com.company.base.dto.response.host.MaintenanceRequestResponse;
+import com.company.base.dto.response.host.OperationsDocumentResponse;
 import com.company.base.entity.ExpenseRecord;
 import com.company.base.entity.MaintenanceRequest;
 import com.company.base.entity.OperationsDocument;
 import com.company.base.exception.AppException;
-import com.company.base.repository.ExpenseRecordRepository;
-import com.company.base.repository.FileMetadataRepository;
-import com.company.base.repository.MaintenanceRequestRepository;
-import com.company.base.repository.OperationsDocumentRepository;
+import com.company.base.repository.host.ExpenseRecordRepository;
+import com.company.base.repository.host.FileMetadataRepository;
+import com.company.base.repository.host.MaintenanceRequestRepository;
+import com.company.base.repository.host.OperationsDocumentRepository;
 import com.company.base.service.OperationsManagementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,6 +24,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.List;
+
 /**
  * Service implementation containing business logic for this module.
  */

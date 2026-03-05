@@ -1,6 +1,6 @@
 package com.company.base.security;
 
-import com.company.base.repository.UserRepository;
+import com.company.base.repository.admin.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

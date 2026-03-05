@@ -1,6 +1,6 @@
 package com.company.base.common.mapper;
 
-import com.company.base.dto.response.UserResponse;
+import com.company.base.dto.response.admin.UserResponse;
 import com.company.base.entity.User;
 import com.company.base.entity.Role;
 import org.mapstruct.Mapper;

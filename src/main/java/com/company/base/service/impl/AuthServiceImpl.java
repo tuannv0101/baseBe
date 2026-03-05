@@ -1,14 +1,13 @@
 package com.company.base.service.impl;
 
-import com.company.base.dto.request.AuthRequest;
-import com.company.base.dto.response.AuthResponse;
+import com.company.base.dto.request.admin.AuthRequest;
+import com.company.base.dto.response.admin.AuthResponse;
 import com.company.base.entity.User;
 import com.company.base.entity.Role;
-import com.company.base.repository.RoleRepository;
-import com.company.base.repository.UserRepository;
+import com.company.base.repository.admin.RoleRepository;
+import com.company.base.repository.admin.UserRepository;
 import com.company.base.security.JwtService;
 import com.company.base.common.mapper.UserMapper;
-import com.company.base.dto.response.UserResponse;
 import com.company.base.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+
 /**
  * Service implementation containing business logic for this module.
  */
@@ -50,7 +50,7 @@ public class AuthServiceImpl implements AuthService {
                 .provider(User.Provider.LOCAL)
                 .build();
         userRepository.save(user);
-        
+
         return AuthResponse.builder().token(jwtService.generateToken(user)).build();
     }
 

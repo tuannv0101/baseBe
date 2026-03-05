@@ -1,6 +1,6 @@
 package com.company.base.security;
 
-import com.company.base.repository.UserRepository;
+import com.company.base.repository.admin.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

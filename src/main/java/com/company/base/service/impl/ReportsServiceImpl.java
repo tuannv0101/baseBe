@@ -1,16 +1,16 @@
 package com.company.base.service.impl;
 
-import com.company.base.dto.response.DebtReportResponse;
-import com.company.base.dto.response.RevenueReportResponse;
-import com.company.base.dto.response.VacancyRateReportResponse;
+import com.company.base.dto.response.host.DebtReportResponse;
+import com.company.base.dto.response.host.RevenueReportResponse;
+import com.company.base.dto.response.host.VacancyRateReportResponse;
 import com.company.base.entity.Contract;
 import com.company.base.entity.Invoice;
 import com.company.base.entity.PaymentReceipt;
 import com.company.base.exception.AppException;
-import com.company.base.repository.ContractRepository;
-import com.company.base.repository.InvoiceRepository;
-import com.company.base.repository.PaymentReceiptRepository;
-import com.company.base.repository.RoomRepository;
+import com.company.base.repository.host.ContractRepository;
+import com.company.base.repository.host.InvoiceRepository;
+import com.company.base.repository.host.PaymentReceiptRepository;
+import com.company.base.repository.host.RoomRepository;
 import com.company.base.service.ReportsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 /**
  * Service implementation containing business logic for this module.
  */

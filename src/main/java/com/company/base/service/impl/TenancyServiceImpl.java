@@ -1,18 +1,18 @@
 package com.company.base.service.impl;
 
-import com.company.base.dto.request.ContractLiquidationRequest;
-import com.company.base.dto.request.ContractRequest;
-import com.company.base.dto.request.TenantRequest;
-import com.company.base.dto.response.ContractLiquidationResponse;
-import com.company.base.dto.response.ContractResponse;
-import com.company.base.dto.response.TenantResponse;
+import com.company.base.dto.request.host.ContractLiquidationRequest;
+import com.company.base.dto.request.host.ContractRequest;
+import com.company.base.dto.request.host.TenantRequest;
+import com.company.base.dto.response.host.ContractLiquidationResponse;
+import com.company.base.dto.response.host.ContractResponse;
+import com.company.base.dto.response.host.TenantResponse;
 import com.company.base.entity.Contract;
 import com.company.base.entity.ContractLiquidationHistory;
 import com.company.base.entity.Tenant;
 import com.company.base.exception.AppException;
-import com.company.base.repository.ContractLiquidationHistoryRepository;
-import com.company.base.repository.ContractRepository;
-import com.company.base.repository.TenantRepository;
+import com.company.base.repository.host.ContractLiquidationHistoryRepository;
+import com.company.base.repository.host.ContractRepository;
+import com.company.base.repository.host.TenantRepository;
 import com.company.base.service.TenancyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
+
 /**
  * Service implementation containing business logic for this module.
  */

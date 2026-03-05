@@ -1,21 +1,21 @@
 package com.company.base.service.impl;
 
-import com.company.base.dto.request.BillingServiceRequest;
-import com.company.base.dto.request.InvoiceRequest;
-import com.company.base.dto.request.MeterReadingBulkRequest;
-import com.company.base.dto.request.PaymentReceiptRequest;
-import com.company.base.dto.response.BillingServiceResponse;
-import com.company.base.dto.response.InvoiceResponse;
-import com.company.base.dto.response.PaymentReceiptResponse;
-import com.company.base.dto.response.ServiceUsageResponse;
+import com.company.base.dto.request.host.BillingServiceRequest;
+import com.company.base.dto.request.host.InvoiceRequest;
+import com.company.base.dto.request.host.MeterReadingBulkRequest;
+import com.company.base.dto.request.host.PaymentReceiptRequest;
+import com.company.base.dto.response.host.BillingServiceResponse;
+import com.company.base.dto.response.host.InvoiceResponse;
+import com.company.base.dto.response.host.PaymentReceiptResponse;
+import com.company.base.dto.response.host.ServiceUsageResponse;
 import com.company.base.entity.Invoice;
 import com.company.base.entity.PaymentReceipt;
 import com.company.base.entity.ServiceUsage;
 import com.company.base.exception.AppException;
-import com.company.base.repository.InvoiceRepository;
-import com.company.base.repository.PaymentReceiptRepository;
-import com.company.base.repository.ServiceRepository;
-import com.company.base.repository.ServiceUsageRepository;
+import com.company.base.repository.host.InvoiceRepository;
+import com.company.base.repository.host.PaymentReceiptRepository;
+import com.company.base.repository.host.ServiceRepository;
+import com.company.base.repository.host.ServiceUsageRepository;
 import com.company.base.service.BillingManagementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,6 +26,7 @@ import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.List;
 import java.util.Set;
+
 /**
  * Service implementation containing business logic for this module.
  */

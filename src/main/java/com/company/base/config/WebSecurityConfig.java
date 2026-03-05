@@ -1,9 +1,9 @@
 package com.company.base.config;
 
+import com.company.base.repository.admin.UserRepository;
 import com.company.base.security.CustomOAuth2UserService;
 import com.company.base.security.OAuth2SuccessHandler;
 import com.company.base.security.JwtAuthenticationFilter;
-import com.company.base.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

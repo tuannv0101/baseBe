@@ -2,7 +2,7 @@ package com.company.base.service.impl;
 
 import com.company.base.entity.FileMetadata;
 import com.company.base.exception.AppException;
-import com.company.base.repository.FileMetadataRepository;
+import com.company.base.repository.host.FileMetadataRepository;
 import com.company.base.service.FileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +19,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.UUID;
+
 /**
  * Service implementation containing business logic for this module.
  */
@@ -38,7 +39,7 @@ public class FileServiceImpl implements FileService {
             String originalFileName = StringUtils.cleanPath(file.getOriginalFilename());
             String fileName = UUID.randomUUID().toString() + "_" + originalFileName;
             Path targetLocation = Paths.get(uploadDir).toAbsolutePath().normalize().resolve(fileName);
-            
+
             Files.createDirectories(targetLocation.getParent());
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 

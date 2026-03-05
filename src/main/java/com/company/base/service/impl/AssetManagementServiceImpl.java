@@ -1,24 +1,25 @@
 package com.company.base.service.impl;
 
-import com.company.base.dto.request.AssetMaintenanceHistoryRequest;
-import com.company.base.dto.request.EquipmentCategoryRequest;
-import com.company.base.dto.request.RoomAssetRequest;
-import com.company.base.dto.response.AssetMaintenanceHistoryResponse;
-import com.company.base.dto.response.EquipmentCategoryResponse;
-import com.company.base.dto.response.RoomAssetResponse;
+import com.company.base.dto.request.host.AssetMaintenanceHistoryRequest;
+import com.company.base.dto.request.host.EquipmentCategoryRequest;
+import com.company.base.dto.request.host.RoomAssetRequest;
+import com.company.base.dto.response.host.AssetMaintenanceHistoryResponse;
+import com.company.base.dto.response.host.EquipmentCategoryResponse;
+import com.company.base.dto.response.host.RoomAssetResponse;
 import com.company.base.entity.AssetMaintenanceHistory;
 import com.company.base.entity.EquipmentCategory;
 import com.company.base.entity.RoomAsset;
 import com.company.base.exception.AppException;
-import com.company.base.repository.AssetMaintenanceHistoryRepository;
-import com.company.base.repository.EquipmentCategoryRepository;
-import com.company.base.repository.RoomAssetRepository;
+import com.company.base.repository.host.AssetMaintenanceHistoryRepository;
+import com.company.base.repository.host.EquipmentCategoryRepository;
+import com.company.base.repository.host.RoomAssetRepository;
 import com.company.base.service.AssetManagementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 /**
  * Service implementation containing business logic for this module.
  */

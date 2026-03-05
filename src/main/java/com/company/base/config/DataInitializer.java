@@ -1,7 +1,7 @@
 package com.company.base.config;
 
 import com.company.base.entity.Role;
-import com.company.base.repository.RoleRepository;
+import com.company.base.repository.admin.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
