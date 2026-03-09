@@ -16,9 +16,9 @@ public class DataInitializer {
     @Bean
     public CommandLineRunner init() {
         return args -> {
-            createRoleIfNotFound("ROLE_USER", "Default end-user role");
-            createRoleIfNotFound("ROLE_ADMIN", "Administrator role");
-            createRoleIfNotFound("ROLE_MANAGER", "Landlord role");
+            createRoleIfNotFound("ROLE_TENANT", "Người thuê trọ");
+            createRoleIfNotFound("ROLE_HOST", "Chủ trọ");
+            createRoleIfNotFound("ROLE_ADMIN", "Quảng trị viên");
             createRoleIfNotFound("ROLE_SUPER_ADMIN", "System owner role");
         };
     }
