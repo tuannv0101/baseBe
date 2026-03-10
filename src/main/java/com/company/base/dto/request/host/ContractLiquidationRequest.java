@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+
 /**
  * Request DTO carrying input data for API operations.
  */
@@ -16,6 +17,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class ContractLiquidationRequest {
     private LocalDate liquidationDate;
+
     private String reason;
+
     private String note;
 }

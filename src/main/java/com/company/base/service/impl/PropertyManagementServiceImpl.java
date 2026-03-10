@@ -9,7 +9,7 @@ import com.company.base.entity.Properties;
 import com.company.base.entity.Room;
 import com.company.base.exception.AppException;
 import com.company.base.repository.host.PropertiesRepository;
-import com.company.base.repository.host.RoomRepository;
+import com.company.base.repository.host.RoomManagementRepository;
 import com.company.base.service.PropertyManagementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,7 +18,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +33,7 @@ import java.util.stream.Collectors;
 public class PropertyManagementServiceImpl implements PropertyManagementService {
 
     private final PropertiesRepository propertiesRepository;
-    private final RoomRepository roomRepository;
+    private final RoomManagementRepository roomManagementRepository;
 
     @Override
     public PropertyResponse createProperty(PropertyRequest request) {
@@ -78,14 +77,14 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
         if (propertyId != null) {
             List<RoomMatrixResponse> one = List.of(buildRoomMatrix(
                     getPropertyEntity(propertyId),
-                    roomRepository.findByPropertiesIdOrderByFloorAscRoomNumberAsc(propertyId)
+                    roomManagementRepository.findByPropertiesIdOrderByFloorAscRoomNumberAsc(propertyId)
             ));
             return PaginationUtils.paginateList(one, pageable);
         }
 
         Page<Properties> propsPage = propertiesRepository.findAllByOrderByNameAsc(pageable);
         List<RoomMatrixResponse> matrices = propsPage.getContent().stream()
-                .map(p -> buildRoomMatrix(p, roomRepository.findByPropertiesIdOrderByFloorAscRoomNumberAsc(p.getId())))
+                .map(p -> buildRoomMatrix(p, roomManagementRepository.findByPropertiesIdOrderByFloorAscRoomNumberAsc(p.getId())))
                 .toList();
         Page<RoomMatrixResponse> dtoPage = new PageImpl<>(matrices, pageable, propsPage.getTotalElements());
         return PageResponse.of(dtoPage);

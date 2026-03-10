@@ -16,9 +16,14 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class SubscriptionPlanRequest {
     private String code;
+
     private String name;
+
     private Integer maxRooms;
+
     private BigDecimal monthlyPrice;
+
     private Boolean active;
+
     private String description;
 }

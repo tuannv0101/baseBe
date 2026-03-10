@@ -14,7 +14,7 @@ import com.company.base.repository.host.ExpenseRecordRepository;
 import com.company.base.repository.host.InvoiceRepository;
 import com.company.base.repository.host.MaintenanceRequestRepository;
 import com.company.base.repository.host.PaymentReceiptRepository;
-import com.company.base.repository.host.RoomRepository;
+import com.company.base.repository.host.RoomManagementRepository;
 import com.company.base.service.DashboardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -43,7 +43,7 @@ public class DashboardServiceImpl implements DashboardService {
 
     private final PaymentReceiptRepository paymentReceiptRepository;
     private final ExpenseRecordRepository expenseRecordRepository;
-    private final RoomRepository roomRepository;
+    private final RoomManagementRepository roomManagementRepository;
     private final ContractRepository contractRepository;
     private final InvoiceRepository invoiceRepository;
     private final MaintenanceRequestRepository maintenanceRequestRepository;
@@ -59,7 +59,7 @@ public class DashboardServiceImpl implements DashboardService {
         BigDecimal expense = sumExpenses(fromDate, toDate);
         BigDecimal net = income.subtract(expense);
 
-        long totalRooms = roomRepository.count();
+        long totalRooms = roomManagementRepository.count();
         long occupiedRooms = countOccupiedRoomsAt(today);
         long vacantRooms = Math.max(totalRooms - occupiedRooms, 0);
         double occupancyRate = totalRooms == 0 ? 0.0 : (occupiedRooms * 100.0) / totalRooms;

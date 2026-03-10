@@ -10,7 +10,7 @@ import com.company.base.exception.AppException;
 import com.company.base.repository.host.ContractRepository;
 import com.company.base.repository.host.InvoiceRepository;
 import com.company.base.repository.host.PaymentReceiptRepository;
-import com.company.base.repository.host.RoomRepository;
+import com.company.base.repository.host.RoomManagementRepository;
 import com.company.base.service.ReportsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -41,7 +41,7 @@ public class ReportsServiceImpl implements ReportsService {
     private final InvoiceRepository invoiceRepository;
     private final PaymentReceiptRepository paymentReceiptRepository;
     private final ContractRepository contractRepository;
-    private final RoomRepository roomRepository;
+    private final RoomManagementRepository roomManagementRepository;
 
     @Override
     public RevenueReportResponse getRevenueReport(Integer fromMonth, Integer fromYear, Integer toMonth, Integer toYear) {
@@ -90,7 +90,7 @@ public class ReportsServiceImpl implements ReportsService {
     @Override
     public VacancyRateReportResponse getVacancyRateReport(Integer fromMonth, Integer fromYear, Integer toMonth, Integer toYear) {
         MonthRange range = resolveRange(fromMonth, fromYear, toMonth, toYear);
-        long totalRooms = roomRepository.count();
+        long totalRooms = roomManagementRepository.count();
         List<Contract> activeContracts = contractRepository.findByStatusIgnoreCaseOrderByStartDateDescIdDesc("ACTIVE");
         List<VacancyRateReportResponse.VacancyPoint> points = new ArrayList<>();
 

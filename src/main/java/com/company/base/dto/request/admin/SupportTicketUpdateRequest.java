@@ -14,6 +14,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SupportTicketUpdateRequest {
     private String status;
+
     private String assignedTo;
+
     private String resolutionNote;
 }

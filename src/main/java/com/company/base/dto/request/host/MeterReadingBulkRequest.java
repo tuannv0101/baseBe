@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+
 /**
  * Request DTO carrying input data for API operations.
  */
@@ -16,8 +17,11 @@ import java.util.List;
 @NoArgsConstructor
 public class MeterReadingBulkRequest {
     private String serviceId;
+
     private Integer month;
+
     private Integer year;
+
     private List<ReadingRow> readings;
 
     @Data
@@ -26,7 +30,9 @@ public class MeterReadingBulkRequest {
     @NoArgsConstructor
     public static class ReadingRow {
         private String roomId;
+
         private Double oldValue;
+
         private Double newValue;
     }
 }

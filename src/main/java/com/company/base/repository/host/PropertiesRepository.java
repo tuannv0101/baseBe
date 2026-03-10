@@ -12,7 +12,5 @@ import java.util.List;
  */
 
 public interface PropertiesRepository extends JpaRepository<Properties, Long> {
-    List<Properties> findAllByOrderByNameAsc();
-
     Page<Properties> findAllByOrderByNameAsc(Pageable pageable);
 }

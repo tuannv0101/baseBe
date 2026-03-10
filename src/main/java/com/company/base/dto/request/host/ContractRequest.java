@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+
 /**
  * Request DTO carrying input data for API operations.
  */
@@ -17,10 +18,16 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class ContractRequest {
     private String roomId;
+
     private String tenantId;
+
     private LocalDate startDate;
+
     private LocalDate endDate;
+
     private BigDecimal depositAmount;
+
     private BigDecimal actualRent;
+
     private String status;
 }

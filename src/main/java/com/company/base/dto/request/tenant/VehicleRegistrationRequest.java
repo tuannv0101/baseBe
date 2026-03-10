@@ -14,6 +14,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class VehicleRegistrationRequest {
     private String vehicleType;
+
     private String plateNumber;
+
     private String note;
 }

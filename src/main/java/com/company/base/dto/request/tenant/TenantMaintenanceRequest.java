@@ -14,7 +14,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TenantMaintenanceRequest {
     private String title;
+
     private String description;
+
     private String priority;
+
     private Long attachmentFileId;
 }

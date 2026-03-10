@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
 /**
  * Request DTO carrying input data for API operations.
  */
@@ -17,11 +18,18 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class PaymentReceiptRequest {
     private Long invoiceId;
+
     private String receiptCode;
+
     private String roomId;
+
     private String payerName;
+
     private BigDecimal amount;
+
     private String paymentMethod;
+
     private LocalDateTime paymentTime;
+
     private String note;
 }

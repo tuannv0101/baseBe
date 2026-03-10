@@ -14,7 +14,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SupportTicketRequest {
     private Long landlordProfileId;
+
     private String title;
+
     private String description;
+
     private String priority;
 }

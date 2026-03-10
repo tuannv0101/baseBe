@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 /**
  * Request DTO carrying input data for API operations.
  */
@@ -14,6 +15,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MaintenanceAssignmentRequest {
     private String assignedTechnician;
+
     private String status;
+
     private String note;
 }

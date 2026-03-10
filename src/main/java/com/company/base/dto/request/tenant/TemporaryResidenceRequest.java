@@ -16,5 +16,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class TemporaryResidenceRequest {
     private Boolean declared;
+
     private LocalDate declaredAt;
 }
