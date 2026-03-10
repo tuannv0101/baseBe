@@ -14,18 +14,25 @@ public class Contract extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     // ID phòng được thuê.
     private String roomId;
+
     // ID người thuê trong hợp đồng.
     private String tenantId;
+
     // Ngày bắt đầu hiệu lực hợp đồng.
     private LocalDate startDate;
+
     // Ngày kết thúc hợp đồng.
     private LocalDate endDate;
+
     // Tiền đặt cọc.
     private BigDecimal depositAmount;
+
     // Giá thuê thực tế áp dụng.
     private BigDecimal actualRent;
+
     // Trạng thái hợp đồng: ACTIVE, EXPIRED, TERMINATED.
     private String status; // ACTIVE, EXPIRED, TERMINATED
 }

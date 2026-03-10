@@ -1,26 +1,35 @@
 package com.company.base.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
 @Table(name = "support_tickets")
 @Data
 public class SupportTicket extends BaseEntity {
+    // ID duy nhất của ticket hỗ trợ.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    // ID hồ sơ chủ nhà gửi yêu cầu hỗ trợ.
     private Long landlordProfileId;
+
+    // Tiêu đề yêu cầu hỗ trợ.
     private String title;
+
+    // Nội dung/mô tả chi tiết vấn đề.
     private String description;
-    // OPEN, IN_PROGRESS, RESOLVED, CLOSED
+
+    // Trạng thái ticket: OPEN, IN_PROGRESS, RESOLVED, CLOSED.
     private String status;
-    // LOW, MEDIUM, HIGH
+
+    // Mức ưu tiên: LOW, MEDIUM, HIGH.
     private String priority;
+
+    // Người được phân công xử lý (tên hoặc định danh).
     private String assignedTo;
+
+    // Ghi chú kết quả/hướng xử lý sau khi giải quyết.
     private String resolutionNote;
 }

@@ -13,10 +13,13 @@ public class Service extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     // Tên dịch vụ.
     private String name;
+
     // Đơn giá dịch vụ.
     private BigDecimal unitPrice;
+
     // Đơn vị tính (kWh, m3, Person, Fixed).
     private String unitType; // kWh, m3, Person, Fixed
 }

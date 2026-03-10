@@ -11,8 +11,10 @@ public class EquipmentCategory extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     // Tên danh mục thiết bị.
     private String name;
+
     // Thương hiệu thiết bị.
     private String brand;
 }

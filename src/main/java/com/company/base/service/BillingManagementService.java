@@ -12,35 +12,76 @@ import com.company.base.dto.response.host.ServiceUsageResponse;
 import java.util.List;
 
 /**
- * Service contract defining operations for this module.
+ * Service quản lý nghiệp vụ thu tiền, hóa đơn và dịch vụ (điện/nước/khác).
  */
-
 public interface BillingManagementService {
+    /**
+     * Tạo mới một dịch vụ tính phí (ví dụ: điện, nước, internet...).
+     */
     BillingServiceResponse createService(BillingServiceRequest request);
 
+    /**
+     * Cập nhật thông tin dịch vụ theo ID.
+     */
     BillingServiceResponse updateService(Long id, BillingServiceRequest request);
 
+    /**
+     * Lấy chi tiết dịch vụ theo ID.
+     */
     BillingServiceResponse getServiceById(Long id);
 
+    /**
+     * Lấy danh sách toàn bộ dịch vụ đang khai báo.
+     */
     List<BillingServiceResponse> getAllServices();
 
+    /**
+     * Xóa dịch vụ theo ID.
+     */
     void deleteService(Long id);
 
+    /**
+     * Lưu hàng loạt chỉ số/định mức sử dụng (bulk meter readings) cho nhiều phòng/dịch vụ.
+     */
     List<ServiceUsageResponse> saveMeterReadingsBulk(MeterReadingBulkRequest request);
 
+    /**
+     * Lấy danh sách sử dụng dịch vụ theo tháng/năm (có thể lọc theo serviceId).
+     */
     List<ServiceUsageResponse> getServiceUsage(Integer month, Integer year, String serviceId);
 
+    /**
+     * Tạo hóa đơn theo yêu cầu nghiệp vụ.
+     */
     InvoiceResponse createInvoice(InvoiceRequest request);
 
+    /**
+     * Cập nhật hóa đơn theo ID.
+     */
     InvoiceResponse updateInvoice(Long id, InvoiceRequest request);
 
+    /**
+     * Lấy chi tiết hóa đơn theo ID.
+     */
     InvoiceResponse getInvoiceById(Long id);
 
+    /**
+     * Lấy danh sách hóa đơn của một tháng/năm chỉ định (thường là tháng hiện tại).
+     */
     List<InvoiceResponse> getCurrentMonthInvoices(Integer month, Integer year);
 
+    /**
+     * Lấy danh sách hóa đơn quá hạn thanh toán.
+     */
     List<InvoiceResponse> getOverdueInvoices();
 
+    /**
+     * Tạo phiếu thu/ghi nhận thanh toán cho hóa đơn.
+     */
     PaymentReceiptResponse createPaymentReceipt(PaymentReceiptRequest request);
 
+    /**
+     * Lấy lịch sử các lần thanh toán/phiếu thu.
+     */
     List<PaymentReceiptResponse> getPaymentHistory();
 }

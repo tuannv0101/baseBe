@@ -10,35 +10,76 @@ import com.company.base.dto.response.host.RoomAssetResponse;
 import java.util.List;
 
 /**
- * Service contract defining operations for this module.
+ * Service quản lý tài sản/phòng và lịch sử bảo trì.
  */
-
 public interface AssetManagementService {
+    /**
+     * Tạo mới danh mục thiết bị (ví dụ: Điều hòa, Bình nóng lạnh...).
+     */
     EquipmentCategoryResponse createCategory(EquipmentCategoryRequest request);
 
+    /**
+     * Cập nhật thông tin danh mục thiết bị theo ID.
+     */
     EquipmentCategoryResponse updateCategory(Long id, EquipmentCategoryRequest request);
 
+    /**
+     * Lấy chi tiết danh mục thiết bị theo ID.
+     */
     EquipmentCategoryResponse getCategoryById(Long id);
 
+    /**
+     * Lấy danh sách toàn bộ danh mục thiết bị.
+     */
     List<EquipmentCategoryResponse> getAllCategories();
 
+    /**
+     * Xóa danh mục thiết bị theo ID.
+     */
     void deleteCategory(Long id);
 
+    /**
+     * Tạo mới tài sản gắn với một phòng (room asset).
+     */
     RoomAssetResponse createRoomAsset(RoomAssetRequest request);
 
+    /**
+     * Cập nhật thông tin tài sản trong phòng theo ID.
+     */
     RoomAssetResponse updateRoomAsset(Long id, RoomAssetRequest request);
 
+    /**
+     * Lấy chi tiết tài sản trong phòng theo ID.
+     */
     RoomAssetResponse getRoomAssetById(Long id);
 
+    /**
+     * Lấy danh sách tài sản theo phòng.
+     */
     List<RoomAssetResponse> getRoomAssetsByRoom(String roomId);
 
+    /**
+     * Xóa tài sản trong phòng theo ID.
+     */
     void deleteRoomAsset(Long id);
 
+    /**
+     * Tạo lịch sử bảo trì cho một tài sản trong phòng.
+     */
     AssetMaintenanceHistoryResponse createMaintenanceHistory(Long roomAssetId, AssetMaintenanceHistoryRequest request);
 
+    /**
+     * Cập nhật lịch sử bảo trì theo ID bản ghi.
+     */
     AssetMaintenanceHistoryResponse updateMaintenanceHistory(Long id, AssetMaintenanceHistoryRequest request);
 
+    /**
+     * Lấy lịch sử bảo trì theo ID tài sản trong phòng.
+     */
     List<AssetMaintenanceHistoryResponse> getMaintenanceHistoryByRoomAsset(Long roomAssetId);
 
+    /**
+     * Lấy lịch sử bảo trì theo phòng (tổng hợp từ các tài sản trong phòng).
+     */
     List<AssetMaintenanceHistoryResponse> getMaintenanceHistoryByRoom(String roomId);
 }

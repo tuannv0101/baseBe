@@ -1,23 +1,29 @@
 package com.company.base.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
 @Table(name = "landlord_profiles")
 @Data
 public class LandlordProfile extends BaseEntity {
+    // ID duy nhất của hồ sơ chủ nhà.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    // ID tài khoản người dùng liên kết (bảng users).
     private Long userId;
+
+    // Tên cá nhân/doanh nghiệp cho mục đích hiển thị/xuất hóa đơn (nếu có).
     private String businessName;
+
+    // Số điện thoại liên hệ chính.
     private String contactPhone;
-    // PENDING, APPROVED, LOCKED
+
+    // Trạng thái hồ sơ chủ nhà: PENDING, APPROVED, LOCKED.
     private String status;
+
+    // Ghi chú nội bộ.
     private String note;
 }

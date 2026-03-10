@@ -11,12 +11,23 @@ import lombok.Data;
 @Table(name = "operations_documents")
 @Data
 public class OperationsDocument extends BaseEntity {
+    // ID duy nhất của tài liệu vận hành.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    // Tiêu đề tài liệu.
     private String title;
+
+    // Loại tài liệu (ví dụ: nội quy, hướng dẫn, biểu mẫu...).
     private String documentType;
+
+    // ID tệp đính kèm (tham chiếu file_metadata).
     private Long fileId;
+
+    // Cờ bật/tắt hiển thị tài liệu.
     private Boolean active;
+
+    // Ghi chú nội bộ.
     private String note;
 }

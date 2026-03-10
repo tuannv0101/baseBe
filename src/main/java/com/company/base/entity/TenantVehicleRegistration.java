@@ -1,10 +1,6 @@
 package com.company.base.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -13,16 +9,29 @@ import java.time.LocalDate;
 @Table(name = "tenant_vehicle_registrations")
 @Data
 public class TenantVehicleRegistration extends BaseEntity {
+    // ID duy nhất của đăng ký phương tiện.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    // ID người thuê đăng ký phương tiện.
     private String tenantId;
+
+    // ID phòng người thuê đang ở (liên quan đến đăng ký).
     private String roomId;
-    // MOTORBIKE, CAR...
+
+    // Loại phương tiện: MOTORBIKE, CAR...
     private String vehicleType;
+
+    // Biển số xe.
     private String plateNumber;
+
+    // Ngày đăng ký.
     private LocalDate registeredDate;
-    // PENDING, APPROVED, REJECTED
+
+    // Trạng thái duyệt đăng ký: PENDING, APPROVED, REJECTED.
     private String status;
+
+    // Ghi chú bổ sung.
     private String note;
 }
