@@ -7,7 +7,8 @@ import com.company.base.dto.response.host.AssetMaintenanceHistoryResponse;
 import com.company.base.dto.response.host.EquipmentCategoryResponse;
 import com.company.base.dto.response.host.RoomAssetResponse;
 
-import java.util.List;
+import com.company.base.common.pagination.PageResponse;
+import org.springframework.data.domain.Pageable;
 
 /**
  * Service quản lý tài sản/phòng và lịch sử bảo trì.
@@ -31,7 +32,7 @@ public interface AssetManagementService {
     /**
      * Lấy danh sách toàn bộ danh mục thiết bị.
      */
-    List<EquipmentCategoryResponse> getAllCategories();
+    PageResponse<EquipmentCategoryResponse> getAllCategories(Pageable pageable);
 
     /**
      * Xóa danh mục thiết bị theo ID.
@@ -56,7 +57,7 @@ public interface AssetManagementService {
     /**
      * Lấy danh sách tài sản theo phòng.
      */
-    List<RoomAssetResponse> getRoomAssetsByRoom(String roomId);
+    PageResponse<RoomAssetResponse> getRoomAssetsByRoom(String roomId, Pageable pageable);
 
     /**
      * Xóa tài sản trong phòng theo ID.
@@ -76,10 +77,10 @@ public interface AssetManagementService {
     /**
      * Lấy lịch sử bảo trì theo ID tài sản trong phòng.
      */
-    List<AssetMaintenanceHistoryResponse> getMaintenanceHistoryByRoomAsset(Long roomAssetId);
+    PageResponse<AssetMaintenanceHistoryResponse> getMaintenanceHistoryByRoomAsset(Long roomAssetId, Pageable pageable);
 
     /**
      * Lấy lịch sử bảo trì theo phòng (tổng hợp từ các tài sản trong phòng).
      */
-    List<AssetMaintenanceHistoryResponse> getMaintenanceHistoryByRoom(String roomId);
+    PageResponse<AssetMaintenanceHistoryResponse> getMaintenanceHistoryByRoom(String roomId, Pageable pageable);
 }

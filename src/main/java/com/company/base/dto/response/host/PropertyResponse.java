@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 /**
  * Response DTO carrying output data for API operations.
  */
@@ -14,7 +15,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PropertyResponse {
     private Long id;
+
     private String name;
+
     private String address;
+
     private Integer totalFloors;
 }

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+
 /**
  * Response DTO carrying output data for API operations.
  */
@@ -16,11 +17,17 @@ import java.util.List;
 @NoArgsConstructor
 public class VacancyRateReportResponse {
     private Integer fromMonth;
+
     private Integer fromYear;
+
     private Integer toMonth;
+
     private Integer toYear;
+
     private Long totalRooms;
+
     private Double averageVacancyRate;
+
     private List<VacancyPoint> points;
 
     @Data
@@ -29,10 +36,15 @@ public class VacancyRateReportResponse {
     @NoArgsConstructor
     public static class VacancyPoint {
         private Integer month;
+
         private Integer year;
+
         private Long totalRooms;
+
         private Long occupiedRooms;
+
         private Long vacantRooms;
+
         private Double vacancyRate;
     }
 }

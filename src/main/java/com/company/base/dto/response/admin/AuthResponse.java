@@ -1,6 +1,10 @@
 package com.company.base.dto.response.admin;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  * Response DTO carrying output data for API operations.
  */

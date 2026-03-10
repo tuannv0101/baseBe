@@ -1,5 +1,7 @@
 package com.company.base.service.impl;
 
+import com.company.base.common.pagination.PageResponse;
+import com.company.base.common.pagination.PaginationUtils;
 import com.company.base.dto.request.host.ContractLiquidationRequest;
 import com.company.base.dto.request.host.ContractRequest;
 import com.company.base.dto.request.host.TenantRequest;
@@ -15,6 +17,8 @@ import com.company.base.repository.host.ContractRepository;
 import com.company.base.repository.host.TenantRepository;
 import com.company.base.service.TenancyService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -58,27 +62,24 @@ public class TenancyServiceImpl implements TenancyService {
     }
 
     @Override
-    public List<TenantResponse> getAllTenants() {
-        return tenantRepository.findAllByOrderByFullNameAsc()
-                .stream()
-                .map(this::toTenantResponse)
-                .toList();
+    public PageResponse<TenantResponse> getAllTenants(Pageable pageable) {
+        Page<TenantResponse> page = tenantRepository.findAllByOrderByFullNameAsc(pageable)
+                .map(this::toTenantResponse);
+        return PageResponse.of(page);
     }
 
     @Override
-    public List<TenantResponse> getTenantsByTemporaryResidenceStatus(boolean declared) {
-        return tenantRepository.findByTemporaryResidenceDeclaredOrderByFullNameAsc(declared)
-                .stream()
-                .map(this::toTenantResponse)
-                .toList();
+    public PageResponse<TenantResponse> getTenantsByTemporaryResidenceStatus(boolean declared, Pageable pageable) {
+        Page<TenantResponse> page = tenantRepository.findByTemporaryResidenceDeclaredOrderByFullNameAsc(declared, pageable)
+                .map(this::toTenantResponse);
+        return PageResponse.of(page);
     }
 
     @Override
     public void deleteTenant(Long id) {
-        if (!tenantRepository.existsById(id)) {
-            throw new AppException(HttpStatus.NOT_FOUND.value(), "Tenant not found");
-        }
-        tenantRepository.deleteById(id);
+        Tenant entity = getTenantEntity(id);
+        entity.setDelYn("Y");
+        tenantRepository.save(entity);
     }
 
     @Override
@@ -101,37 +102,36 @@ public class TenancyServiceImpl implements TenancyService {
     }
 
     @Override
-    public List<ContractResponse> getAllContracts() {
-        return contractRepository.findAll().stream()
-                .map(this::toContractResponse)
-                .toList();
+    public PageResponse<ContractResponse> getAllContracts(Pageable pageable) {
+        Page<ContractResponse> page = contractRepository.findAllByOrderByStartDateDescIdDesc(pageable)
+                .map(this::toContractResponse);
+        return PageResponse.of(page);
     }
 
     @Override
-    public List<ContractResponse> getEffectiveContracts() {
+    public PageResponse<ContractResponse> getEffectiveContracts(Pageable pageable) {
         LocalDate today = LocalDate.now();
-        return contractRepository.findByStatusIgnoreCaseOrderByStartDateDescIdDesc(STATUS_ACTIVE)
+        List<ContractResponse> effective = contractRepository.findByStatusIgnoreCaseOrderByStartDateDescIdDesc(STATUS_ACTIVE)
                 .stream()
                 .filter(contract -> contract.getStartDate() == null || !contract.getStartDate().isAfter(today))
                 .filter(contract -> contract.getEndDate() == null || !contract.getEndDate().isBefore(today))
                 .map(this::toContractResponse)
                 .toList();
+        return PaginationUtils.paginateList(effective, pageable);
     }
 
     @Override
-    public List<ContractResponse> getPendingContracts() {
-        return contractRepository.findByStatusInOrderByStartDateDescIdDesc(PENDING_STATUSES)
-                .stream()
-                .map(this::toContractResponse)
-                .toList();
+    public PageResponse<ContractResponse> getPendingContracts(Pageable pageable) {
+        Page<ContractResponse> page = contractRepository.findByStatusInOrderByStartDateDescIdDesc(PENDING_STATUSES, pageable)
+                .map(this::toContractResponse);
+        return PageResponse.of(page);
     }
 
     @Override
     public void deleteContract(Long id) {
-        if (!contractRepository.existsById(id)) {
-            throw new AppException(HttpStatus.NOT_FOUND.value(), "Contract not found");
-        }
-        contractRepository.deleteById(id);
+        Contract entity = getContractEntity(id);
+        entity.setDelYn("Y");
+        contractRepository.save(entity);
     }
 
     @Override
@@ -152,11 +152,10 @@ public class TenancyServiceImpl implements TenancyService {
     }
 
     @Override
-    public List<ContractLiquidationResponse> getLiquidationHistory() {
-        return liquidationHistoryRepository.findAllByOrderByLiquidationDateDescIdDesc()
-                .stream()
-                .map(this::toLiquidationResponse)
-                .toList();
+    public PageResponse<ContractLiquidationResponse> getLiquidationHistory(Pageable pageable) {
+        Page<ContractLiquidationResponse> page = liquidationHistoryRepository.findAllByOrderByLiquidationDateDescIdDesc(pageable)
+                .map(this::toLiquidationResponse);
+        return PageResponse.of(page);
     }
 
     private void applyTenantUpdate(Tenant entity, TenantRequest request) {

@@ -7,7 +7,8 @@ import com.company.base.dto.response.host.ContractLiquidationResponse;
 import com.company.base.dto.response.host.ContractResponse;
 import com.company.base.dto.response.host.TenantResponse;
 
-import java.util.List;
+import com.company.base.common.pagination.PageResponse;
+import org.springframework.data.domain.Pageable;
 
 /**
  * Service quản lý người thuê và hợp đồng thuê (tenancy).
@@ -31,12 +32,12 @@ public interface TenancyService {
     /**
      * Lấy danh sách toàn bộ người thuê.
      */
-    List<TenantResponse> getAllTenants();
+    PageResponse<TenantResponse> getAllTenants(Pageable pageable);
 
     /**
      * Lấy danh sách người thuê theo trạng thái khai báo tạm trú.
      */
-    List<TenantResponse> getTenantsByTemporaryResidenceStatus(boolean declared);
+    PageResponse<TenantResponse> getTenantsByTemporaryResidenceStatus(boolean declared, Pageable pageable);
 
     /**
      * Xóa người thuê theo ID.
@@ -61,17 +62,17 @@ public interface TenancyService {
     /**
      * Lấy danh sách toàn bộ hợp đồng.
      */
-    List<ContractResponse> getAllContracts();
+    PageResponse<ContractResponse> getAllContracts(Pageable pageable);
 
     /**
      * Lấy danh sách hợp đồng đang hiệu lực (effective).
      */
-    List<ContractResponse> getEffectiveContracts();
+    PageResponse<ContractResponse> getEffectiveContracts(Pageable pageable);
 
     /**
      * Lấy danh sách hợp đồng đang chờ xử lý/duyệt (pending).
      */
-    List<ContractResponse> getPendingContracts();
+    PageResponse<ContractResponse> getPendingContracts(Pageable pageable);
 
     /**
      * Xóa hợp đồng theo ID.
@@ -86,5 +87,5 @@ public interface TenancyService {
     /**
      * Lấy danh sách lịch sử thanh lý hợp đồng.
      */
-    List<ContractLiquidationResponse> getLiquidationHistory();
+    PageResponse<ContractLiquidationResponse> getLiquidationHistory(Pageable pageable);
 }

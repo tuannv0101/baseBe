@@ -42,6 +42,8 @@ public class WebSecurityConfig {
                 .requestMatchers("/api/v1/auth/**", "/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
                 .requestMatchers("/api/v1/super-admin/**").hasRole("ADMIN")
                 .requestMatchers("/api/v1/tenant/**").hasAnyRole("TENANT", "HOST")
+                // Allow unauthenticated reads for non-tenant/non-admin APIs.
+                .requestMatchers(HttpMethod.GET, "/**").permitAll()
                 .anyRequest().authenticated())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authenticationProvider(authenticationProvider())

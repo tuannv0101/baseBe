@@ -9,7 +9,8 @@ import com.company.base.dto.response.host.EquipmentCategoryResponse;
 import com.company.base.dto.response.host.RoomAssetResponse;
 import com.company.base.service.AssetManagementService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import com.company.base.common.pagination.PageResponse;
 
 /**
  * REST controller that exposes API endpoints for this module.
@@ -47,11 +48,11 @@ public class AssetManagementController {
     }
 
     @GetMapping("/categories")
-    public ApiResponse<List<EquipmentCategoryResponse>> getAllCategories() {
-        return ApiResponse.success(assetManagementService.getAllCategories());
+    public ApiResponse<PageResponse<EquipmentCategoryResponse>> getAllCategories(@PageableDefault(size = 20) Pageable pageable) {
+        return ApiResponse.success(assetManagementService.getAllCategories(pageable));
     }
 
-    @DeleteMapping("/categories/{id}")
+    @PutMapping("/categories/{id}/delete")
     public ApiResponse<Void> deleteCategory(@PathVariable Long id) {
         assetManagementService.deleteCategory(id);
         return ApiResponse.success(null);
@@ -72,15 +73,18 @@ public class AssetManagementController {
         return ApiResponse.success(assetManagementService.getRoomAssetById(id));
     }
 
-    @DeleteMapping("/room-assets/{id}")
+    @PutMapping("/room-assets/{id}/delete")
     public ApiResponse<Void> deleteRoomAsset(@PathVariable Long id) {
         assetManagementService.deleteRoomAsset(id);
         return ApiResponse.success(null);
     }
 
     @GetMapping("/rooms/{roomId}/inventory")
-    public ApiResponse<List<RoomAssetResponse>> getRoomInventory(@PathVariable String roomId) {
-        return ApiResponse.success(assetManagementService.getRoomAssetsByRoom(roomId));
+    public ApiResponse<PageResponse<RoomAssetResponse>> getRoomInventory(
+            @PathVariable String roomId,
+            @PageableDefault(size = 20) Pageable pageable
+    ) {
+        return ApiResponse.success(assetManagementService.getRoomAssetsByRoom(roomId, pageable));
     }
 
     @PostMapping("/room-assets/{roomAssetId}/maintenance-history")
@@ -100,12 +104,18 @@ public class AssetManagementController {
     }
 
     @GetMapping("/room-assets/{roomAssetId}/maintenance-history")
-    public ApiResponse<List<AssetMaintenanceHistoryResponse>> getMaintenanceHistoryByRoomAsset(@PathVariable Long roomAssetId) {
-        return ApiResponse.success(assetManagementService.getMaintenanceHistoryByRoomAsset(roomAssetId));
+    public ApiResponse<PageResponse<AssetMaintenanceHistoryResponse>> getMaintenanceHistoryByRoomAsset(
+            @PathVariable Long roomAssetId,
+            @PageableDefault(size = 20) Pageable pageable
+    ) {
+        return ApiResponse.success(assetManagementService.getMaintenanceHistoryByRoomAsset(roomAssetId, pageable));
     }
 
     @GetMapping("/rooms/{roomId}/maintenance-history")
-    public ApiResponse<List<AssetMaintenanceHistoryResponse>> getMaintenanceHistoryByRoom(@PathVariable String roomId) {
-        return ApiResponse.success(assetManagementService.getMaintenanceHistoryByRoom(roomId));
+    public ApiResponse<PageResponse<AssetMaintenanceHistoryResponse>> getMaintenanceHistoryByRoom(
+            @PathVariable String roomId,
+            @PageableDefault(size = 20) Pageable pageable
+    ) {
+        return ApiResponse.success(assetManagementService.getMaintenanceHistoryByRoom(roomId, pageable));
     }
 }

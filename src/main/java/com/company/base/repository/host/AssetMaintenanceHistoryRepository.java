@@ -1,6 +1,8 @@
 package com.company.base.repository.host;
 
 import com.company.base.entity.AssetMaintenanceHistory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Collection;
@@ -14,4 +16,8 @@ public interface AssetMaintenanceHistoryRepository extends JpaRepository<AssetMa
     List<AssetMaintenanceHistory> findByRoomAssetIdOrderByMaintenanceDateDescIdDesc(Long roomAssetId);
 
     List<AssetMaintenanceHistory> findByRoomAssetIdInOrderByMaintenanceDateDescIdDesc(Collection<Long> roomAssetIds);
+
+    Page<AssetMaintenanceHistory> findByRoomAssetIdOrderByMaintenanceDateDescIdDesc(Long roomAssetId, Pageable pageable);
+
+    Page<AssetMaintenanceHistory> findByRoomAssetIdInOrderByMaintenanceDateDescIdDesc(Collection<Long> roomAssetIds, Pageable pageable);
 }

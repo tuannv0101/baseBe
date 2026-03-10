@@ -9,7 +9,8 @@ import com.company.base.dto.response.tenant.TenantInvoiceSummaryResponse;
 import com.company.base.dto.response.tenant.TenantMaintenanceResponse;
 import com.company.base.dto.response.tenant.TenantUtilityOverviewResponse;
 
-import java.util.List;
+import com.company.base.common.pagination.PageResponse;
+import org.springframework.data.domain.Pageable;
 
 /**
  * Service dành cho cổng thông tin người thuê (tenant portal).
@@ -23,7 +24,7 @@ public interface TenantPortalService {
     /**
      * Lấy danh sách hóa đơn của người thuê.
      */
-    List<TenantInvoiceSummaryResponse> getMyInvoices(String tenantId);
+    PageResponse<TenantInvoiceSummaryResponse> getMyInvoices(String tenantId, Pageable pageable);
 
     /**
      * Lấy chi tiết 1 hóa đơn của người thuê (có kiểm tra quyền sở hữu theo tenantId).
@@ -33,7 +34,7 @@ public interface TenantPortalService {
     /**
      * Lấy danh sách các yêu cầu bảo trì do người thuê tạo.
      */
-    List<TenantMaintenanceResponse> getMyMaintenanceRequests(String tenantId);
+    PageResponse<TenantMaintenanceResponse> getMyMaintenanceRequests(String tenantId, Pageable pageable);
 
     /**
      * Người thuê tạo yêu cầu bảo trì mới.

@@ -1,5 +1,6 @@
 package com.company.base.service.impl;
 
+import com.company.base.common.pagination.PageResponse;
 import com.company.base.dto.request.host.AssetMaintenanceHistoryRequest;
 import com.company.base.dto.request.host.EquipmentCategoryRequest;
 import com.company.base.dto.request.host.RoomAssetRequest;
@@ -15,6 +16,8 @@ import com.company.base.repository.host.EquipmentCategoryRepository;
 import com.company.base.repository.host.RoomAssetRepository;
 import com.company.base.service.AssetManagementService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -54,19 +57,17 @@ public class AssetManagementServiceImpl implements AssetManagementService {
     }
 
     @Override
-    public List<EquipmentCategoryResponse> getAllCategories() {
-        return equipmentCategoryRepository.findAllByOrderByNameAsc()
-                .stream()
-                .map(this::toCategoryResponse)
-                .toList();
+    public PageResponse<EquipmentCategoryResponse> getAllCategories(Pageable pageable) {
+        Page<EquipmentCategoryResponse> page = equipmentCategoryRepository.findAllByOrderByNameAsc(pageable)
+                .map(this::toCategoryResponse);
+        return PageResponse.of(page);
     }
 
     @Override
     public void deleteCategory(Long id) {
-        if (!equipmentCategoryRepository.existsById(id)) {
-            throw new AppException(HttpStatus.NOT_FOUND.value(), "Equipment category not found");
-        }
-        equipmentCategoryRepository.deleteById(id);
+        EquipmentCategory entity = getCategoryEntity(id);
+        entity.setDelYn("Y");
+        equipmentCategoryRepository.save(entity);
     }
 
     @Override
@@ -95,19 +96,17 @@ public class AssetManagementServiceImpl implements AssetManagementService {
     }
 
     @Override
-    public List<RoomAssetResponse> getRoomAssetsByRoom(String roomId) {
-        return roomAssetRepository.findByRoomId(roomId)
-                .stream()
-                .map(this::toRoomAssetResponse)
-                .toList();
+    public PageResponse<RoomAssetResponse> getRoomAssetsByRoom(String roomId, Pageable pageable) {
+        Page<RoomAssetResponse> page = roomAssetRepository.findByRoomIdOrderByIdAsc(roomId, pageable)
+                .map(this::toRoomAssetResponse);
+        return PageResponse.of(page);
     }
 
     @Override
     public void deleteRoomAsset(Long id) {
-        if (!roomAssetRepository.existsById(id)) {
-            throw new AppException(HttpStatus.NOT_FOUND.value(), "Room asset not found");
-        }
-        roomAssetRepository.deleteById(id);
+        RoomAsset entity = getRoomAssetEntity(id);
+        entity.setDelYn("Y");
+        roomAssetRepository.save(entity);
     }
 
     @Override
@@ -130,28 +129,28 @@ public class AssetManagementServiceImpl implements AssetManagementService {
     }
 
     @Override
-    public List<AssetMaintenanceHistoryResponse> getMaintenanceHistoryByRoomAsset(Long roomAssetId) {
+    public PageResponse<AssetMaintenanceHistoryResponse> getMaintenanceHistoryByRoomAsset(Long roomAssetId, Pageable pageable) {
         if (!roomAssetRepository.existsById(roomAssetId)) {
             throw new AppException(HttpStatus.NOT_FOUND.value(), "Room asset not found");
         }
-        return maintenanceHistoryRepository.findByRoomAssetIdOrderByMaintenanceDateDescIdDesc(roomAssetId)
-                .stream()
-                .map(this::toMaintenanceResponse)
-                .toList();
+        Page<AssetMaintenanceHistoryResponse> page = maintenanceHistoryRepository
+                .findByRoomAssetIdOrderByMaintenanceDateDescIdDesc(roomAssetId, pageable)
+                .map(this::toMaintenanceResponse);
+        return PageResponse.of(page);
     }
 
     @Override
-    public List<AssetMaintenanceHistoryResponse> getMaintenanceHistoryByRoom(String roomId) {
+    public PageResponse<AssetMaintenanceHistoryResponse> getMaintenanceHistoryByRoom(String roomId, Pageable pageable) {
         List<Long> roomAssetIds = roomAssetRepository.findByRoomId(roomId).stream()
                 .map(RoomAsset::getId)
                 .toList();
         if (roomAssetIds.isEmpty()) {
-            return List.of();
+            return PageResponse.of(Page.empty(pageable));
         }
-        return maintenanceHistoryRepository.findByRoomAssetIdInOrderByMaintenanceDateDescIdDesc(roomAssetIds)
-                .stream()
-                .map(this::toMaintenanceResponse)
-                .toList();
+        Page<AssetMaintenanceHistoryResponse> page = maintenanceHistoryRepository
+                .findByRoomAssetIdInOrderByMaintenanceDateDescIdDesc(roomAssetIds, pageable)
+                .map(this::toMaintenanceResponse);
+        return PageResponse.of(page);
     }
 
     private void applyMaintenanceUpdate(AssetMaintenanceHistory entity, AssetMaintenanceHistoryRequest request) {

@@ -4,7 +4,8 @@ import com.company.base.dto.request.host.PropertyRequest;
 import com.company.base.dto.response.host.PropertyResponse;
 import com.company.base.dto.response.host.RoomMatrixResponse;
 
-import java.util.List;
+import com.company.base.common.pagination.PageResponse;
+import org.springframework.data.domain.Pageable;
 
 /**
  * Service quản lý bất động sản/tòa nhà và phòng.
@@ -28,7 +29,7 @@ public interface PropertyManagementService {
     /**
      * Lấy danh sách toàn bộ tòa nhà/bất động sản.
      */
-    List<PropertyResponse> getAllProperties();
+    PageResponse<PropertyResponse> getAllProperties(Pageable pageable);
 
     /**
      * Xóa tòa nhà/bất động sản theo ID.
@@ -38,5 +39,5 @@ public interface PropertyManagementService {
     /**
      * Lấy ma trận phòng (tầng/phòng/trạng thái) theo propertyId để hiển thị dạng lưới.
      */
-    List<RoomMatrixResponse> getRoomMatrix(Long propertyId);
+    PageResponse<RoomMatrixResponse> getRoomMatrix(Long propertyId, Pageable pageable);
 }

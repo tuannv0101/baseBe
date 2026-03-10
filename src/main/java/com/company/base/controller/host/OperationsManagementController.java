@@ -10,9 +10,11 @@ import com.company.base.dto.response.host.MaintenanceRequestResponse;
 import com.company.base.dto.response.host.OperationsDocumentResponse;
 import com.company.base.service.OperationsManagementService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import com.company.base.common.pagination.PageResponse;
 
 /**
  * REST controller that exposes API endpoints for this module.
@@ -44,8 +46,11 @@ public class OperationsManagementController {
     }
 
     @GetMapping("/maintenance-requests")
-    public ApiResponse<List<MaintenanceRequestResponse>> getMaintenanceRequests(@RequestParam(required = false) String status) {
-        return ApiResponse.success(operationsManagementService.getMaintenanceRequests(status));
+    public ApiResponse<PageResponse<MaintenanceRequestResponse>> getMaintenanceRequests(
+            @RequestParam(required = false) String status,
+            @PageableDefault(size = 20) Pageable pageable
+    ) {
+        return ApiResponse.success(operationsManagementService.getMaintenanceRequests(status, pageable));
     }
 
     @PostMapping("/expenses")
@@ -64,14 +69,15 @@ public class OperationsManagementController {
     }
 
     @GetMapping("/expenses")
-    public ApiResponse<List<ExpenseRecordResponse>> getExpenseRecords(
+    public ApiResponse<PageResponse<ExpenseRecordResponse>> getExpenseRecords(
             @RequestParam(required = false) Integer month,
-            @RequestParam(required = false) Integer year
+            @RequestParam(required = false) Integer year,
+            @PageableDefault(size = 20) Pageable pageable
     ) {
-        return ApiResponse.success(operationsManagementService.getExpenseRecords(month, year));
+        return ApiResponse.success(operationsManagementService.getExpenseRecords(month, year, pageable));
     }
 
-    @DeleteMapping("/expenses/{id}")
+    @PutMapping("/expenses/{id}/delete")
     public ApiResponse<Void> deleteExpenseRecord(@PathVariable Long id) {
         operationsManagementService.deleteExpenseRecord(id);
         return ApiResponse.success(null);
@@ -93,11 +99,14 @@ public class OperationsManagementController {
     }
 
     @GetMapping("/documents")
-    public ApiResponse<List<OperationsDocumentResponse>> getDocuments(@RequestParam(required = false) String documentType) {
-        return ApiResponse.success(operationsManagementService.getDocuments(documentType));
+    public ApiResponse<PageResponse<OperationsDocumentResponse>> getDocuments(
+            @RequestParam(required = false) String documentType,
+            @PageableDefault(size = 20) Pageable pageable
+    ) {
+        return ApiResponse.success(operationsManagementService.getDocuments(documentType, pageable));
     }
 
-    @DeleteMapping("/documents/{id}")
+    @PutMapping("/documents/{id}/delete")
     public ApiResponse<Void> deleteDocument(@PathVariable Long id) {
         operationsManagementService.deleteDocument(id);
         return ApiResponse.success(null);

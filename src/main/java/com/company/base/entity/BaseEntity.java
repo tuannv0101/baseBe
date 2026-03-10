@@ -3,6 +3,7 @@ package com.company.base.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.PrePersist;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedBy;
@@ -35,4 +36,14 @@ public abstract class BaseEntity {
     // Định danh người cập nhật bản ghi gần nhất.
     @LastModifiedBy
     private String updatedBy;
+
+    private String delYn;
+
+    @PrePersist
+    protected void prePersist() {
+        // Default to non-deleted when creating new rows.
+        if (delYn == null || delYn.isBlank()) {
+            delYn = "N";
+        }
+    }
 }

@@ -17,8 +17,11 @@ import java.util.List;
 @NoArgsConstructor
 public class SuperAdminDashboardResponse {
     private Long totalLandlords;
+
     private BigDecimal totalSubscriptionRevenue;
+
     private List<UserGrowthPoint> newUserGrowth;
+
     private ServerStatus serverStatus;
 
     @Data
@@ -27,7 +30,9 @@ public class SuperAdminDashboardResponse {
     @NoArgsConstructor
     public static class UserGrowthPoint {
         private Integer month;
+
         private Integer year;
+
         private Long newUsers;
     }
 
@@ -37,8 +42,11 @@ public class SuperAdminDashboardResponse {
     @NoArgsConstructor
     public static class ServerStatus {
         private Long memoryUsedMb;
+
         private Long memoryMaxMb;
+
         private Double memoryUsagePercent;
+
         private String status;
     }
 }

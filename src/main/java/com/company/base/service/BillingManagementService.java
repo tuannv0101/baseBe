@@ -8,6 +8,8 @@ import com.company.base.dto.response.host.BillingServiceResponse;
 import com.company.base.dto.response.host.InvoiceResponse;
 import com.company.base.dto.response.host.PaymentReceiptResponse;
 import com.company.base.dto.response.host.ServiceUsageResponse;
+import com.company.base.common.pagination.PageResponse;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -33,7 +35,7 @@ public interface BillingManagementService {
     /**
      * Lấy danh sách toàn bộ dịch vụ đang khai báo.
      */
-    List<BillingServiceResponse> getAllServices();
+    PageResponse<BillingServiceResponse> getAllServices(Pageable pageable);
 
     /**
      * Xóa dịch vụ theo ID.
@@ -48,7 +50,7 @@ public interface BillingManagementService {
     /**
      * Lấy danh sách sử dụng dịch vụ theo tháng/năm (có thể lọc theo serviceId).
      */
-    List<ServiceUsageResponse> getServiceUsage(Integer month, Integer year, String serviceId);
+    PageResponse<ServiceUsageResponse> getServiceUsage(Integer month, Integer year, String serviceId, Pageable pageable);
 
     /**
      * Tạo hóa đơn theo yêu cầu nghiệp vụ.
@@ -68,12 +70,12 @@ public interface BillingManagementService {
     /**
      * Lấy danh sách hóa đơn của một tháng/năm chỉ định (thường là tháng hiện tại).
      */
-    List<InvoiceResponse> getCurrentMonthInvoices(Integer month, Integer year);
+    PageResponse<InvoiceResponse> getCurrentMonthInvoices(Integer month, Integer year, Pageable pageable);
 
     /**
      * Lấy danh sách hóa đơn quá hạn thanh toán.
      */
-    List<InvoiceResponse> getOverdueInvoices();
+    PageResponse<InvoiceResponse> getOverdueInvoices(Pageable pageable);
 
     /**
      * Tạo phiếu thu/ghi nhận thanh toán cho hóa đơn.
@@ -83,5 +85,5 @@ public interface BillingManagementService {
     /**
      * Lấy lịch sử các lần thanh toán/phiếu thu.
      */
-    List<PaymentReceiptResponse> getPaymentHistory();
+    PageResponse<PaymentReceiptResponse> getPaymentHistory(Pageable pageable);
 }

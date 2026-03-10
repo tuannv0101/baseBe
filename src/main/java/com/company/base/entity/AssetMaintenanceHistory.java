@@ -2,12 +2,14 @@ package com.company.base.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.Where;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "asset_maintenance_histories")
+@Where(clause = "del_yn IS NULL OR del_yn <> 'Y'")
 @Data
 public class AssetMaintenanceHistory extends BaseEntity {
     // ID duy nhat cua lich su bao tri.

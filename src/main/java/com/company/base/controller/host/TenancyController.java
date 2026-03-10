@@ -9,9 +9,11 @@ import com.company.base.dto.response.host.ContractResponse;
 import com.company.base.dto.response.host.TenantResponse;
 import com.company.base.service.TenancyService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import com.company.base.common.pagination.PageResponse;
 
 /**
  * REST controller that exposes API endpoints for this module.
@@ -40,19 +42,22 @@ public class TenancyController {
     }
 
     @GetMapping("/tenants")
-    public ApiResponse<List<TenantResponse>> getAllTenants() {
-        return ApiResponse.success(tenancyService.getAllTenants());
+    public ApiResponse<PageResponse<TenantResponse>> getAllTenants(@PageableDefault(size = 20) Pageable pageable) {
+        return ApiResponse.success(tenancyService.getAllTenants(pageable));
     }
 
-    @DeleteMapping("/tenants/{id}")
+    @PutMapping("/tenants/{id}/delete")
     public ApiResponse<Void> deleteTenant(@PathVariable Long id) {
         tenancyService.deleteTenant(id);
         return ApiResponse.success(null);
     }
 
     @GetMapping("/temporary-residence")
-    public ApiResponse<List<TenantResponse>> getTenantsByTemporaryResidence(@RequestParam boolean declared) {
-        return ApiResponse.success(tenancyService.getTenantsByTemporaryResidenceStatus(declared));
+    public ApiResponse<PageResponse<TenantResponse>> getTenantsByTemporaryResidence(
+            @RequestParam boolean declared,
+            @PageableDefault(size = 20) Pageable pageable
+    ) {
+        return ApiResponse.success(tenancyService.getTenantsByTemporaryResidenceStatus(declared, pageable));
     }
 
     @PostMapping("/contracts")
@@ -71,21 +76,21 @@ public class TenancyController {
     }
 
     @GetMapping("/contracts")
-    public ApiResponse<List<ContractResponse>> getAllContracts() {
-        return ApiResponse.success(tenancyService.getAllContracts());
+    public ApiResponse<PageResponse<ContractResponse>> getAllContracts(@PageableDefault(size = 20) Pageable pageable) {
+        return ApiResponse.success(tenancyService.getAllContracts(pageable));
     }
 
     @GetMapping("/contracts/effective")
-    public ApiResponse<List<ContractResponse>> getEffectiveContracts() {
-        return ApiResponse.success(tenancyService.getEffectiveContracts());
+    public ApiResponse<PageResponse<ContractResponse>> getEffectiveContracts(@PageableDefault(size = 20) Pageable pageable) {
+        return ApiResponse.success(tenancyService.getEffectiveContracts(pageable));
     }
 
     @GetMapping("/contracts/pending")
-    public ApiResponse<List<ContractResponse>> getPendingContracts() {
-        return ApiResponse.success(tenancyService.getPendingContracts());
+    public ApiResponse<PageResponse<ContractResponse>> getPendingContracts(@PageableDefault(size = 20) Pageable pageable) {
+        return ApiResponse.success(tenancyService.getPendingContracts(pageable));
     }
 
-    @DeleteMapping("/contracts/{id}")
+    @PutMapping("/contracts/{id}/delete")
     public ApiResponse<Void> deleteContract(@PathVariable Long id) {
         tenancyService.deleteContract(id);
         return ApiResponse.success(null);
@@ -100,7 +105,7 @@ public class TenancyController {
     }
 
     @GetMapping("/contracts/liquidation-history")
-    public ApiResponse<List<ContractLiquidationResponse>> getLiquidationHistory() {
-        return ApiResponse.success(tenancyService.getLiquidationHistory());
+    public ApiResponse<PageResponse<ContractLiquidationResponse>> getLiquidationHistory(@PageableDefault(size = 20) Pageable pageable) {
+        return ApiResponse.success(tenancyService.getLiquidationHistory(pageable));
     }
 }

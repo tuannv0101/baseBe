@@ -18,9 +18,14 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class TenantInvoiceSummaryResponse {
     private Long id;
+
     private String invoiceCode;
+
     private BigDecimal totalAmount;
+
     private String status;
+
     private LocalDate dueDate;
+
     private LocalDateTime paymentDate;
 }

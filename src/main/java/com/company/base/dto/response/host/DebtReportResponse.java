@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+
 /**
  * Response DTO carrying output data for API operations.
  */
@@ -18,8 +19,11 @@ import java.util.List;
 @NoArgsConstructor
 public class DebtReportResponse {
     private LocalDate reportDate;
+
     private BigDecimal totalOutstanding;
+
     private BigDecimal totalOverdue;
+
     private List<DebtItem> items;
 
     @Data
@@ -28,13 +32,21 @@ public class DebtReportResponse {
     @NoArgsConstructor
     public static class DebtItem {
         private Long invoiceId;
+
         private String invoiceCode;
+
         private String contractId;
+
         private String tenantId;
+
         private String roomId;
+
         private BigDecimal amount;
+
         private String status;
+
         private LocalDate dueDate;
+
         private Long daysPastDue;
     }
 }

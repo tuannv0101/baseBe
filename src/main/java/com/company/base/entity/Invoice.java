@@ -2,6 +2,7 @@ package com.company.base.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.Where;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -9,6 +10,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "invoices")
+@Where(clause = "del_yn IS NULL OR del_yn <> 'Y'")
 @Data
 public class Invoice extends BaseEntity {
     // ID duy nhất của hóa đơn.

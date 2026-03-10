@@ -11,9 +11,12 @@ import com.company.base.dto.response.host.PaymentReceiptResponse;
 import com.company.base.dto.response.host.ServiceUsageResponse;
 import com.company.base.service.BillingManagementService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import com.company.base.common.pagination.PageResponse;
 
 /**
  * REST controller that exposes API endpoints for this module.
@@ -42,11 +45,11 @@ public class BillingManagementController {
     }
 
     @GetMapping("/services")
-    public ApiResponse<List<BillingServiceResponse>> getAllServices() {
-        return ApiResponse.success(billingManagementService.getAllServices());
+    public ApiResponse<PageResponse<BillingServiceResponse>> getAllServices(@PageableDefault(size = 20) Pageable pageable) {
+        return ApiResponse.success(billingManagementService.getAllServices(pageable));
     }
 
-    @DeleteMapping("/services/{id}")
+    @PutMapping("/services/{id}/delete")
     public ApiResponse<Void> deleteService(@PathVariable Long id) {
         billingManagementService.deleteService(id);
         return ApiResponse.success(null);
@@ -58,12 +61,13 @@ public class BillingManagementController {
     }
 
     @GetMapping("/meter-readings")
-    public ApiResponse<List<ServiceUsageResponse>> getServiceUsage(
+    public ApiResponse<PageResponse<ServiceUsageResponse>> getServiceUsage(
             @RequestParam Integer month,
             @RequestParam Integer year,
-            @RequestParam(required = false) String serviceId
+            @RequestParam(required = false) String serviceId,
+            @PageableDefault(size = 20) Pageable pageable
     ) {
-        return ApiResponse.success(billingManagementService.getServiceUsage(month, year, serviceId));
+        return ApiResponse.success(billingManagementService.getServiceUsage(month, year, serviceId, pageable));
     }
 
     @PostMapping("/invoices")
@@ -82,16 +86,17 @@ public class BillingManagementController {
     }
 
     @GetMapping("/invoices/current-month")
-    public ApiResponse<List<InvoiceResponse>> getCurrentMonthInvoices(
+    public ApiResponse<PageResponse<InvoiceResponse>> getCurrentMonthInvoices(
             @RequestParam(required = false) Integer month,
-            @RequestParam(required = false) Integer year
+            @RequestParam(required = false) Integer year,
+            @PageableDefault(size = 20) Pageable pageable
     ) {
-        return ApiResponse.success(billingManagementService.getCurrentMonthInvoices(month, year));
+        return ApiResponse.success(billingManagementService.getCurrentMonthInvoices(month, year, pageable));
     }
 
     @GetMapping("/invoices/overdue")
-    public ApiResponse<List<InvoiceResponse>> getOverdueInvoices() {
-        return ApiResponse.success(billingManagementService.getOverdueInvoices());
+    public ApiResponse<PageResponse<InvoiceResponse>> getOverdueInvoices(@PageableDefault(size = 20) Pageable pageable) {
+        return ApiResponse.success(billingManagementService.getOverdueInvoices(pageable));
     }
 
     @PostMapping("/receipts")
@@ -100,7 +105,7 @@ public class BillingManagementController {
     }
 
     @GetMapping("/receipts/history")
-    public ApiResponse<List<PaymentReceiptResponse>> getPaymentHistory() {
-        return ApiResponse.success(billingManagementService.getPaymentHistory());
+    public ApiResponse<PageResponse<PaymentReceiptResponse>> getPaymentHistory(@PageableDefault(size = 20) Pageable pageable) {
+        return ApiResponse.success(billingManagementService.getPaymentHistory(pageable));
     }
 }

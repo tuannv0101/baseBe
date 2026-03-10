@@ -1,5 +1,7 @@
 package com.company.base.service.impl;
 
+import com.company.base.common.pagination.PageResponse;
+import com.company.base.common.pagination.PaginationUtils;
 import com.company.base.dto.request.host.BillingServiceRequest;
 import com.company.base.dto.request.host.InvoiceRequest;
 import com.company.base.dto.request.host.MeterReadingBulkRequest;
@@ -18,6 +20,8 @@ import com.company.base.repository.host.ServiceRepository;
 import com.company.base.repository.host.ServiceUsageRepository;
 import com.company.base.service.BillingManagementService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -62,19 +66,17 @@ public class BillingManagementServiceImpl implements BillingManagementService {
     }
 
     @Override
-    public List<BillingServiceResponse> getAllServices() {
-        return serviceRepository.findAllByOrderByNameAsc()
-                .stream()
-                .map(this::toServiceResponse)
-                .toList();
+    public PageResponse<BillingServiceResponse> getAllServices(Pageable pageable) {
+        Page<BillingServiceResponse> page = serviceRepository.findAllByOrderByNameAsc(pageable)
+                .map(this::toServiceResponse);
+        return PageResponse.of(page);
     }
 
     @Override
     public void deleteService(Long id) {
-        if (!serviceRepository.existsById(id)) {
-            throw new AppException(HttpStatus.NOT_FOUND.value(), "Service not found");
-        }
-        serviceRepository.deleteById(id);
+        com.company.base.entity.Service entity = getServiceEntity(id);
+        entity.setDelYn("Y");
+        serviceRepository.save(entity);
     }
 
     @Override
@@ -104,14 +106,16 @@ public class BillingManagementServiceImpl implements BillingManagementService {
     }
 
     @Override
-    public List<ServiceUsageResponse> getServiceUsage(Integer month, Integer year, String serviceId) {
-        List<ServiceUsage> usages;
+    public PageResponse<ServiceUsageResponse> getServiceUsage(Integer month, Integer year, String serviceId, Pageable pageable) {
+        Page<ServiceUsageResponse> page;
         if (serviceId == null || serviceId.isBlank()) {
-            usages = serviceUsageRepository.findByMonthAndYearOrderByRoomIdAsc(month, year);
+            page = serviceUsageRepository.findByMonthAndYearOrderByRoomIdAsc(month, year, pageable)
+                    .map(this::toUsageResponse);
         } else {
-            usages = serviceUsageRepository.findByServiceIdAndMonthAndYearOrderByRoomIdAsc(serviceId, month, year);
+            page = serviceUsageRepository.findByServiceIdAndMonthAndYearOrderByRoomIdAsc(serviceId, month, year, pageable)
+                    .map(this::toUsageResponse);
         }
-        return usages.stream().map(this::toUsageResponse).toList();
+        return PageResponse.of(page);
     }
 
     @Override
@@ -134,7 +138,7 @@ public class BillingManagementServiceImpl implements BillingManagementService {
     }
 
     @Override
-    public List<InvoiceResponse> getCurrentMonthInvoices(Integer month, Integer year) {
+    public PageResponse<InvoiceResponse> getCurrentMonthInvoices(Integer month, Integer year, Pageable pageable) {
         LocalDate now = LocalDate.now();
         int targetMonth = month != null ? month : now.getMonthValue();
         int targetYear = year != null ? year : now.getYear();
@@ -142,16 +146,16 @@ public class BillingManagementServiceImpl implements BillingManagementService {
         LocalDate fromDate = ym.atDay(1);
         LocalDate toDate = ym.atEndOfMonth();
 
-        return invoiceRepository.findByDueDateBetweenOrderByDueDateAscIdDesc(fromDate, toDate)
-                .stream()
-                .map(this::toInvoiceResponse)
-                .toList();
+        Page<InvoiceResponse> page = invoiceRepository.findByDueDateBetweenOrderByDueDateAscIdDesc(fromDate, toDate, pageable)
+                .map(this::toInvoiceResponse);
+        return PageResponse.of(page);
     }
 
     @Override
-    public List<InvoiceResponse> getOverdueInvoices() {
+    public PageResponse<InvoiceResponse> getOverdueInvoices(Pageable pageable) {
         LocalDate today = LocalDate.now();
-        return invoiceRepository.findByStatusInAndDueDateBeforeOrderByDueDateAscIdDesc(OVERDUE_STATUSES, today)
+        // Preserve existing behavior (auto-mark UNPAID -> OVERDUE) then paginate results.
+        List<InvoiceResponse> all = invoiceRepository.findByStatusInAndDueDateBeforeOrderByDueDateAscIdDesc(OVERDUE_STATUSES, today)
                 .stream()
                 .map(invoice -> {
                     if ("UNPAID".equalsIgnoreCase(invoice.getStatus())) {
@@ -161,6 +165,7 @@ public class BillingManagementServiceImpl implements BillingManagementService {
                     return toInvoiceResponse(invoice);
                 })
                 .toList();
+        return PaginationUtils.paginateList(all, pageable);
     }
 
     @Override
@@ -183,11 +188,10 @@ public class BillingManagementServiceImpl implements BillingManagementService {
     }
 
     @Override
-    public List<PaymentReceiptResponse> getPaymentHistory() {
-        return paymentReceiptRepository.findAllByOrderByPaymentTimeDescIdDesc()
-                .stream()
-                .map(this::toPaymentReceiptResponse)
-                .toList();
+    public PageResponse<PaymentReceiptResponse> getPaymentHistory(Pageable pageable) {
+        Page<PaymentReceiptResponse> page = paymentReceiptRepository.findAllByOrderByPaymentTimeDescIdDesc(pageable)
+                .map(this::toPaymentReceiptResponse);
+        return PageResponse.of(page);
     }
 
     private void applyServiceUpdate(com.company.base.entity.Service entity, BillingServiceRequest request) {

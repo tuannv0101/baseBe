@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+
 /**
  * Response DTO carrying output data for API operations.
  */
@@ -17,12 +18,20 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class AssetMaintenanceHistoryResponse {
     private Long id;
+
     private Long roomAssetId;
+
     private LocalDate maintenanceDate;
+
     private String maintenanceType;
+
     private String description;
+
     private String vendor;
+
     private BigDecimal cost;
+
     private String status;
+
     private String note;
 }

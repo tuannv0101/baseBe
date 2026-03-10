@@ -1,5 +1,6 @@
 package com.company.base.service.impl;
 
+import com.company.base.common.pagination.PageResponse;
 import com.company.base.dto.request.host.ExpenseRecordRequest;
 import com.company.base.dto.request.host.MaintenanceAssignmentRequest;
 import com.company.base.dto.request.host.MaintenanceRequestCreateRequest;
@@ -17,6 +18,8 @@ import com.company.base.repository.host.MaintenanceRequestRepository;
 import com.company.base.repository.host.OperationsDocumentRepository;
 import com.company.base.service.OperationsManagementService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -72,17 +75,11 @@ public class OperationsManagementServiceImpl implements OperationsManagementServ
     }
 
     @Override
-    public List<MaintenanceRequestResponse> getMaintenanceRequests(String status) {
-        if (status == null || status.isBlank()) {
-            return maintenanceRequestRepository.findAllByOrderByRequestedAtDescIdDesc()
-                    .stream()
-                    .map(this::toMaintenanceResponse)
-                    .toList();
-        }
-        return maintenanceRequestRepository.findByStatusIgnoreCaseOrderByRequestedAtDescIdDesc(status)
-                .stream()
-                .map(this::toMaintenanceResponse)
-                .toList();
+    public PageResponse<MaintenanceRequestResponse> getMaintenanceRequests(String status, Pageable pageable) {
+        Page<MaintenanceRequestResponse> page = (status == null || status.isBlank())
+                ? maintenanceRequestRepository.findAllByOrderByRequestedAtDescIdDesc(pageable).map(this::toMaintenanceResponse)
+                : maintenanceRequestRepository.findByStatusIgnoreCaseOrderByRequestedAtDescIdDesc(status, pageable).map(this::toMaintenanceResponse);
+        return PageResponse.of(page);
     }
 
     @Override
@@ -105,28 +102,25 @@ public class OperationsManagementServiceImpl implements OperationsManagementServ
     }
 
     @Override
-    public List<ExpenseRecordResponse> getExpenseRecords(Integer month, Integer year) {
+    public PageResponse<ExpenseRecordResponse> getExpenseRecords(Integer month, Integer year, Pageable pageable) {
+        Page<ExpenseRecordResponse> page;
         if (month == null || year == null) {
-            return expenseRecordRepository.findAllByOrderByExpenseDateDescIdDesc()
-                    .stream()
-                    .map(this::toExpenseResponse)
-                    .toList();
+            page = expenseRecordRepository.findAllByOrderByExpenseDateDescIdDesc(pageable).map(this::toExpenseResponse);
+        } else {
+            YearMonth ym = YearMonth.of(year, month);
+            LocalDate fromDate = ym.atDay(1);
+            LocalDate toDate = ym.atEndOfMonth();
+            page = expenseRecordRepository.findByExpenseDateBetweenOrderByExpenseDateDescIdDesc(fromDate, toDate, pageable)
+                    .map(this::toExpenseResponse);
         }
-        YearMonth ym = YearMonth.of(year, month);
-        LocalDate fromDate = ym.atDay(1);
-        LocalDate toDate = ym.atEndOfMonth();
-        return expenseRecordRepository.findByExpenseDateBetweenOrderByExpenseDateDescIdDesc(fromDate, toDate)
-                .stream()
-                .map(this::toExpenseResponse)
-                .toList();
+        return PageResponse.of(page);
     }
 
     @Override
     public void deleteExpenseRecord(Long id) {
-        if (!expenseRecordRepository.existsById(id)) {
-            throw new AppException(HttpStatus.NOT_FOUND.value(), "Expense record not found");
-        }
-        expenseRecordRepository.deleteById(id);
+        ExpenseRecord entity = getExpenseEntity(id);
+        entity.setDelYn("Y");
+        expenseRecordRepository.save(entity);
     }
 
     @Override
@@ -151,25 +145,18 @@ public class OperationsManagementServiceImpl implements OperationsManagementServ
     }
 
     @Override
-    public List<OperationsDocumentResponse> getDocuments(String documentType) {
-        if (documentType == null || documentType.isBlank()) {
-            return operationsDocumentRepository.findAllByOrderByDocumentTypeAscTitleAsc()
-                    .stream()
-                    .map(this::toDocumentResponse)
-                    .toList();
-        }
-        return operationsDocumentRepository.findByDocumentTypeIgnoreCaseOrderByTitleAsc(documentType)
-                .stream()
-                .map(this::toDocumentResponse)
-                .toList();
+    public PageResponse<OperationsDocumentResponse> getDocuments(String documentType, Pageable pageable) {
+        Page<OperationsDocumentResponse> page = (documentType == null || documentType.isBlank())
+                ? operationsDocumentRepository.findAllByOrderByDocumentTypeAscTitleAsc(pageable).map(this::toDocumentResponse)
+                : operationsDocumentRepository.findByDocumentTypeIgnoreCaseOrderByTitleAsc(documentType, pageable).map(this::toDocumentResponse);
+        return PageResponse.of(page);
     }
 
     @Override
     public void deleteDocument(Long id) {
-        if (!operationsDocumentRepository.existsById(id)) {
-            throw new AppException(HttpStatus.NOT_FOUND.value(), "Document not found");
-        }
-        operationsDocumentRepository.deleteById(id);
+        OperationsDocument entity = getDocumentEntity(id);
+        entity.setDelYn("Y");
+        operationsDocumentRepository.save(entity);
     }
 
     private void applyExpenseUpdate(ExpenseRecord entity, ExpenseRecordRequest request) {

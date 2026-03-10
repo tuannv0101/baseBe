@@ -11,6 +11,8 @@ import com.company.base.dto.response.tenant.TenantMaintenanceResponse;
 import com.company.base.dto.response.tenant.TenantUtilityOverviewResponse;
 import com.company.base.service.TenantPortalService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import com.company.base.common.pagination.PageResponse;
 
 /**
  * REST controller that exposes API endpoints for this module.
@@ -38,8 +40,11 @@ public class TenantPortalController {
     }
 
     @GetMapping("/invoices")
-    public ApiResponse<List<TenantInvoiceSummaryResponse>> getMyInvoices(@RequestParam String tenantId) {
-        return ApiResponse.success(tenantPortalService.getMyInvoices(tenantId));
+    public ApiResponse<PageResponse<TenantInvoiceSummaryResponse>> getMyInvoices(
+            @RequestParam String tenantId,
+            @PageableDefault(size = 20) Pageable pageable
+    ) {
+        return ApiResponse.success(tenantPortalService.getMyInvoices(tenantId, pageable));
     }
 
     @GetMapping("/invoices/{invoiceId}")
@@ -51,8 +56,11 @@ public class TenantPortalController {
     }
 
     @GetMapping("/maintenance")
-    public ApiResponse<List<TenantMaintenanceResponse>> getMyMaintenanceRequests(@RequestParam String tenantId) {
-        return ApiResponse.success(tenantPortalService.getMyMaintenanceRequests(tenantId));
+    public ApiResponse<PageResponse<TenantMaintenanceResponse>> getMyMaintenanceRequests(
+            @RequestParam String tenantId,
+            @PageableDefault(size = 20) Pageable pageable
+    ) {
+        return ApiResponse.success(tenantPortalService.getMyMaintenanceRequests(tenantId, pageable));
     }
 
     @PostMapping("/maintenance")

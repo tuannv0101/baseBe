@@ -3,7 +3,8 @@ package com.company.base.service;
 import com.company.base.dto.response.host.DashboardOverviewResponse;
 import com.company.base.dto.response.host.SystemNotificationResponse;
 
-import java.util.List;
+import com.company.base.common.pagination.PageResponse;
+import org.springframework.data.domain.Pageable;
 
 /**
  * Service tổng hợp số liệu cho dashboard (tổng quan và thông báo hệ thống).
@@ -17,5 +18,5 @@ public interface DashboardService {
     /**
      * Lấy danh sách thông báo hệ thống gần nhất.
      */
-    List<SystemNotificationResponse> getSystemNotifications(Integer limit);
+    PageResponse<SystemNotificationResponse> getSystemNotifications(Integer limit, Pageable pageable);
 }

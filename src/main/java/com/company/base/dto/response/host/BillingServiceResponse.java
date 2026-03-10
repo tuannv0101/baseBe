@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+
 /**
  * Response DTO carrying output data for API operations.
  */
@@ -16,7 +17,10 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class BillingServiceResponse {
     private Long id;
+
     private String name;
+
     private BigDecimal unitPrice;
+
     private String unitType;
 }

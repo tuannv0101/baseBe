@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+
 /**
  * Response DTO carrying output data for API operations.
  */
@@ -16,10 +17,16 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class SystemNotificationResponse {
     private String type;
+
     private String severity;
+
     private String title;
+
     private String message;
+
     private LocalDateTime createdAt;
+
     private String referenceType;
+
     private String referenceId;
 }

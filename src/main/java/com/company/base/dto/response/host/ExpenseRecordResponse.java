@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+
 /**
  * Response DTO carrying output data for API operations.
  */
@@ -17,11 +18,18 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class ExpenseRecordResponse {
     private Long id;
+
     private LocalDate expenseDate;
+
     private String category;
+
     private BigDecimal amount;
+
     private String description;
+
     private String vendor;
+
     private String paidBy;
+
     private String note;
 }

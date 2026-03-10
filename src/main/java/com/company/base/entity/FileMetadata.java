@@ -2,9 +2,11 @@ package com.company.base.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Where;
 
 @Entity
 @Table(name = "file_metadata")
+@Where(clause = "del_yn IS NULL OR del_yn <> 'Y'")
 @Getter
 @Setter
 @Builder

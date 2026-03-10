@@ -1,8 +1,12 @@
 package com.company.base.dto.response.admin;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+
 /**
  * Response DTO carrying output data for API operations.
  */
@@ -13,8 +17,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class UserResponse {
     private Long id;
+
     private String username;
+
     private String email;
+
     private String role;
+
     private LocalDateTime createdAt;
 }

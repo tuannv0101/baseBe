@@ -6,11 +6,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
+import org.hibernate.annotations.Where;
 
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "tenants")
+@Where(clause = "del_yn IS NULL OR del_yn <> 'Y'")
 @Data
 public class Tenant extends BaseEntity {
     // Unique tenant ID.

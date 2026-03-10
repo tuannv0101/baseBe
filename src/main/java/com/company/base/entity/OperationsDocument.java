@@ -6,9 +6,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
+import org.hibernate.annotations.Where;
 
 @Entity
 @Table(name = "operations_documents")
+@Where(clause = "del_yn IS NULL OR del_yn <> 'Y'")
 @Data
 public class OperationsDocument extends BaseEntity {
     // ID duy nhất của tài liệu vận hành.

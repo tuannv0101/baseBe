@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.List;
+
 /**
  * Response DTO carrying output data for API operations.
  */
@@ -17,15 +18,25 @@ import java.util.List;
 @NoArgsConstructor
 public class DashboardOverviewResponse {
     private Integer month;
+
     private Integer year;
+
     private BigDecimal actualRevenue;
+
     private BigDecimal totalIncome;
+
     private BigDecimal totalExpense;
+
     private BigDecimal netCashFlow;
+
     private Long totalRooms;
+
     private Long occupiedRooms;
+
     private Long vacantRooms;
+
     private Double occupancyRate;
+
     private List<CashFlowPoint> cashFlowChart;
 
     @Data
@@ -34,9 +45,13 @@ public class DashboardOverviewResponse {
     @NoArgsConstructor
     public static class CashFlowPoint {
         private Integer month;
+
         private Integer year;
+
         private BigDecimal income;
+
         private BigDecimal expense;
+
         private BigDecimal net;
     }
 }

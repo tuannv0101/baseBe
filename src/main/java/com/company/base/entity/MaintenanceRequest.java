@@ -2,11 +2,13 @@ package com.company.base.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.Where;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "maintenance_requests")
+@Where(clause = "del_yn IS NULL OR del_yn <> 'Y'")
 @Data
 public class MaintenanceRequest extends BaseEntity {
     // ID duy nhất của yêu cầu bảo trì/sửa chữa.

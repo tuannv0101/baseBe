@@ -1,5 +1,7 @@
 package com.company.base.service.impl;
 
+import com.company.base.common.pagination.PageResponse;
+import com.company.base.common.pagination.PaginationUtils;
 import com.company.base.dto.request.host.PropertyRequest;
 import com.company.base.dto.response.host.PropertyResponse;
 import com.company.base.dto.response.host.RoomMatrixResponse;
@@ -10,6 +12,9 @@ import com.company.base.repository.host.PropertiesRepository;
 import com.company.base.repository.host.RoomRepository;
 import com.company.base.service.PropertyManagementService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -55,33 +60,35 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
     }
 
     @Override
-    public List<PropertyResponse> getAllProperties() {
-        return propertiesRepository.findAllByOrderByNameAsc()
-                .stream()
-                .map(this::toPropertyResponse)
-                .toList();
+    public PageResponse<PropertyResponse> getAllProperties(Pageable pageable) {
+        Page<PropertyResponse> page = propertiesRepository.findAllByOrderByNameAsc(pageable)
+                .map(this::toPropertyResponse);
+        return PageResponse.of(page);
     }
 
     @Override
     public void deleteProperty(Long id) {
-        if (!propertiesRepository.existsById(id)) {
-            throw new AppException(HttpStatus.NOT_FOUND.value(), "Property not found");
-        }
-        propertiesRepository.deleteById(id);
+        Properties entity = getPropertyEntity(id);
+        entity.setDelYn("Y");
+        propertiesRepository.save(entity);
     }
 
     @Override
-    public List<RoomMatrixResponse> getRoomMatrix(Long propertyId) {
-        List<Properties> properties = propertyId == null
-                ? propertiesRepository.findAllByOrderByNameAsc()
-                : List.of(getPropertyEntity(propertyId));
-
-        List<RoomMatrixResponse> result = new ArrayList<>();
-        for (Properties property : properties) {
-            List<Room> rooms = roomRepository.findByPropertiesIdOrderByFloorAscRoomNumberAsc(property.getId());
-            result.add(buildRoomMatrix(property, rooms));
+    public PageResponse<RoomMatrixResponse> getRoomMatrix(Long propertyId, Pageable pageable) {
+        if (propertyId != null) {
+            List<RoomMatrixResponse> one = List.of(buildRoomMatrix(
+                    getPropertyEntity(propertyId),
+                    roomRepository.findByPropertiesIdOrderByFloorAscRoomNumberAsc(propertyId)
+            ));
+            return PaginationUtils.paginateList(one, pageable);
         }
-        return result;
+
+        Page<Properties> propsPage = propertiesRepository.findAllByOrderByNameAsc(pageable);
+        List<RoomMatrixResponse> matrices = propsPage.getContent().stream()
+                .map(p -> buildRoomMatrix(p, roomRepository.findByPropertiesIdOrderByFloorAscRoomNumberAsc(p.getId())))
+                .toList();
+        Page<RoomMatrixResponse> dtoPage = new PageImpl<>(matrices, pageable, propsPage.getTotalElements());
+        return PageResponse.of(dtoPage);
     }
 
     private RoomMatrixResponse buildRoomMatrix(Properties property, List<Room> rooms) {

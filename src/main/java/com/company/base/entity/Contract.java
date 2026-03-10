@@ -2,12 +2,14 @@ package com.company.base.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.Where;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "contracts")
+@Where(clause = "del_yn IS NULL OR del_yn <> 'Y'")
 @Data
 public class Contract extends BaseEntity {
     // ID duy nhất của hợp đồng.

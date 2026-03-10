@@ -17,8 +17,11 @@ import java.util.List;
 @NoArgsConstructor
 public class TenantUtilityOverviewResponse {
     private Boolean temporaryResidenceDeclared;
+
     private LocalDate temporaryResidenceDeclaredAt;
+
     private List<RuleDocumentItem> rules;
+
     private List<VehicleItem> vehicles;
 
     @Data
@@ -27,8 +30,11 @@ public class TenantUtilityOverviewResponse {
     @NoArgsConstructor
     public static class RuleDocumentItem {
         private Long id;
+
         private String title;
+
         private Long fileId;
+
         private String fileUrl;
     }
 
@@ -38,10 +44,15 @@ public class TenantUtilityOverviewResponse {
     @NoArgsConstructor
     public static class VehicleItem {
         private Long id;
+
         private String vehicleType;
+
         private String plateNumber;
+
         private String status;
+
         private LocalDate registeredDate;
+
         private String note;
     }
 }

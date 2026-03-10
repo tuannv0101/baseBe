@@ -1,6 +1,8 @@
 package com.company.base.repository.host;
 
 import com.company.base.entity.EquipmentCategory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -11,4 +13,6 @@ import java.util.List;
 
 public interface EquipmentCategoryRepository extends JpaRepository<EquipmentCategory, Long> {
     List<EquipmentCategory> findAllByOrderByNameAsc();
+
+    Page<EquipmentCategory> findAllByOrderByNameAsc(Pageable pageable);
 }

@@ -1,5 +1,6 @@
 package com.company.base.service.impl;
 
+import com.company.base.common.pagination.PageResponse;
 import com.company.base.dto.request.tenant.TemporaryResidenceRequest;
 import com.company.base.dto.request.tenant.TenantMaintenanceRequest;
 import com.company.base.dto.request.tenant.VehicleRegistrationRequest;
@@ -30,6 +31,8 @@ import com.company.base.repository.tenant.LandlordAnnouncementRepository;
 import com.company.base.repository.tenant.TenantVehicleRegistrationRepository;
 import com.company.base.service.TenantPortalService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -104,10 +107,19 @@ public class TenantPortalServiceImpl implements TenantPortalService {
     }
 
     @Override
-    public List<TenantInvoiceSummaryResponse> getMyInvoices(String tenantId) {
-        return getInvoicesByTenant(tenantId).stream()
-                .map(this::toInvoiceSummary)
+    public PageResponse<TenantInvoiceSummaryResponse> getMyInvoices(String tenantId, Pageable pageable) {
+        getTenant(tenantId);
+        List<String> contractIds = contractRepository.findByTenantIdOrderByStartDateDescIdDesc(tenantId)
+                .stream()
+                .map(c -> String.valueOf(c.getId()))
                 .toList();
+        if (contractIds.isEmpty()) {
+            return PageResponse.of(Page.empty(pageable));
+        }
+        Page<TenantInvoiceSummaryResponse> page = invoiceRepository
+                .findByContractIdInOrderByDueDateDescIdDesc(contractIds, pageable)
+                .map(this::toInvoiceSummary);
+        return PageResponse.of(page);
     }
 
     @Override
@@ -158,11 +170,12 @@ public class TenantPortalServiceImpl implements TenantPortalService {
     }
 
     @Override
-    public List<TenantMaintenanceResponse> getMyMaintenanceRequests(String tenantId) {
+    public PageResponse<TenantMaintenanceResponse> getMyMaintenanceRequests(String tenantId, Pageable pageable) {
         getTenant(tenantId);
-        return maintenanceRequestRepository.findByTenantIdOrderByRequestedAtDescIdDesc(tenantId).stream()
-                .map(this::toMaintenanceResponse)
-                .toList();
+        Page<TenantMaintenanceResponse> page = maintenanceRequestRepository
+                .findByTenantIdOrderByRequestedAtDescIdDesc(tenantId, pageable)
+                .map(this::toMaintenanceResponse);
+        return PageResponse.of(page);
     }
 
     @Override

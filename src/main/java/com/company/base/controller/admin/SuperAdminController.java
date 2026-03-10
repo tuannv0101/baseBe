@@ -14,7 +14,8 @@ import com.company.base.dto.response.admin.SupportTicketResponse;
 import com.company.base.dto.response.admin.SystemConfigResponse;
 import com.company.base.service.SuperAdminService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import com.company.base.common.pagination.PageResponse;
 
 /**
  * REST controller that exposes API endpoints for this module.
@@ -47,8 +48,11 @@ public class SuperAdminController {
     }
 
     @GetMapping("/landlords")
-    public ApiResponse<List<LandlordProfileResponse>> getLandlords(@RequestParam(required = false) String status) {
-        return ApiResponse.success(superAdminService.getLandlords(status));
+    public ApiResponse<PageResponse<LandlordProfileResponse>> getLandlords(
+            @RequestParam(required = false) String status,
+            @PageableDefault(size = 20) Pageable pageable
+    ) {
+        return ApiResponse.success(superAdminService.getLandlords(status, pageable));
     }
 
     @PutMapping("/landlords/{id}/approve")
@@ -77,11 +81,11 @@ public class SuperAdminController {
     }
 
     @GetMapping("/plans")
-    public ApiResponse<List<SubscriptionPlanResponse>> getPlans() {
-        return ApiResponse.success(superAdminService.getPlans());
+    public ApiResponse<PageResponse<SubscriptionPlanResponse>> getPlans(@PageableDefault(size = 20) Pageable pageable) {
+        return ApiResponse.success(superAdminService.getPlans(pageable));
     }
 
-    @DeleteMapping("/plans/{id}")
+    @PutMapping("/plans/{id}/delete")
     public ApiResponse<Void> deletePlan(@PathVariable Long id) {
         superAdminService.deletePlan(id);
         return ApiResponse.success(null);
@@ -93,8 +97,11 @@ public class SuperAdminController {
     }
 
     @GetMapping("/subscriptions")
-    public ApiResponse<List<LandlordSubscriptionResponse>> getSubscriptions(@RequestParam Long landlordProfileId) {
-        return ApiResponse.success(superAdminService.getSubscriptions(landlordProfileId));
+    public ApiResponse<PageResponse<LandlordSubscriptionResponse>> getSubscriptions(
+            @RequestParam Long landlordProfileId,
+            @PageableDefault(size = 20) Pageable pageable
+    ) {
+        return ApiResponse.success(superAdminService.getSubscriptions(landlordProfileId, pageable));
     }
 
     @PostMapping("/system-configs")
@@ -103,8 +110,8 @@ public class SuperAdminController {
     }
 
     @GetMapping("/system-configs")
-    public ApiResponse<List<SystemConfigResponse>> getSystemConfigs() {
-        return ApiResponse.success(superAdminService.getSystemConfigs());
+    public ApiResponse<PageResponse<SystemConfigResponse>> getSystemConfigs(@PageableDefault(size = 20) Pageable pageable) {
+        return ApiResponse.success(superAdminService.getSystemConfigs(pageable));
     }
 
     @PostMapping("/tickets")
@@ -118,7 +125,10 @@ public class SuperAdminController {
     }
 
     @GetMapping("/tickets")
-    public ApiResponse<List<SupportTicketResponse>> getSupportTickets(@RequestParam(required = false) String status) {
-        return ApiResponse.success(superAdminService.getSupportTickets(status));
+    public ApiResponse<PageResponse<SupportTicketResponse>> getSupportTickets(
+            @RequestParam(required = false) String status,
+            @PageableDefault(size = 20) Pageable pageable
+    ) {
+        return ApiResponse.success(superAdminService.getSupportTickets(status, pageable));
     }
 }

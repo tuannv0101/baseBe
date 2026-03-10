@@ -2,9 +2,11 @@ package com.company.base.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.Where;
 
 @Entity
 @Table(name = "room_assets")
+@Where(clause = "del_yn IS NULL OR del_yn <> 'Y'")
 @Data
 public class RoomAsset extends BaseEntity {
     // ID duy nhất của tài sản trong phòng.

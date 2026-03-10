@@ -1,6 +1,8 @@
 package com.company.base.repository.host;
 
 import com.company.base.entity.Invoice;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDate;
@@ -21,4 +23,10 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
     List<Invoice> findByContractIdOrderByDueDateDescIdDesc(String contractId);
 
     List<Invoice> findByContractIdInOrderByDueDateDescIdDesc(Collection<String> contractIds);
+
+    Page<Invoice> findByDueDateBetweenOrderByDueDateAscIdDesc(LocalDate fromDate, LocalDate toDate, Pageable pageable);
+
+    Page<Invoice> findByStatusInAndDueDateBeforeOrderByDueDateAscIdDesc(Collection<String> statuses, LocalDate dueDate, Pageable pageable);
+
+    Page<Invoice> findByContractIdInOrderByDueDateDescIdDesc(Collection<String> contractIds, Pageable pageable);
 }

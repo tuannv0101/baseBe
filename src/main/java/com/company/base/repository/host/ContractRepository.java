@@ -1,6 +1,8 @@
 package com.company.base.repository.host;
 
 import com.company.base.entity.Contract;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDate;
@@ -22,4 +24,10 @@ public interface ContractRepository extends JpaRepository<Contract, Long> {
     List<Contract> findByTenantIdOrderByStartDateDescIdDesc(String tenantId);
 
     Optional<Contract> findFirstByTenantIdAndStatusIgnoreCaseOrderByStartDateDescIdDesc(String tenantId, String status);
+
+    Page<Contract> findAllByOrderByStartDateDescIdDesc(Pageable pageable);
+
+    Page<Contract> findByStatusIgnoreCaseOrderByStartDateDescIdDesc(String status, Pageable pageable);
+
+    Page<Contract> findByStatusInOrderByStartDateDescIdDesc(Collection<String> statuses, Pageable pageable);
 }

@@ -14,7 +14,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SystemConfigResponse {
     private Long id;
+
     private String configKey;
+
     private String configValue;
+
     private String description;
 }

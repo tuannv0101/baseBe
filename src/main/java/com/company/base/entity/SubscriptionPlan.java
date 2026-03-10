@@ -2,11 +2,13 @@ package com.company.base.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.Where;
 
 import java.math.BigDecimal;
 
 @Entity
 @Table(name = "subscription_plans")
+@Where(clause = "del_yn IS NULL OR del_yn <> 'Y'")
 @Data
 public class SubscriptionPlan extends BaseEntity {
     // ID duy nhất của gói đăng ký.

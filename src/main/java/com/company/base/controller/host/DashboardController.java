@@ -5,12 +5,14 @@ import com.company.base.dto.response.host.DashboardOverviewResponse;
 import com.company.base.dto.response.host.SystemNotificationResponse;
 import com.company.base.service.DashboardService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import com.company.base.common.pagination.PageResponse;
 
 /**
  * REST controller that exposes API endpoints for this module.
@@ -32,9 +34,10 @@ public class DashboardController {
     }
 
     @GetMapping("/notifications")
-    public ApiResponse<List<SystemNotificationResponse>> getSystemNotifications(
-            @RequestParam(required = false) Integer limit
+    public ApiResponse<PageResponse<SystemNotificationResponse>> getSystemNotifications(
+            @RequestParam(required = false) Integer limit,
+            @PageableDefault(size = 20) Pageable pageable
     ) {
-        return ApiResponse.success(dashboardService.getSystemNotifications(limit));
+        return ApiResponse.success(dashboardService.getSystemNotifications(limit, pageable));
     }
 }

@@ -12,7 +12,8 @@ import com.company.base.dto.response.admin.SuperAdminDashboardResponse;
 import com.company.base.dto.response.admin.SupportTicketResponse;
 import com.company.base.dto.response.admin.SystemConfigResponse;
 
-import java.util.List;
+import com.company.base.common.pagination.PageResponse;
+import org.springframework.data.domain.Pageable;
 
 /**
  * Service nghiệp vụ Super Admin: duyệt chủ nhà, gói dịch vụ, cấu hình hệ thống, ticket hỗ trợ.
@@ -26,7 +27,7 @@ public interface SuperAdminService {
     /**
      * Lấy danh sách chủ nhà (có thể lọc theo trạng thái hồ sơ).
      */
-    List<LandlordProfileResponse> getLandlords(String status);
+    PageResponse<LandlordProfileResponse> getLandlords(String status, Pageable pageable);
 
     /**
      * Duyệt hồ sơ chủ nhà (chuyển sang trạng thái được phép sử dụng hệ thống).
@@ -56,7 +57,7 @@ public interface SuperAdminService {
     /**
      * Lấy danh sách các gói đăng ký.
      */
-    List<SubscriptionPlanResponse> getPlans();
+    PageResponse<SubscriptionPlanResponse> getPlans(Pageable pageable);
 
     /**
      * Xóa gói đăng ký theo ID.
@@ -71,7 +72,7 @@ public interface SuperAdminService {
     /**
      * Lấy danh sách đăng ký gói theo chủ nhà (nếu truyền landlordProfileId).
      */
-    List<LandlordSubscriptionResponse> getSubscriptions(Long landlordProfileId);
+    PageResponse<LandlordSubscriptionResponse> getSubscriptions(Long landlordProfileId, Pageable pageable);
 
     /**
      * Tạo mới hoặc cập nhật (upsert) cấu hình hệ thống theo configKey.
@@ -81,7 +82,7 @@ public interface SuperAdminService {
     /**
      * Lấy danh sách cấu hình hệ thống.
      */
-    List<SystemConfigResponse> getSystemConfigs();
+    PageResponse<SystemConfigResponse> getSystemConfigs(Pageable pageable);
 
     /**
      * Tạo ticket hỗ trợ (ví dụ: phản ánh lỗi, yêu cầu hỗ trợ nghiệp vụ).
@@ -96,5 +97,5 @@ public interface SuperAdminService {
     /**
      * Lấy danh sách ticket hỗ trợ (có thể lọc theo trạng thái).
      */
-    List<SupportTicketResponse> getSupportTickets(String status);
+    PageResponse<SupportTicketResponse> getSupportTickets(String status, Pageable pageable);
 }

@@ -17,10 +17,16 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class LandlordSubscriptionResponse {
     private Long id;
+
     private Long landlordProfileId;
+
     private Long planId;
+
     private LocalDate startDate;
+
     private LocalDate endDate;
+
     private String status;
+
     private BigDecimal amountPaid;
 }

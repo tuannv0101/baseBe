@@ -1,5 +1,6 @@
 package com.company.base.service.impl;
 
+import com.company.base.common.pagination.PageResponse;
 import com.company.base.dto.request.admin.LandlordSubscriptionRequest;
 import com.company.base.dto.request.admin.SubscriptionPlanRequest;
 import com.company.base.dto.request.admin.SupportTicketRequest;
@@ -26,6 +27,9 @@ import com.company.base.repository.admin.SystemConfigRepository;
 import com.company.base.repository.admin.UserRepository;
 import com.company.base.service.SuperAdminService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -96,11 +100,14 @@ public class SuperAdminServiceImpl implements SuperAdminService {
     }
 
     @Override
-    public List<LandlordProfileResponse> getLandlords(String status) {
-        List<LandlordProfile> profiles = (status == null || status.isBlank())
-                ? landlordProfileRepository.findAllByOrderByCreatedAtDesc()
-                : landlordProfileRepository.findByStatusIgnoreCaseOrderByCreatedAtDesc(status);
-        return toLandlordResponses(profiles);
+    public PageResponse<LandlordProfileResponse> getLandlords(String status, Pageable pageable) {
+        Page<LandlordProfile> profiles = (status == null || status.isBlank())
+                ? landlordProfileRepository.findAllByOrderByCreatedAtDesc(pageable)
+                : landlordProfileRepository.findByStatusIgnoreCaseOrderByCreatedAtDesc(status, pageable);
+
+        List<LandlordProfileResponse> items = toLandlordResponses(profiles.getContent());
+        Page<LandlordProfileResponse> dtoPage = new PageImpl<>(items, pageable, profiles.getTotalElements());
+        return PageResponse.of(dtoPage);
     }
 
     @Override
@@ -152,19 +159,17 @@ public class SuperAdminServiceImpl implements SuperAdminService {
     }
 
     @Override
-    public List<SubscriptionPlanResponse> getPlans() {
-        return subscriptionPlanRepository.findAllByOrderByMonthlyPriceAsc()
-                .stream()
-                .map(this::toPlanResponse)
-                .toList();
+    public PageResponse<SubscriptionPlanResponse> getPlans(Pageable pageable) {
+        Page<SubscriptionPlanResponse> page = subscriptionPlanRepository.findAllByOrderByMonthlyPriceAsc(pageable)
+                .map(this::toPlanResponse);
+        return PageResponse.of(page);
     }
 
     @Override
     public void deletePlan(Long planId) {
-        if (!subscriptionPlanRepository.existsById(planId)) {
-            throw new AppException(HttpStatus.NOT_FOUND.value(), "Plan not found");
-        }
-        subscriptionPlanRepository.deleteById(planId);
+        SubscriptionPlan plan = getPlan(planId);
+        plan.setDelYn("Y");
+        subscriptionPlanRepository.save(plan);
     }
 
     @Override
@@ -182,11 +187,11 @@ public class SuperAdminServiceImpl implements SuperAdminService {
     }
 
     @Override
-    public List<LandlordSubscriptionResponse> getSubscriptions(Long landlordProfileId) {
-        return landlordSubscriptionRepository.findByLandlordProfileIdOrderByStartDateDescIdDesc(landlordProfileId)
-                .stream()
-                .map(this::toSubscriptionResponse)
-                .toList();
+    public PageResponse<LandlordSubscriptionResponse> getSubscriptions(Long landlordProfileId, Pageable pageable) {
+        Page<LandlordSubscriptionResponse> page = landlordSubscriptionRepository
+                .findByLandlordProfileIdOrderByStartDateDescIdDesc(landlordProfileId, pageable)
+                .map(this::toSubscriptionResponse);
+        return PageResponse.of(page);
     }
 
     @Override
@@ -200,11 +205,10 @@ public class SuperAdminServiceImpl implements SuperAdminService {
     }
 
     @Override
-    public List<SystemConfigResponse> getSystemConfigs() {
-        return systemConfigRepository.findAllByOrderByConfigKeyAsc()
-                .stream()
-                .map(this::toConfigResponse)
-                .toList();
+    public PageResponse<SystemConfigResponse> getSystemConfigs(Pageable pageable) {
+        Page<SystemConfigResponse> page = systemConfigRepository.findAllByOrderByConfigKeyAsc(pageable)
+                .map(this::toConfigResponse);
+        return PageResponse.of(page);
     }
 
     @Override
@@ -236,13 +240,11 @@ public class SuperAdminServiceImpl implements SuperAdminService {
     }
 
     @Override
-    public List<SupportTicketResponse> getSupportTickets(String status) {
-        List<SupportTicket> tickets = (status == null || status.isBlank())
-                ? supportTicketRepository.findAllByOrderByCreatedAtDesc()
-                : supportTicketRepository.findByStatusIgnoreCaseOrderByCreatedAtDesc(status);
-        return tickets.stream()
-                .map(this::toTicketResponse)
-                .toList();
+    public PageResponse<SupportTicketResponse> getSupportTickets(String status, Pageable pageable) {
+        Page<SupportTicketResponse> page = (status == null || status.isBlank())
+                ? supportTicketRepository.findAllByOrderByCreatedAtDesc(pageable).map(this::toTicketResponse)
+                : supportTicketRepository.findByStatusIgnoreCaseOrderByCreatedAtDesc(status, pageable).map(this::toTicketResponse);
+        return PageResponse.of(page);
     }
 
     private List<LandlordProfileResponse> toLandlordResponses(List<LandlordProfile> profiles) {

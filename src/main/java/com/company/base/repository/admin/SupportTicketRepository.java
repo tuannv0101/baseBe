@@ -1,6 +1,8 @@
 package com.company.base.repository.admin;
 
 import com.company.base.entity.SupportTicket;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -11,4 +13,7 @@ import java.util.List;
 public interface SupportTicketRepository extends JpaRepository<SupportTicket, Long> {
     List<SupportTicket> findAllByOrderByCreatedAtDesc();
     List<SupportTicket> findByStatusIgnoreCaseOrderByCreatedAtDesc(String status);
+
+    Page<SupportTicket> findAllByOrderByCreatedAtDesc(Pageable pageable);
+    Page<SupportTicket> findByStatusIgnoreCaseOrderByCreatedAtDesc(String status, Pageable pageable);
 }

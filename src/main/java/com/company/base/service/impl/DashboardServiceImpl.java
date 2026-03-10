@@ -1,5 +1,7 @@
 package com.company.base.service.impl;
 
+import com.company.base.common.pagination.PageResponse;
+import com.company.base.common.pagination.PaginationUtils;
 import com.company.base.dto.response.host.DashboardOverviewResponse;
 import com.company.base.dto.response.host.SystemNotificationResponse;
 import com.company.base.entity.Contract;
@@ -15,6 +17,8 @@ import com.company.base.repository.host.PaymentReceiptRepository;
 import com.company.base.repository.host.RoomRepository;
 import com.company.base.service.DashboardService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -78,8 +82,12 @@ public class DashboardServiceImpl implements DashboardService {
     }
 
     @Override
-    public List<SystemNotificationResponse> getSystemNotifications(Integer limit) {
-        int maxItems = (limit == null || limit <= 0) ? 20 : Math.min(limit, 100);
+    public PageResponse<SystemNotificationResponse> getSystemNotifications(Integer limit, Pageable pageable) {
+        Pageable effectivePageable = pageable;
+        if (limit != null && limit > 0) {
+            effectivePageable = PageRequest.of(pageable.getPageNumber(), Math.min(limit, 100), pageable.getSort());
+        }
+
         LocalDate today = LocalDate.now();
         LocalDate next30Days = today.plusDays(30);
         List<SystemNotificationResponse> notifications = new ArrayList<>();
@@ -125,10 +133,10 @@ public class DashboardServiceImpl implements DashboardService {
                     .build());
         }
 
-        return notifications.stream()
+        List<SystemNotificationResponse> sorted = notifications.stream()
                 .sorted(Comparator.comparing(SystemNotificationResponse::getCreatedAt, Comparator.nullsLast(Comparator.reverseOrder())))
-                .limit(maxItems)
                 .toList();
+        return PaginationUtils.paginateList(sorted, effectivePageable);
     }
 
     private List<DashboardOverviewResponse.CashFlowPoint> buildCashFlowChart(YearMonth target, int monthsBack) {

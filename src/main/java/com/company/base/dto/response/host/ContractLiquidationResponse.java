@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+
 /**
  * Response DTO carrying output data for API operations.
  */
@@ -16,10 +17,16 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class ContractLiquidationResponse {
     private Long id;
+
     private Long contractId;
+
     private String roomId;
+
     private String tenantId;
+
     private LocalDate liquidationDate;
+
     private String reason;
+
     private String note;
 }

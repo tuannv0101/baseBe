@@ -8,7 +8,8 @@ import com.company.base.dto.response.host.ExpenseRecordResponse;
 import com.company.base.dto.response.host.MaintenanceRequestResponse;
 import com.company.base.dto.response.host.OperationsDocumentResponse;
 
-import java.util.List;
+import com.company.base.common.pagination.PageResponse;
+import org.springframework.data.domain.Pageable;
 
 /**
  * Service quản lý vận hành: yêu cầu bảo trì, chi phí, tài liệu vận hành.
@@ -32,7 +33,7 @@ public interface OperationsManagementService {
     /**
      * Lấy danh sách yêu cầu bảo trì (có thể lọc theo trạng thái).
      */
-    List<MaintenanceRequestResponse> getMaintenanceRequests(String status);
+    PageResponse<MaintenanceRequestResponse> getMaintenanceRequests(String status, Pageable pageable);
 
     /**
      * Tạo mới bản ghi chi phí vận hành.
@@ -52,7 +53,7 @@ public interface OperationsManagementService {
     /**
      * Lấy danh sách chi phí theo tháng/năm.
      */
-    List<ExpenseRecordResponse> getExpenseRecords(Integer month, Integer year);
+    PageResponse<ExpenseRecordResponse> getExpenseRecords(Integer month, Integer year, Pageable pageable);
 
     /**
      * Xóa bản ghi chi phí theo ID.
@@ -77,7 +78,7 @@ public interface OperationsManagementService {
     /**
      * Lấy danh sách tài liệu vận hành (có thể lọc theo loại tài liệu).
      */
-    List<OperationsDocumentResponse> getDocuments(String documentType);
+    PageResponse<OperationsDocumentResponse> getDocuments(String documentType, Pageable pageable);
 
     /**
      * Xóa tài liệu vận hành theo ID.

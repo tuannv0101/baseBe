@@ -16,13 +16,22 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class SupportTicketResponse {
     private Long id;
+
     private Long landlordProfileId;
+
     private String title;
+
     private String description;
+
     private String status;
+
     private String priority;
+
     private String assignedTo;
+
     private String resolutionNote;
+
     private LocalDateTime createdAt;
+
     private LocalDateTime updatedAt;
 }

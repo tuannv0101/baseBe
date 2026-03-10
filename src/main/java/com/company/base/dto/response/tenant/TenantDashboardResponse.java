@@ -19,9 +19,13 @@ import java.util.List;
 @NoArgsConstructor
 public class TenantDashboardResponse {
     private String tenantId;
+
     private String roomId;
+
     private BigDecimal amountDueNow;
+
     private LocalDate nearestDueDate;
+
     private List<AnnouncementItem> latestAnnouncements;
 
     @Data
@@ -30,8 +34,11 @@ public class TenantDashboardResponse {
     @NoArgsConstructor
     public static class AnnouncementItem {
         private Long id;
+
         private String title;
+
         private String content;
+
         private LocalDateTime createdAt;
     }
 }

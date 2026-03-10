@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.List;
+
 /**
  * Response DTO carrying output data for API operations.
  */
@@ -17,12 +18,19 @@ import java.util.List;
 @NoArgsConstructor
 public class RevenueReportResponse {
     private Integer fromMonth;
+
     private Integer fromYear;
+
     private Integer toMonth;
+
     private Integer toYear;
+
     private BigDecimal totalExpected;
+
     private BigDecimal totalActual;
+
     private BigDecimal variance;
+
     private List<RevenuePoint> points;
 
     @Data
@@ -31,9 +39,13 @@ public class RevenueReportResponse {
     @NoArgsConstructor
     public static class RevenuePoint {
         private Integer month;
+
         private Integer year;
+
         private BigDecimal expected;
+
         private BigDecimal actual;
+
         private BigDecimal variance;
     }
 }
