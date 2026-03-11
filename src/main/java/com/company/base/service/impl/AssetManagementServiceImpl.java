@@ -74,7 +74,6 @@ public class AssetManagementServiceImpl implements AssetManagementService {
     public RoomAssetResponse createRoomAsset(RoomAssetRequest request) {
         RoomAsset entity = new RoomAsset();
         entity.setRoomId(request.getRoomId());
-        entity.setCategoryId(request.getCategoryId());
         entity.setSerialNumber(request.getSerialNumber());
         entity.setStatus(request.getStatus());
         return toRoomAssetResponse(roomAssetRepository.save(entity));
@@ -84,7 +83,6 @@ public class AssetManagementServiceImpl implements AssetManagementService {
     public RoomAssetResponse updateRoomAsset(Long id, RoomAssetRequest request) {
         RoomAsset entity = getRoomAssetEntity(id);
         entity.setRoomId(request.getRoomId());
-        entity.setCategoryId(request.getCategoryId());
         entity.setSerialNumber(request.getSerialNumber());
         entity.setStatus(request.getStatus());
         return toRoomAssetResponse(roomAssetRepository.save(entity));
@@ -96,7 +94,7 @@ public class AssetManagementServiceImpl implements AssetManagementService {
     }
 
     @Override
-    public PageResponse<RoomAssetResponse> getRoomAssetsByRoom(String roomId, Pageable pageable) {
+    public PageResponse<RoomAssetResponse> getRoomAssetsByRoom(Long roomId, Pageable pageable) {
         Page<RoomAssetResponse> page = roomAssetRepository.findByRoomIdOrderByIdAsc(roomId, pageable)
                 .map(this::toRoomAssetResponse);
         return PageResponse.of(page);
@@ -140,7 +138,7 @@ public class AssetManagementServiceImpl implements AssetManagementService {
     }
 
     @Override
-    public PageResponse<AssetMaintenanceHistoryResponse> getMaintenanceHistoryByRoom(String roomId, Pageable pageable) {
+    public PageResponse<AssetMaintenanceHistoryResponse> getMaintenanceHistoryByRoom(Long roomId, Pageable pageable) {
         List<Long> roomAssetIds = roomAssetRepository.findByRoomId(roomId).stream()
                 .map(RoomAsset::getId)
                 .toList();
@@ -190,7 +188,6 @@ public class AssetManagementServiceImpl implements AssetManagementService {
         return RoomAssetResponse.builder()
                 .id(entity.getId())
                 .roomId(entity.getRoomId())
-                .categoryId(entity.getCategoryId())
                 .serialNumber(entity.getSerialNumber())
                 .status(entity.getStatus())
                 .build();

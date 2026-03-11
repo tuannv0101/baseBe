@@ -22,7 +22,7 @@ public class TenantInvoiceDetailResponse {
 
     private String invoiceCode;
 
-    private String contractId;
+    private Long contractId;
 
     private BigDecimal totalAmount;
 
@@ -41,7 +41,7 @@ public class TenantInvoiceDetailResponse {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class ServiceItem {
-        private String serviceId;
+        private Long serviceId;
 
         private String serviceName;
 

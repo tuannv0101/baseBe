@@ -18,9 +18,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TenantDashboardResponse {
-    private String tenantId;
+    private Long tenantId;
 
-    private String roomId;
+    private Long roomId;
 
     private BigDecimal amountDueNow;
 

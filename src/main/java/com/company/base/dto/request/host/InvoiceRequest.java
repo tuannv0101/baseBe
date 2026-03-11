@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class InvoiceRequest {
-    private String contractId;
+    private Long contractId;
 
     private String invoiceCode;
 

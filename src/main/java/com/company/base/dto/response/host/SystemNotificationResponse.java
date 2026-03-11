@@ -28,5 +28,5 @@ public class SystemNotificationResponse {
 
     private String referenceType;
 
-    private String referenceId;
+    private Long referenceId;
 }

@@ -35,11 +35,11 @@ public class DebtReportResponse {
 
         private String invoiceCode;
 
-        private String contractId;
+        private Long contractId;
 
-        private String tenantId;
+        private Long tenantId;
 
-        private String roomId;
+        private Long roomId;
 
         private BigDecimal amount;
 

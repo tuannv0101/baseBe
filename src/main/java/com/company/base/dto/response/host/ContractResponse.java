@@ -19,9 +19,9 @@ import java.time.LocalDate;
 public class ContractResponse {
     private Long id;
 
-    private String roomId;
+    private Long roomId;
 
-    private String tenantId;
+    private Long tenantId;
 
     private LocalDate startDate;
 

@@ -164,7 +164,6 @@ public class TenancyServiceImpl implements TenancyService {
         entity.setEmail(request.getEmail());
         entity.setIdCardNumber(request.getIdCardNumber());
         entity.setPortraitImageId(request.getPortraitImageId());
-        entity.setPasswordHash(request.getPasswordHash());
 
         boolean declared = Boolean.TRUE.equals(request.getTemporaryResidenceDeclared());
         entity.setTemporaryResidenceDeclared(declared);

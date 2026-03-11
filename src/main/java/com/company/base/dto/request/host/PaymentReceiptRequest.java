@@ -21,7 +21,7 @@ public class PaymentReceiptRequest {
 
     private String receiptCode;
 
-    private String roomId;
+    private Long roomId;
 
     private String payerName;
 

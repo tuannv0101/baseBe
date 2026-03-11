@@ -1,26 +1,19 @@
-package com.company.base.dto.response.host;
+package com.company.base.dto.response.host.roomManager;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * Response DTO carrying output data for API operations.
- */
-
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RoomAssetResponse {
+public class RoomAssetDetailResDTO {
     private Long id;
-
-    private Long roomId;
-
-    private Long categoryId;
-
+    private String name;
+    private String brand;
     private String serialNumber;
-
     private String status;
 }
+

@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @Table(name = "services")
 @Where(clause = "del_yn IS NULL OR del_yn <> 'Y'")
 @Data
-public class Service extends BaseEntity {
+public class ServiceManager extends BaseEntity {
     // ID duy nhất của dịch vụ.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

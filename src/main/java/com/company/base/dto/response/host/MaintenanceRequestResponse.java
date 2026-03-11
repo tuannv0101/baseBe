@@ -18,9 +18,9 @@ import java.time.LocalDateTime;
 public class MaintenanceRequestResponse {
     private Long id;
 
-    private String roomId;
+    private Long roomId;
 
-    private String tenantId;
+    private Long tenantId;
 
     private String title;
 

@@ -24,7 +24,7 @@ public class PaymentReceipt extends BaseEntity {
     private String receiptCode;
 
     // ID phòng liên quan đến khoản thu.
-    private String roomId;
+    private Long roomId;
 
     // Tên người nộp tiền.
     private String payerName;

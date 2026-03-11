@@ -1,6 +1,5 @@
-package com.company.base.dto.request.host;
+package com.company.base.dto.response.host.roomManager;
 
-import com.company.base.dto.request.host.roomManager.RoomAssetCreateReqDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,21 +11,22 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RoomRequest {
+public class RoomDetailResDTO {
+    private Long roomId;
+
     private Long propertyId;
+    private String propertyName;
+    private String propertyAddress;
+
+    private Long tenantId;
+    private String tenantFullName;
 
     private Float area;
-
     private Integer floor;
-
     private String price;
-
     private String roomNumber;
-
     private String status;
-
     private String type;
 
-    // If provided (even empty), assets will be replaced.
-    private List<RoomAssetCreateReqDTO> roomAssetCreateReqDTOS;
+    private List<RoomAssetDetailResDTO> assets;
 }

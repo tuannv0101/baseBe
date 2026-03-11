@@ -12,7 +12,11 @@ import lombok.NoArgsConstructor;
 public class RoomResponse {
     private Long roomId;
 
-    private String propertyId;
+    private Long propertyId;
+
+    private Long tenantId;
+
+    private String tenantFullName;
 
     private Float area;
 

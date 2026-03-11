@@ -20,9 +20,9 @@ public class ContractLiquidationResponse {
 
     private Long contractId;
 
-    private String roomId;
+    private Long roomId;
 
-    private String tenantId;
+    private Long tenantId;
 
     private LocalDate liquidationDate;
 

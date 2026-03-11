@@ -15,10 +15,10 @@ public class ServiceUsage extends BaseEntity {
     private Long id;
 
     // ID phòng sử dụng dịch vụ.
-    private String roomId;
+    private Long roomId;
 
     // ID dịch vụ được sử dụng.
-    private String serviceId;
+    private Long serviceId;
 
     // Tháng ghi nhận chỉ số.
     private Integer month;

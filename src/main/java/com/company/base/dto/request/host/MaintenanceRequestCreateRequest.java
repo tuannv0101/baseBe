@@ -14,9 +14,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MaintenanceRequestCreateRequest {
-    private String roomId;
+    private Long roomId;
 
-    private String tenantId;
+    private Long tenantId;
 
     private String title;
 

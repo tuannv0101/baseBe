@@ -10,8 +10,9 @@ import com.company.base.dto.response.host.BillingServiceResponse;
 import com.company.base.dto.response.host.InvoiceResponse;
 import com.company.base.dto.response.host.PaymentReceiptResponse;
 import com.company.base.dto.response.host.ServiceUsageResponse;
-import com.company.base.entity.Invoice;
+import com.company.base.entity.InvoiceManager;
 import com.company.base.entity.PaymentReceipt;
+import com.company.base.entity.ServiceManager;
 import com.company.base.entity.ServiceUsage;
 import com.company.base.exception.AppException;
 import com.company.base.repository.host.InvoiceRepository;
@@ -48,14 +49,14 @@ public class BillingManagementServiceImpl implements BillingManagementService {
 
     @Override
     public BillingServiceResponse createService(BillingServiceRequest request) {
-        com.company.base.entity.Service entity = new com.company.base.entity.Service();
+        ServiceManager entity = new ServiceManager();
         applyServiceUpdate(entity, request);
         return toServiceResponse(serviceRepository.save(entity));
     }
 
     @Override
     public BillingServiceResponse updateService(Long id, BillingServiceRequest request) {
-        com.company.base.entity.Service entity = getServiceEntity(id);
+        ServiceManager entity = getServiceEntity(id);
         applyServiceUpdate(entity, request);
         return toServiceResponse(serviceRepository.save(entity));
     }
@@ -74,7 +75,7 @@ public class BillingManagementServiceImpl implements BillingManagementService {
 
     @Override
     public void deleteService(Long id) {
-        com.company.base.entity.Service entity = getServiceEntity(id);
+        ServiceManager entity = getServiceEntity(id);
         entity.setDelYn("Y");
         serviceRepository.save(entity);
     }
@@ -106,9 +107,9 @@ public class BillingManagementServiceImpl implements BillingManagementService {
     }
 
     @Override
-    public PageResponse<ServiceUsageResponse> getServiceUsage(Integer month, Integer year, String serviceId, Pageable pageable) {
+    public PageResponse<ServiceUsageResponse> getServiceUsage(Integer month, Integer year, Long serviceId, Pageable pageable) {
         Page<ServiceUsageResponse> page;
-        if (serviceId == null || serviceId.isBlank()) {
+        if (serviceId == null) {
             page = serviceUsageRepository.findByMonthAndYearOrderByRoomIdAsc(month, year, pageable)
                     .map(this::toUsageResponse);
         } else {
@@ -120,14 +121,14 @@ public class BillingManagementServiceImpl implements BillingManagementService {
 
     @Override
     public InvoiceResponse createInvoice(InvoiceRequest request) {
-        Invoice entity = new Invoice();
+        InvoiceManager entity = new InvoiceManager();
         applyInvoiceUpdate(entity, request);
         return toInvoiceResponse(invoiceRepository.save(entity));
     }
 
     @Override
     public InvoiceResponse updateInvoice(Long id, InvoiceRequest request) {
-        Invoice entity = getInvoiceEntity(id);
+        InvoiceManager entity = getInvoiceEntity(id);
         applyInvoiceUpdate(entity, request);
         return toInvoiceResponse(invoiceRepository.save(entity));
     }
@@ -170,10 +171,10 @@ public class BillingManagementServiceImpl implements BillingManagementService {
 
     @Override
     public PaymentReceiptResponse createPaymentReceipt(PaymentReceiptRequest request) {
-        Invoice invoice = getInvoiceEntity(request.getInvoiceId());
-        invoice.setStatus("PAID");
-        invoice.setPaymentDate(request.getPaymentTime() != null ? request.getPaymentTime() : LocalDateTime.now());
-        invoiceRepository.save(invoice);
+        InvoiceManager invoiceManager = getInvoiceEntity(request.getInvoiceId());
+        invoiceManager.setStatus("PAID");
+        invoiceManager.setPaymentDate(request.getPaymentTime() != null ? request.getPaymentTime() : LocalDateTime.now());
+        invoiceRepository.save(invoiceManager);
 
         PaymentReceipt receipt = new PaymentReceipt();
         receipt.setInvoiceId(request.getInvoiceId());
@@ -194,13 +195,13 @@ public class BillingManagementServiceImpl implements BillingManagementService {
         return PageResponse.of(page);
     }
 
-    private void applyServiceUpdate(com.company.base.entity.Service entity, BillingServiceRequest request) {
+    private void applyServiceUpdate(ServiceManager entity, BillingServiceRequest request) {
         entity.setName(request.getName());
         entity.setUnitPrice(request.getUnitPrice());
         entity.setUnitType(request.getUnitType());
     }
 
-    private void applyInvoiceUpdate(Invoice entity, InvoiceRequest request) {
+    private void applyInvoiceUpdate(InvoiceManager entity, InvoiceRequest request) {
         entity.setContractId(request.getContractId());
         entity.setInvoiceCode(request.getInvoiceCode());
         entity.setTotalAmount(request.getTotalAmount());
@@ -212,17 +213,17 @@ public class BillingManagementServiceImpl implements BillingManagementService {
         return status == null ? null : status.trim().toUpperCase();
     }
 
-    private com.company.base.entity.Service getServiceEntity(Long id) {
+    private ServiceManager getServiceEntity(Long id) {
         return serviceRepository.findById(id)
                 .orElseThrow(() -> new AppException(HttpStatus.NOT_FOUND.value(), "Service not found"));
     }
 
-    private Invoice getInvoiceEntity(Long id) {
+    private InvoiceManager getInvoiceEntity(Long id) {
         return invoiceRepository.findById(id)
                 .orElseThrow(() -> new AppException(HttpStatus.NOT_FOUND.value(), "Invoice not found"));
     }
 
-    private BillingServiceResponse toServiceResponse(com.company.base.entity.Service entity) {
+    private BillingServiceResponse toServiceResponse(ServiceManager entity) {
         return BillingServiceResponse.builder()
                 .id(entity.getId())
                 .name(entity.getName())
@@ -247,7 +248,7 @@ public class BillingManagementServiceImpl implements BillingManagementService {
                 .build();
     }
 
-    private InvoiceResponse toInvoiceResponse(Invoice entity) {
+    private InvoiceResponse toInvoiceResponse(InvoiceManager entity) {
         return InvoiceResponse.builder()
                 .id(entity.getId())
                 .contractId(entity.getContractId())

@@ -3,10 +3,13 @@ package com.company.base.service.impl;
 import com.company.base.common.pagination.PageResponse;
 import com.company.base.common.pagination.PaginationUtils;
 import com.company.base.dto.request.host.PropertyRequest;
+import com.company.base.dto.request.host.PropertySearchRequest;
 import com.company.base.dto.response.host.PropertyResponse;
 import com.company.base.dto.response.host.RoomMatrixResponse;
-import com.company.base.entity.Properties;
-import com.company.base.entity.Room;
+import com.company.base.dto.response.host.roomManager.ListRoomResDTO;
+import com.company.base.dto.response.host.roomManager.ListRoomResProjection;
+import com.company.base.entity.PropertiesManager;
+import com.company.base.entity.RoomManager;
 import com.company.base.exception.AppException;
 import com.company.base.repository.host.PropertiesRepository;
 import com.company.base.repository.host.RoomManagementRepository;
@@ -18,10 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -37,7 +37,7 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
 
     @Override
     public PropertyResponse createProperty(PropertyRequest request) {
-        Properties entity = new Properties();
+        PropertiesManager entity = new PropertiesManager();
         entity.setName(request.getName());
         entity.setAddress(request.getAddress());
         entity.setTotalFloors(request.getTotalFloors());
@@ -46,7 +46,7 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
 
     @Override
     public PropertyResponse updateProperty(Long id, PropertyRequest request) {
-        Properties entity = getPropertyEntity(id);
+        PropertiesManager entity = getPropertyEntity(id);
         entity.setName(request.getName());
         entity.setAddress(request.getAddress());
         entity.setTotalFloors(request.getTotalFloors());
@@ -59,15 +59,34 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
     }
 
     @Override
-    public PageResponse<PropertyResponse> getAllProperties(Pageable pageable) {
-        Page<PropertyResponse> page = propertiesRepository.findAllByOrderByNameAsc(pageable)
-                .map(this::toPropertyResponse);
-        return PageResponse.of(page);
+    public PageResponse<ListRoomResDTO> getAllProperties(PropertySearchRequest propertySearchRequest, Pageable pageable) {
+        String nameProperty = propertySearchRequest != null ? propertySearchRequest.getNameProperty() : null;
+        String statusRoom = propertySearchRequest != null ? propertySearchRequest.getStatusRoom() : null;
+        String typeRoom = propertySearchRequest != null ? propertySearchRequest.getTypeRoom() : null;
+        String tenantName = propertySearchRequest != null ? propertySearchRequest.getTenantName() : null;
+        String priceRoom = propertySearchRequest != null ? propertySearchRequest.getPriceRoom() : null;
+
+        Page<ListRoomResDTO> dtoPage = propertiesRepository
+                .searchProperties(nameProperty, statusRoom, typeRoom, tenantName, priceRoom, pageable)
+                .map(this::toListRoomResDTO);
+        return PageResponse.of(dtoPage);
+    }
+
+    private ListRoomResDTO toListRoomResDTO(ListRoomResProjection p) {
+        return ListRoomResDTO.builder()
+                .id(p.getId())
+                .roomNumber(p.getRoomNumber())
+                .propertyName(p.getPropertyName())
+                .typeRoom(p.getTypeRoom())
+                .price(p.getPrice())
+                .tenantName(p.getTenantName())
+                .statusRoom(p.getStatusRoom())
+                .build();
     }
 
     @Override
     public void deleteProperty(Long id) {
-        Properties entity = getPropertyEntity(id);
+        PropertiesManager entity = getPropertyEntity(id);
         entity.setDelYn("Y");
         propertiesRepository.save(entity);
     }
@@ -82,7 +101,7 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
             return PaginationUtils.paginateList(one, pageable);
         }
 
-        Page<Properties> propsPage = propertiesRepository.findAllByOrderByNameAsc(pageable);
+        Page<PropertiesManager> propsPage = propertiesRepository.findAllByOrderByNameAsc(pageable);
         List<RoomMatrixResponse> matrices = propsPage.getContent().stream()
                 .map(p -> buildRoomMatrix(p, roomManagementRepository.findByPropertiesIdOrderByFloorAscRoomNumberAsc(p.getId())))
                 .toList();
@@ -90,9 +109,9 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
         return PageResponse.of(dtoPage);
     }
 
-    private RoomMatrixResponse buildRoomMatrix(Properties property, List<Room> rooms) {
-        Map<Integer, List<Room>> groupedByFloor = rooms.stream()
-                .collect(Collectors.groupingBy(Room::getFloor, TreeMap::new, Collectors.toList()));
+    private RoomMatrixResponse buildRoomMatrix(PropertiesManager property, List<RoomManager> roomManagers) {
+        Map<Integer, List<RoomManager>> groupedByFloor = roomManagers.stream()
+                .collect(Collectors.groupingBy(RoomManager::getFloor, TreeMap::new, Collectors.toList()));
 
         List<RoomMatrixResponse.FloorRow> floors = groupedByFloor.entrySet()
                 .stream()
@@ -103,10 +122,10 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
                         .build())
                 .toList();
 
-        int total = rooms.size();
-        int available = countByStatus(rooms, "AVAILABLE");
-        int occupied = countByStatus(rooms, "OCCUPIED");
-        int maintenance = countByStatus(rooms, "MAINTENANCE");
+        int total = roomManagers.size();
+        int available = countByStatus(roomManagers, "AVAILABLE");
+        int occupied = countByStatus(roomManagers, "OCCUPIED");
+        int maintenance = countByStatus(roomManagers, "MAINTENANCE");
 
         return RoomMatrixResponse.builder()
                 .propertyId(property.getId())
@@ -122,23 +141,23 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
                 .build();
     }
 
-    private int countByStatus(List<Room> rooms, String status) {
-        return (int) rooms.stream()
-                .filter(room -> room.getStatus() != null && room.getStatus().equalsIgnoreCase(status))
+    private int countByStatus(List<RoomManager> roomManagers, String status) {
+        return (int) roomManagers.stream()
+                .filter(roomManager -> roomManager.getStatus() != null && roomManager.getStatus().equalsIgnoreCase(status))
                 .count();
     }
 
-    private RoomMatrixResponse.RoomCell toRoomCell(Room room) {
+    private RoomMatrixResponse.RoomCell toRoomCell(RoomManager roomManager) {
         return RoomMatrixResponse.RoomCell.builder()
-                .id(room.getId())
-                .roomNumber(room.getRoomNumber())
-                .status(room.getStatus())
-                .price(room.getPrice())
-                .area(room.getArea())
+                .id(roomManager.getId())
+                .roomNumber(roomManager.getRoomNumber())
+                .status(roomManager.getStatus())
+                .price(roomManager.getPrice())
+                .area(roomManager.getArea())
                 .build();
     }
 
-    private PropertyResponse toPropertyResponse(Properties entity) {
+    private PropertyResponse toPropertyResponse(PropertiesManager entity) {
         return PropertyResponse.builder()
                 .id(entity.getId())
                 .name(entity.getName())
@@ -147,7 +166,7 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
                 .build();
     }
 
-    private Properties getPropertyEntity(Long id) {
+    private PropertiesManager getPropertyEntity(Long id) {
         return propertiesRepository.findById(id)
                 .orElseThrow(() -> new AppException(HttpStatus.NOT_FOUND.value(), "Property not found"));
     }

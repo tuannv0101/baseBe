@@ -18,7 +18,7 @@ public class LandlordAnnouncement extends BaseEntity {
     private Long landlordProfileId;
 
     // ID phòng liên quan (nếu thông báo gắn với một phòng cụ thể).
-    private String roomId;
+    private Long roomId;
 
     // Tiêu đề thông báo.
     private String title;

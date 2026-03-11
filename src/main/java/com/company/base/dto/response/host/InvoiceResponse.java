@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 public class InvoiceResponse {
     private Long id;
 
-    private String contractId;
+    private Long contractId;
 
     private String invoiceCode;
 

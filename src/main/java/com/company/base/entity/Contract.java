@@ -18,10 +18,10 @@ public class Contract extends BaseEntity {
     private Long id;
 
     // ID phòng được thuê.
-    private String roomId;
+    private Long roomId;
 
     // ID người thuê trong hợp đồng.
-    private String tenantId;
+    private Long tenantId;
 
     // Ngày bắt đầu hiệu lực hợp đồng.
     private LocalDate startDate;

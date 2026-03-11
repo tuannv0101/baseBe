@@ -1,6 +1,6 @@
 package com.company.base.repository.host;
 
-import com.company.base.entity.Service;
+import com.company.base.entity.ServiceManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,8 +11,8 @@ import java.util.List;
  * Repository for data access operations.
  */
 
-public interface ServiceRepository extends JpaRepository<Service, Long> {
-    List<Service> findAllByOrderByNameAsc();
+public interface ServiceRepository extends JpaRepository<ServiceManager, Long> {
+    List<ServiceManager> findAllByOrderByNameAsc();
 
-    Page<Service> findAllByOrderByNameAsc(Pageable pageable);
+    Page<ServiceManager> findAllByOrderByNameAsc(Pageable pageable);
 }

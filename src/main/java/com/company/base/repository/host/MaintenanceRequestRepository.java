@@ -19,11 +19,11 @@ public interface MaintenanceRequestRepository extends JpaRepository<MaintenanceR
 
     List<MaintenanceRequest> findTop20ByStatusInOrderByRequestedAtDescIdDesc(Collection<String> statuses);
 
-    List<MaintenanceRequest> findByTenantIdOrderByRequestedAtDescIdDesc(String tenantId);
+    List<MaintenanceRequest> findByTenantIdOrderByRequestedAtDescIdDesc(Long tenantId);
 
     Page<MaintenanceRequest> findAllByOrderByRequestedAtDescIdDesc(Pageable pageable);
 
     Page<MaintenanceRequest> findByStatusIgnoreCaseOrderByRequestedAtDescIdDesc(String status, Pageable pageable);
 
-    Page<MaintenanceRequest> findByTenantIdOrderByRequestedAtDescIdDesc(String tenantId, Pageable pageable);
+    Page<MaintenanceRequest> findByTenantIdOrderByRequestedAtDescIdDesc(Long tenantId, Pageable pageable);
 }

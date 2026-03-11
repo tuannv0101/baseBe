@@ -4,7 +4,7 @@ import com.company.base.dto.response.host.DebtReportResponse;
 import com.company.base.dto.response.host.RevenueReportResponse;
 import com.company.base.dto.response.host.VacancyRateReportResponse;
 import com.company.base.entity.Contract;
-import com.company.base.entity.Invoice;
+import com.company.base.entity.InvoiceManager;
 import com.company.base.entity.PaymentReceipt;
 import com.company.base.exception.AppException;
 import com.company.base.repository.host.ContractRepository;
@@ -101,7 +101,7 @@ public class ReportsServiceImpl implements ReportsService {
             long occupiedRooms = activeContracts.stream()
                     .filter(contract -> overlaps(contract, monthStart, monthEnd))
                     .map(Contract::getRoomId)
-                    .filter(roomId -> roomId != null && !roomId.isBlank())
+                    .filter(roomId -> roomId != null)
                     .distinct()
                     .count();
 
@@ -142,12 +142,12 @@ public class ReportsServiceImpl implements ReportsService {
     @Override
     public DebtReportResponse getDebtReport() {
         LocalDate today = LocalDate.now();
-        List<Invoice> debtInvoices = invoiceRepository.findByStatusInOrderByDueDateAscIdDesc(DEBT_STATUSES);
-        Map<String, Contract> contractById = contractRepository.findAll().stream()
-                .collect(Collectors.toMap(contract -> String.valueOf(contract.getId()), contract -> contract, (a, b) -> a));
+        List<InvoiceManager> debtInvoiceManagers = invoiceRepository.findByStatusInOrderByDueDateAscIdDesc(DEBT_STATUSES);
+        Map<Long, Contract> contractById = contractRepository.findAll().stream()
+                .collect(Collectors.toMap(Contract::getId, contract -> contract, (a, b) -> a));
 
-        List<DebtReportResponse.DebtItem> items = debtInvoices.stream()
-                .sorted(Comparator.comparing(Invoice::getDueDate, Comparator.nullsLast(Comparator.naturalOrder())))
+        List<DebtReportResponse.DebtItem> items = debtInvoiceManagers.stream()
+                .sorted(Comparator.comparing(InvoiceManager::getDueDate, Comparator.nullsLast(Comparator.naturalOrder())))
                 .map(invoice -> toDebtItem(invoice, contractById.get(invoice.getContractId()), today))
                 .toList();
 
@@ -178,29 +178,29 @@ public class ReportsServiceImpl implements ReportsService {
         return startOk && endOk;
     }
 
-    private DebtReportResponse.DebtItem toDebtItem(Invoice invoice, Contract contract, LocalDate today) {
-        LocalDate dueDate = invoice.getDueDate();
+    private DebtReportResponse.DebtItem toDebtItem(InvoiceManager invoiceManager, Contract contract, LocalDate today) {
+        LocalDate dueDate = invoiceManager.getDueDate();
         Long daysPastDue = null;
         if (dueDate != null && dueDate.isBefore(today)) {
             daysPastDue = ChronoUnit.DAYS.between(dueDate, today);
         }
 
         return DebtReportResponse.DebtItem.builder()
-                .invoiceId(invoice.getId())
-                .invoiceCode(invoice.getInvoiceCode())
-                .contractId(invoice.getContractId())
+                .invoiceId(invoiceManager.getId())
+                .invoiceCode(invoiceManager.getInvoiceCode())
+                .contractId(invoiceManager.getContractId())
                 .tenantId(contract != null ? contract.getTenantId() : null)
                 .roomId(contract != null ? contract.getRoomId() : null)
-                .amount(invoice.getTotalAmount())
-                .status(invoice.getStatus())
+                .amount(invoiceManager.getTotalAmount())
+                .status(invoiceManager.getStatus())
                 .dueDate(dueDate)
                 .daysPastDue(daysPastDue)
                 .build();
     }
 
-    private BigDecimal sumInvoiceAmount(List<Invoice> invoices) {
-        return invoices.stream()
-                .map(Invoice::getTotalAmount)
+    private BigDecimal sumInvoiceAmount(List<InvoiceManager> invoiceManagers) {
+        return invoiceManagers.stream()
+                .map(InvoiceManager::getTotalAmount)
                 .filter(amount -> amount != null)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }

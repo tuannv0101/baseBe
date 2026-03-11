@@ -5,20 +5,19 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * Request DTO carrying input data for API operations.
- */
-
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RoomAssetRequest {
-    private Long roomId;
+public class PropertySearchRequest {
+    private String nameProperty;
 
-    private Long categoryId;
+    private String tenantName;
 
-    private String serialNumber;
+    private String statusRoom;
 
-    private String status;
+    private String priceRoom;
+
+    private String typeRoom;
+
 }

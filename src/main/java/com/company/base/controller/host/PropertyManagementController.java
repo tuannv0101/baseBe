@@ -2,8 +2,10 @@ package com.company.base.controller.host;
 
 import com.company.base.common.ApiResponse;
 import com.company.base.dto.request.host.PropertyRequest;
+import com.company.base.dto.request.host.PropertySearchRequest;
 import com.company.base.dto.response.host.PropertyResponse;
 import com.company.base.dto.response.host.RoomMatrixResponse;
+import com.company.base.dto.response.host.roomManager.ListRoomResDTO;
 import com.company.base.service.PropertyManagementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -39,8 +41,11 @@ public class PropertyManagementController {
     }
 
     @GetMapping("/properties")
-    public ApiResponse<PageResponse<PropertyResponse>> getAllProperties(@PageableDefault(size = 20) Pageable pageable) {
-        return ApiResponse.success(propertyManagementService.getAllProperties(pageable));
+    public ApiResponse<PageResponse<ListRoomResDTO>> getAllProperties(
+            @ModelAttribute PropertySearchRequest propertySearchRequest,
+            @PageableDefault(size = 20) Pageable pageable
+    ) {
+        return ApiResponse.success(propertyManagementService.getAllProperties(propertySearchRequest, pageable));
     }
 
     @PutMapping("/properties/{id}/delete")

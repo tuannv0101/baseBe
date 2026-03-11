@@ -57,7 +57,7 @@ public interface AssetManagementService {
     /**
      * Lấy danh sách tài sản theo phòng.
      */
-    PageResponse<RoomAssetResponse> getRoomAssetsByRoom(String roomId, Pageable pageable);
+    PageResponse<RoomAssetResponse> getRoomAssetsByRoom(Long roomId, Pageable pageable);
 
     /**
      * Xóa tài sản trong phòng theo ID.
@@ -82,5 +82,5 @@ public interface AssetManagementService {
     /**
      * Lấy lịch sử bảo trì theo phòng (tổng hợp từ các tài sản trong phòng).
      */
-    PageResponse<AssetMaintenanceHistoryResponse> getMaintenanceHistoryByRoom(String roomId, Pageable pageable);
+    PageResponse<AssetMaintenanceHistoryResponse> getMaintenanceHistoryByRoom(Long roomId, Pageable pageable);
 }

@@ -12,14 +12,14 @@ import java.time.LocalDateTime;
 @Table(name = "invoices")
 @Where(clause = "del_yn IS NULL OR del_yn <> 'Y'")
 @Data
-public class Invoice extends BaseEntity {
+public class InvoiceManager extends BaseEntity {
     // ID duy nhất của hóa đơn.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     // ID hợp đồng liên quan.
-    private String contractId;
+    private Long contractId;
 
     // Mã hóa đơn nghiệp vụ.
     private String invoiceCode;

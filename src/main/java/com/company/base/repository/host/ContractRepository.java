@@ -21,9 +21,11 @@ public interface ContractRepository extends JpaRepository<Contract, Long> {
 
     List<Contract> findByEndDateBetweenAndStatusIgnoreCaseOrderByEndDateAscIdDesc(LocalDate fromDate, LocalDate toDate, String status);
 
-    List<Contract> findByTenantIdOrderByStartDateDescIdDesc(String tenantId);
+    List<Contract> findByTenantIdOrderByStartDateDescIdDesc(Long tenantId);
 
-    Optional<Contract> findFirstByTenantIdAndStatusIgnoreCaseOrderByStartDateDescIdDesc(String tenantId, String status);
+    Optional<Contract> findFirstByTenantIdAndStatusIgnoreCaseOrderByStartDateDescIdDesc(Long tenantId, String status);
+
+    Optional<Contract> findFirstByRoomIdAndStatusIgnoreCaseOrderByStartDateDescIdDesc(Long roomId, String status);
 
     Page<Contract> findAllByOrderByStartDateDescIdDesc(Pageable pageable);
 

@@ -6,7 +6,7 @@ import com.company.base.dto.response.host.DashboardOverviewResponse;
 import com.company.base.dto.response.host.SystemNotificationResponse;
 import com.company.base.entity.Contract;
 import com.company.base.entity.ExpenseRecord;
-import com.company.base.entity.Invoice;
+import com.company.base.entity.InvoiceManager;
 import com.company.base.entity.MaintenanceRequest;
 import com.company.base.entity.PaymentReceipt;
 import com.company.base.repository.host.ContractRepository;
@@ -92,16 +92,16 @@ public class DashboardServiceImpl implements DashboardService {
         LocalDate next30Days = today.plusDays(30);
         List<SystemNotificationResponse> notifications = new ArrayList<>();
 
-        List<Invoice> debtInvoices = invoiceRepository.findByStatusInAndDueDateBeforeOrderByDueDateAscIdDesc(DEBT_STATUSES, today);
-        for (Invoice invoice : debtInvoices) {
+        List<InvoiceManager> debtInvoiceManagers = invoiceRepository.findByStatusInAndDueDateBeforeOrderByDueDateAscIdDesc(DEBT_STATUSES, today);
+        for (InvoiceManager invoiceManager : debtInvoiceManagers) {
             notifications.add(SystemNotificationResponse.builder()
                     .type("DEBT")
                     .severity("HIGH")
                     .title("Hoa don qua han")
-                    .message("Hoa don " + safe(invoice.getInvoiceCode()) + " da qua han thanh toan")
-                    .createdAt(invoice.getDueDate() != null ? invoice.getDueDate().atStartOfDay() : LocalDateTime.now())
+                    .message("Hoa don " + safe(invoiceManager.getInvoiceCode()) + " da qua han thanh toan")
+                    .createdAt(invoiceManager.getDueDate() != null ? invoiceManager.getDueDate().atStartOfDay() : LocalDateTime.now())
                     .referenceType("INVOICE")
-                    .referenceId(String.valueOf(invoice.getId()))
+                    .referenceId(invoiceManager.getId())
                     .build());
         }
 
@@ -115,7 +115,7 @@ public class DashboardServiceImpl implements DashboardService {
                     .message("Hop dong #" + contract.getId() + " se het han vao " + contract.getEndDate())
                     .createdAt(contract.getEndDate() != null ? contract.getEndDate().atStartOfDay() : LocalDateTime.now())
                     .referenceType("CONTRACT")
-                    .referenceId(String.valueOf(contract.getId()))
+                    .referenceId(contract.getId())
                     .build());
         }
 
@@ -129,7 +129,7 @@ public class DashboardServiceImpl implements DashboardService {
                     .message("Yeu cau #" + request.getId() + " - " + safe(request.getTitle()))
                     .createdAt(request.getRequestedAt() != null ? request.getRequestedAt() : LocalDateTime.now())
                     .referenceType("MAINTENANCE_REQUEST")
-                    .referenceId(String.valueOf(request.getId()))
+                    .referenceId(request.getId())
                     .build());
         }
 
@@ -183,7 +183,7 @@ public class DashboardServiceImpl implements DashboardService {
                 .stream()
                 .filter(contract -> overlaps(contract, date))
                 .map(Contract::getRoomId)
-                .filter(roomId -> roomId != null && !roomId.isBlank())
+                .filter(roomId -> roomId != null)
                 .distinct()
                 .count();
     }

@@ -12,7 +12,11 @@ import java.util.List;
  */
 
 public interface RoomAssetRepository extends JpaRepository<RoomAsset, Long> {
-    List<RoomAsset> findByRoomId(String roomId);
+    List<RoomAsset> findByRoomId(Long roomId);
 
-    Page<RoomAsset> findByRoomIdOrderByIdAsc(String roomId, Pageable pageable);
+    Page<RoomAsset> findByRoomIdOrderByIdAsc(Long roomId, Pageable pageable);
+
+    List<RoomAsset> findByRoomIdAndDelYn(Long roomId, String delYn);
+
+    Page<RoomAsset> findByRoomIdAndDelYnOrderByIdAsc(Long roomId, String delYn, Pageable pageable);
 }

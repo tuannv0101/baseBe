@@ -50,7 +50,7 @@ public interface BillingManagementService {
     /**
      * Lấy danh sách sử dụng dịch vụ theo tháng/năm (có thể lọc theo serviceId).
      */
-    PageResponse<ServiceUsageResponse> getServiceUsage(Integer month, Integer year, String serviceId, Pageable pageable);
+    PageResponse<ServiceUsageResponse> getServiceUsage(Integer month, Integer year, Long serviceId, Pageable pageable);
 
     /**
      * Tạo hóa đơn theo yêu cầu nghiệp vụ.

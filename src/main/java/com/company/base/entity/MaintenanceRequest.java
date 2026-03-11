@@ -17,10 +17,10 @@ public class MaintenanceRequest extends BaseEntity {
     private Long id;
 
     // ID phòng phát sinh yêu cầu.
-    private String roomId;
+    private Long roomId;
 
     // ID người thuê tạo yêu cầu.
-    private String tenantId;
+    private Long tenantId;
 
     // Tiêu đề yêu cầu.
     private String title;

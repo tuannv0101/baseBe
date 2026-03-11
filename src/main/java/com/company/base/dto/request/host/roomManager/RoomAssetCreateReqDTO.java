@@ -1,18 +1,15 @@
-package com.company.base.entity;
+package com.company.base.dto.request.host.roomManager;
 
-import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import org.hibernate.annotations.Where;
+import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "room_assets")
-@Where(clause = "del_yn IS NULL OR del_yn <> 'Y'")
 @Data
-public class RoomAsset extends BaseEntity {
-    // ID duy nhất của tài sản trong phòng.
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class RoomAssetCreateReqDTO {
     // ID phòng sở hữu tài sản.
     private Long roomId;
     // Tên danh mục thiết bị.

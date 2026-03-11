@@ -1,6 +1,6 @@
 package com.company.base.repository.host;
 
-import com.company.base.entity.Invoice;
+import com.company.base.entity.InvoiceManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,20 +13,20 @@ import java.util.List;
  * Repository for data access operations.
  */
 
-public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
-    List<Invoice> findByDueDateBetweenOrderByDueDateAscIdDesc(LocalDate fromDate, LocalDate toDate);
+public interface InvoiceRepository extends JpaRepository<InvoiceManager, Long> {
+    List<InvoiceManager> findByDueDateBetweenOrderByDueDateAscIdDesc(LocalDate fromDate, LocalDate toDate);
 
-    List<Invoice> findByStatusInAndDueDateBeforeOrderByDueDateAscIdDesc(Collection<String> statuses, LocalDate dueDate);
+    List<InvoiceManager> findByStatusInAndDueDateBeforeOrderByDueDateAscIdDesc(Collection<String> statuses, LocalDate dueDate);
 
-    List<Invoice> findByStatusInOrderByDueDateAscIdDesc(Collection<String> statuses);
+    List<InvoiceManager> findByStatusInOrderByDueDateAscIdDesc(Collection<String> statuses);
 
-    List<Invoice> findByContractIdOrderByDueDateDescIdDesc(String contractId);
+    List<InvoiceManager> findByContractIdOrderByDueDateDescIdDesc(Long contractId);
 
-    List<Invoice> findByContractIdInOrderByDueDateDescIdDesc(Collection<String> contractIds);
+    List<InvoiceManager> findByContractIdInOrderByDueDateDescIdDesc(Collection<Long> contractIds);
 
-    Page<Invoice> findByDueDateBetweenOrderByDueDateAscIdDesc(LocalDate fromDate, LocalDate toDate, Pageable pageable);
+    Page<InvoiceManager> findByDueDateBetweenOrderByDueDateAscIdDesc(LocalDate fromDate, LocalDate toDate, Pageable pageable);
 
-    Page<Invoice> findByStatusInAndDueDateBeforeOrderByDueDateAscIdDesc(Collection<String> statuses, LocalDate dueDate, Pageable pageable);
+    Page<InvoiceManager> findByStatusInAndDueDateBeforeOrderByDueDateAscIdDesc(Collection<String> statuses, LocalDate dueDate, Pageable pageable);
 
-    Page<Invoice> findByContractIdInOrderByDueDateDescIdDesc(Collection<String> contractIds, Pageable pageable);
+    Page<InvoiceManager> findByContractIdInOrderByDueDateDescIdDesc(Collection<Long> contractIds, Pageable pageable);
 }

@@ -64,7 +64,7 @@ public class BillingManagementController {
     public ApiResponse<PageResponse<ServiceUsageResponse>> getServiceUsage(
             @RequestParam Integer month,
             @RequestParam Integer year,
-            @RequestParam(required = false) String serviceId,
+            @RequestParam(required = false) Long serviceId,
             @PageableDefault(size = 20) Pageable pageable
     ) {
         return ApiResponse.success(billingManagementService.getServiceUsage(month, year, serviceId, pageable));

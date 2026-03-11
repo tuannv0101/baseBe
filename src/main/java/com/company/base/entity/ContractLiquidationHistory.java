@@ -20,10 +20,10 @@ public class ContractLiquidationHistory extends BaseEntity {
     private Long contractId;
 
     // Related room ID.
-    private String roomId;
+    private Long roomId;
 
     // Related tenant ID.
-    private String tenantId;
+    private Long tenantId;
 
     // Liquidation date.
     private LocalDate liquidationDate;

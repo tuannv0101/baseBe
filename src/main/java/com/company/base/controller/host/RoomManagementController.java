@@ -3,7 +3,9 @@ package com.company.base.controller.host;
 import com.company.base.common.ApiResponse;
 import com.company.base.common.pagination.PageResponse;
 import com.company.base.dto.request.host.RoomRequest;
+import com.company.base.dto.request.host.roomManager.RoomManagerCreateReqDTO;
 import com.company.base.dto.response.host.RoomResponse;
+import com.company.base.dto.response.host.roomManager.RoomDetailResDTO;
 import com.company.base.service.RoomManagementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -24,8 +26,8 @@ public class RoomManagementController {
     private final RoomManagementService roomManagementService;
 
     @PostMapping
-    public ApiResponse<RoomResponse> createRoom(@RequestBody RoomRequest request) {
-        return ApiResponse.success(roomManagementService.createRoom(request));
+    public ApiResponse<Long> createRoom(@RequestBody RoomManagerCreateReqDTO roomManagerCreateReqDTO) {
+        return ApiResponse.success(roomManagementService.createRoom(roomManagerCreateReqDTO));
     }
 
     @PutMapping("/{id}")
@@ -36,6 +38,11 @@ public class RoomManagementController {
     @GetMapping("/{id}")
     public ApiResponse<RoomResponse> getRoomById(@PathVariable Long id) {
         return ApiResponse.success(roomManagementService.getRoomById(id));
+    }
+
+    @GetMapping("/{id}/detail")
+    public ApiResponse<RoomDetailResDTO> getRoomDetail(@PathVariable Long id) {
+        return ApiResponse.success(roomManagementService.getRoomDetail(id));
     }
 
     @GetMapping
@@ -52,4 +59,3 @@ public class RoomManagementController {
         return ApiResponse.success(null);
     }
 }
-

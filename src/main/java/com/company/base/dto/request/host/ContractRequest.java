@@ -17,9 +17,9 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ContractRequest {
-    private String roomId;
+    private Long roomId;
 
-    private String tenantId;
+    private Long tenantId;
 
     private LocalDate startDate;
 

@@ -16,9 +16,9 @@ import lombok.NoArgsConstructor;
 public class ServiceUsageResponse {
     private Long id;
 
-    private String roomId;
+    private Long roomId;
 
-    private String serviceId;
+    private Long serviceId;
 
     private Integer month;
 

@@ -17,10 +17,10 @@ public class TenantVehicleRegistration extends BaseEntity {
     private Long id;
 
     // ID người thuê đăng ký phương tiện.
-    private String tenantId;
+    private Long tenantId;
 
     // ID phòng người thuê đang ở (liên quan đến đăng ký).
-    private String roomId;
+    private Long roomId;
 
     // Loại phương tiện: MOTORBIKE, CAR...
     private String vehicleType;

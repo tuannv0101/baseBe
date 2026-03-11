@@ -33,6 +33,4 @@ public class Tenant extends BaseEntity {
     private Boolean temporaryResidenceDeclared;
     // Date of temporary residence declaration.
     private LocalDate temporaryResidenceDeclaredAt;
-    // Hashed password for tenant account.
-    private String passwordHash;
 }

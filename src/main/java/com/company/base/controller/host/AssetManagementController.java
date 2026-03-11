@@ -81,7 +81,7 @@ public class AssetManagementController {
 
     @GetMapping("/rooms/{roomId}/inventory")
     public ApiResponse<PageResponse<RoomAssetResponse>> getRoomInventory(
-            @PathVariable String roomId,
+            @PathVariable Long roomId,
             @PageableDefault(size = 20) Pageable pageable
     ) {
         return ApiResponse.success(assetManagementService.getRoomAssetsByRoom(roomId, pageable));
@@ -113,7 +113,7 @@ public class AssetManagementController {
 
     @GetMapping("/rooms/{roomId}/maintenance-history")
     public ApiResponse<PageResponse<AssetMaintenanceHistoryResponse>> getMaintenanceHistoryByRoom(
-            @PathVariable String roomId,
+            @PathVariable Long roomId,
             @PageableDefault(size = 20) Pageable pageable
     ) {
         return ApiResponse.success(assetManagementService.getMaintenanceHistoryByRoom(roomId, pageable));

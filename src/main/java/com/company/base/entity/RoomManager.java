@@ -8,7 +8,7 @@ import org.hibernate.annotations.Where;
 @Table(name = "rooms")
 @Where(clause = "del_yn IS NULL OR del_yn <> 'Y'")
 @Data
-public class Room extends BaseEntity {
+public class RoomManager extends BaseEntity {
     // ID duy nhất của phòng.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,4 +25,6 @@ public class Room extends BaseEntity {
     private Float area;
     // Trạng thái phòng: AVAILABLE, OCCUPIED, MAINTENANCE.
     private String status; // AVAILABLE, OCCUPIED, MAINTENANCE
+    // Loại phòng
+    private String type;
 }
