@@ -17,6 +17,8 @@ public interface ListRoomResProjection {
 
     String getTenantName();
 
+    String getTenantIdCardNumber();
+
     String getStatusRoom();
 }
 

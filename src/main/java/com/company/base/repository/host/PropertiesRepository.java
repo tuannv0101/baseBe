@@ -8,12 +8,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 /**
  * Repository for data access operations.
  */
 
 public interface PropertiesRepository extends JpaRepository<PropertiesManager, Long> {
     Page<PropertiesManager> findAllByOrderByNameAsc(Pageable pageable);
+
+    List<PropertiesManager> findAllByOrderByNameAsc();
 
     Page<PropertiesManager> findByNameContainingIgnoreCaseOrderByNameAsc(String name, Pageable pageable);
 
@@ -26,6 +30,7 @@ public interface PropertiesRepository extends JpaRepository<PropertiesManager, L
                         r.type as typeRoom,
                         r.price as price,
                         t.full_name as tenantName,
+                        t.id_card_number as tenantIdCardNumber,
                         r.status as statusRoom
                     from rooms r
                     join properties p

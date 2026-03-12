@@ -10,17 +10,20 @@ import com.company.base.dto.response.host.ContractResponse;
 import com.company.base.dto.response.host.TenantResponse;
 import com.company.base.entity.Contract;
 import com.company.base.entity.ContractLiquidationHistory;
+import com.company.base.entity.FileMetadata;
 import com.company.base.entity.Tenant;
 import com.company.base.exception.AppException;
 import com.company.base.repository.host.ContractLiquidationHistoryRepository;
 import com.company.base.repository.host.ContractRepository;
 import com.company.base.repository.host.TenantRepository;
+import com.company.base.service.FileService;
 import com.company.base.service.TenancyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -41,6 +44,7 @@ public class TenancyServiceImpl implements TenancyService {
     private final TenantRepository tenantRepository;
     private final ContractRepository contractRepository;
     private final ContractLiquidationHistoryRepository liquidationHistoryRepository;
+    private final FileService fileService;
 
     @Override
     public TenantResponse createTenant(TenantRequest request) {
@@ -62,6 +66,16 @@ public class TenancyServiceImpl implements TenancyService {
     }
 
     @Override
+    public TenantResponse getTenantByIdCardNumber(String idCardNumber) {
+        if (idCardNumber == null || idCardNumber.isBlank()) {
+            throw new AppException(HttpStatus.BAD_REQUEST.value(), "idCardNumber is required");
+        }
+        Tenant entity = tenantRepository.findByIdCardNumber(idCardNumber.trim())
+                .orElseThrow(() -> new AppException(HttpStatus.NOT_FOUND.value(), "Tenant not found"));
+        return toTenantResponse(entity);
+    }
+
+    @Override
     public PageResponse<TenantResponse> getAllTenants(Pageable pageable) {
         Page<TenantResponse> page = tenantRepository.findAllByOrderByFullNameAsc(pageable)
                 .map(this::toTenantResponse);
@@ -80,6 +94,18 @@ public class TenancyServiceImpl implements TenancyService {
         Tenant entity = getTenantEntity(id);
         entity.setDelYn("Y");
         tenantRepository.save(entity);
+    }
+
+    @Override
+    public TenantResponse uploadTenantPortrait(Long tenantId, MultipartFile file) {
+        if (file == null || file.isEmpty()) {
+            throw new AppException(HttpStatus.BAD_REQUEST.value(), "File is required");
+        }
+
+        FileMetadata metadata = fileService.upload(file);
+        Tenant entity = getTenantEntity(tenantId);
+        entity.setPortraitImageId(metadata.getId());
+        return toTenantResponse(tenantRepository.save(entity));
     }
 
     @Override

@@ -28,7 +28,8 @@ jwt:
   expiration: 86400000 # 24 hours
 
 file:
-  upload-dir: ./uploads
+  # Local file storage root. Override via env var FILE_UPLOAD_DIR when needed.
+  upload-dir: ${FILE_UPLOAD_DIR:D:/data/test/fileUpload/}
 
 springdoc:
   api-docs:

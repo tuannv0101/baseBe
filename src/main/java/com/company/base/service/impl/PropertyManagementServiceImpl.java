@@ -1,11 +1,10 @@
 package com.company.base.service.impl;
 
 import com.company.base.common.pagination.PageResponse;
-import com.company.base.common.pagination.PaginationUtils;
 import com.company.base.dto.request.host.PropertyRequest;
 import com.company.base.dto.request.host.PropertySearchRequest;
 import com.company.base.dto.response.host.PropertyResponse;
-import com.company.base.dto.response.host.RoomMatrixResponse;
+import com.company.base.dto.response.host.RoomBasicInfoResponse;
 import com.company.base.dto.response.host.roomManager.ListRoomResDTO;
 import com.company.base.dto.response.host.roomManager.ListRoomResProjection;
 import com.company.base.entity.PropertiesManager;
@@ -16,13 +15,11 @@ import com.company.base.repository.host.RoomManagementRepository;
 import com.company.base.service.PropertyManagementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.List;
 
 /**
  * Service implementation containing business logic for this module.
@@ -72,6 +69,14 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
         return PageResponse.of(dtoPage);
     }
 
+    @Override
+    public List<PropertyResponse> getAllProperties() {
+        return propertiesRepository.findAllByOrderByNameAsc()
+                .stream()
+                .map(this::toPropertyResponse)
+                .toList();
+    }
+
     private ListRoomResDTO toListRoomResDTO(ListRoomResProjection p) {
         return ListRoomResDTO.builder()
                 .id(p.getId())
@@ -92,64 +97,23 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
     }
 
     @Override
-    public PageResponse<RoomMatrixResponse> getRoomMatrix(Long propertyId, Pageable pageable) {
+    public PageResponse<RoomBasicInfoResponse> getRoomMatrix(Long propertyId, Pageable pageable) {
+        Page<RoomBasicInfoResponse> dtoPage;
         if (propertyId != null) {
-            List<RoomMatrixResponse> one = List.of(buildRoomMatrix(
-                    getPropertyEntity(propertyId),
-                    roomManagementRepository.findByPropertiesIdOrderByFloorAscRoomNumberAsc(propertyId)
-            ));
-            return PaginationUtils.paginateList(one, pageable);
+            dtoPage = roomManagementRepository.findByPropertiesIdOrderByFloorAscRoomNumberAsc(propertyId, pageable)
+                    .map(this::toRoomBasicInfoResponse);
+        } else {
+            dtoPage = roomManagementRepository.findAllByOrderByIdDesc(pageable)
+                    .map(this::toRoomBasicInfoResponse);
         }
-
-        Page<PropertiesManager> propsPage = propertiesRepository.findAllByOrderByNameAsc(pageable);
-        List<RoomMatrixResponse> matrices = propsPage.getContent().stream()
-                .map(p -> buildRoomMatrix(p, roomManagementRepository.findByPropertiesIdOrderByFloorAscRoomNumberAsc(p.getId())))
-                .toList();
-        Page<RoomMatrixResponse> dtoPage = new PageImpl<>(matrices, pageable, propsPage.getTotalElements());
         return PageResponse.of(dtoPage);
     }
 
-    private RoomMatrixResponse buildRoomMatrix(PropertiesManager property, List<RoomManager> roomManagers) {
-        Map<Integer, List<RoomManager>> groupedByFloor = roomManagers.stream()
-                .collect(Collectors.groupingBy(RoomManager::getFloor, TreeMap::new, Collectors.toList()));
-
-        List<RoomMatrixResponse.FloorRow> floors = groupedByFloor.entrySet()
-                .stream()
-                .sorted(Comparator.comparingInt(Map.Entry::getKey))
-                .map(entry -> RoomMatrixResponse.FloorRow.builder()
-                        .floor(entry.getKey())
-                        .rooms(entry.getValue().stream().map(this::toRoomCell).toList())
-                        .build())
-                .toList();
-
-        int total = roomManagers.size();
-        int available = countByStatus(roomManagers, "AVAILABLE");
-        int occupied = countByStatus(roomManagers, "OCCUPIED");
-        int maintenance = countByStatus(roomManagers, "MAINTENANCE");
-
-        return RoomMatrixResponse.builder()
-                .propertyId(property.getId())
-                .propertyName(property.getName())
-                .address(property.getAddress())
-                .floors(floors)
-                .summary(RoomMatrixResponse.Summary.builder()
-                        .totalRooms(total)
-                        .availableRooms(available)
-                        .occupiedRooms(occupied)
-                        .maintenanceRooms(maintenance)
-                        .build())
-                .build();
-    }
-
-    private int countByStatus(List<RoomManager> roomManagers, String status) {
-        return (int) roomManagers.stream()
-                .filter(roomManager -> roomManager.getStatus() != null && roomManager.getStatus().equalsIgnoreCase(status))
-                .count();
-    }
-
-    private RoomMatrixResponse.RoomCell toRoomCell(RoomManager roomManager) {
-        return RoomMatrixResponse.RoomCell.builder()
-                .id(roomManager.getId())
+    private RoomBasicInfoResponse toRoomBasicInfoResponse(RoomManager roomManager) {
+        return RoomBasicInfoResponse.builder()
+                .roomId(roomManager.getId())
+                .propertyId(roomManager.getPropertiesId())
+                .floor(roomManager.getFloor())
                 .roomNumber(roomManager.getRoomNumber())
                 .status(roomManager.getStatus())
                 .price(roomManager.getPrice())

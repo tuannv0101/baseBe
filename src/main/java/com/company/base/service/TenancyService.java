@@ -9,6 +9,7 @@ import com.company.base.dto.response.host.TenantResponse;
 
 import com.company.base.common.pagination.PageResponse;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Service quản lý người thuê và hợp đồng thuê (tenancy).
@@ -29,6 +30,8 @@ public interface TenancyService {
      */
     TenantResponse getTenantById(Long id);
 
+    TenantResponse getTenantByIdCardNumber(String idCardNumber);
+
     /**
      * Lấy danh sách toàn bộ người thuê.
      */
@@ -43,6 +46,12 @@ public interface TenancyService {
      * Xóa người thuê theo ID.
      */
     void deleteTenant(Long id);
+
+    /**
+     * Upload ảnh (hoặc file) cho tenant và lưu metadata vào bảng file_metadata.
+     * Tenant hiện tham chiếu file qua portraitImageId.
+     */
+    TenantResponse uploadTenantPortrait(Long tenantId, MultipartFile file);
 
     /**
      * Tạo mới hợp đồng thuê.

@@ -3,11 +3,13 @@ package com.company.base.service;
 import com.company.base.dto.request.host.PropertyRequest;
 import com.company.base.dto.request.host.PropertySearchRequest;
 import com.company.base.dto.response.host.PropertyResponse;
-import com.company.base.dto.response.host.RoomMatrixResponse;
+import com.company.base.dto.response.host.RoomBasicInfoResponse;
 
 import com.company.base.common.pagination.PageResponse;
 import com.company.base.dto.response.host.roomManager.ListRoomResDTO;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 /**
  * Service quản lý bất động sản/tòa nhà và phòng.
@@ -33,6 +35,8 @@ public interface PropertyManagementService {
      */
     PageResponse<ListRoomResDTO> getAllProperties(PropertySearchRequest propertySearchRequest, Pageable pageable);
 
+    List<PropertyResponse> getAllProperties();
+
     /**
      * Xóa tòa nhà/bất động sản theo ID.
      */
@@ -41,5 +45,5 @@ public interface PropertyManagementService {
     /**
      * Lấy ma trận phòng (tầng/phòng/trạng thái) theo propertyId để hiển thị dạng lưới.
      */
-    PageResponse<RoomMatrixResponse> getRoomMatrix(Long propertyId, Pageable pageable);
+    PageResponse<RoomBasicInfoResponse> getRoomMatrix(Long propertyId, Pageable pageable);
 }

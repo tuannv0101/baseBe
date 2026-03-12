@@ -29,6 +29,4 @@ public class TenantRequest {
     private Boolean temporaryResidenceDeclared;
 
     private LocalDate temporaryResidenceDeclaredAt;
-
-    private String passwordHash;
 }

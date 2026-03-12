@@ -22,5 +22,7 @@ public class ListRoomResDTO {
 
     private String tenantName;
 
+    private String tenantIdCardNumber;
+
     private String statusRoom;
 }

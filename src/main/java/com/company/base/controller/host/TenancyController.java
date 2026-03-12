@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.company.base.common.pagination.PageResponse;
 
@@ -41,6 +42,11 @@ public class TenancyController {
         return ApiResponse.success(tenancyService.getTenantById(id));
     }
 
+    @GetMapping("/tenants/by-id-card-number")
+    public ApiResponse<TenantResponse> getTenantByIdCardNumber(@RequestParam("idCardNumber") String idCardNumber) {
+        return ApiResponse.success(tenancyService.getTenantByIdCardNumber(idCardNumber));
+    }
+
     @GetMapping("/tenants")
     public ApiResponse<PageResponse<TenantResponse>> getAllTenants(@PageableDefault(size = 20) Pageable pageable) {
         return ApiResponse.success(tenancyService.getAllTenants(pageable));
@@ -50,6 +56,14 @@ public class TenancyController {
     public ApiResponse<Void> deleteTenant(@PathVariable Long id) {
         tenancyService.deleteTenant(id);
         return ApiResponse.success(null);
+    }
+
+    @PostMapping("/tenants/{id}/portrait")
+    public ApiResponse<TenantResponse> uploadTenantPortrait(
+            @PathVariable Long id,
+            @RequestParam("file") MultipartFile file
+    ) {
+        return ApiResponse.success(tenancyService.uploadTenantPortrait(id, file));
     }
 
     @GetMapping("/temporary-residence")
