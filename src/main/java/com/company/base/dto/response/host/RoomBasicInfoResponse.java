@@ -26,5 +26,10 @@ public class RoomBasicInfoResponse {
     private String price;
 
     private Float area;
-}
 
+    private String typeRoom;
+
+    private String tenantName;
+
+    private String tenantIdCardNumber;
+}

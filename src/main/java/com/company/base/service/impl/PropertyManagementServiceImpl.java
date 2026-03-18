@@ -1,14 +1,16 @@
 package com.company.base.service.impl;
 
+import com.company.base.common.pagination.PageDTO;
 import com.company.base.common.pagination.PageResponse;
 import com.company.base.dto.request.host.PropertyRequest;
 import com.company.base.dto.request.host.PropertySearchRequest;
+import com.company.base.dto.response.host.PropertyRoomStatsProjection;
 import com.company.base.dto.response.host.PropertyResponse;
 import com.company.base.dto.response.host.RoomBasicInfoResponse;
+import com.company.base.dto.response.host.RoomMatrixProjection;
 import com.company.base.dto.response.host.roomManager.ListRoomResDTO;
 import com.company.base.dto.response.host.roomManager.ListRoomResProjection;
 import com.company.base.entity.PropertiesManager;
-import com.company.base.entity.RoomManager;
 import com.company.base.exception.AppException;
 import com.company.base.repository.host.PropertiesRepository;
 import com.company.base.repository.host.RoomManagementRepository;
@@ -77,6 +79,13 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
                 .toList();
     }
 
+    @Override
+    public PageDTO<PropertyResponse> getAllProperties(Pageable pageable) {
+        Page<PropertyResponse> dtoPage = propertiesRepository.findAllWithRoomStats(pageable)
+                .map(this::toPropertyResponse);
+        return PageDTO.of(dtoPage);
+    }
+
     private ListRoomResDTO toListRoomResDTO(ListRoomResProjection p) {
         return ListRoomResDTO.builder()
                 .id(p.getId())
@@ -98,26 +107,23 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
 
     @Override
     public PageResponse<RoomBasicInfoResponse> getRoomMatrix(Long propertyId, Pageable pageable) {
-        Page<RoomBasicInfoResponse> dtoPage;
-        if (propertyId != null) {
-            dtoPage = roomManagementRepository.findByPropertiesIdOrderByFloorAscRoomNumberAsc(propertyId, pageable)
-                    .map(this::toRoomBasicInfoResponse);
-        } else {
-            dtoPage = roomManagementRepository.findAllByOrderByIdDesc(pageable)
-                    .map(this::toRoomBasicInfoResponse);
-        }
+        Page<RoomBasicInfoResponse> dtoPage = roomManagementRepository.getRoomMatrix(propertyId, pageable)
+                .map(this::toRoomBasicInfoResponse);
         return PageResponse.of(dtoPage);
     }
 
-    private RoomBasicInfoResponse toRoomBasicInfoResponse(RoomManager roomManager) {
+    private RoomBasicInfoResponse toRoomBasicInfoResponse(RoomMatrixProjection p) {
         return RoomBasicInfoResponse.builder()
-                .roomId(roomManager.getId())
-                .propertyId(roomManager.getPropertiesId())
-                .floor(roomManager.getFloor())
-                .roomNumber(roomManager.getRoomNumber())
-                .status(roomManager.getStatus())
-                .price(roomManager.getPrice())
-                .area(roomManager.getArea())
+                .roomId(p.getRoomId())
+                .propertyId(p.getPropertyId())
+                .floor(p.getFloor())
+                .roomNumber(p.getRoomNumber())
+                .status(p.getStatus())
+                .price(p.getPrice())
+                .area(p.getArea())
+                .typeRoom(p.getTypeRoom())
+                .tenantName(p.getTenantName())
+                .tenantIdCardNumber(p.getTenantIdCardNumber())
                 .build();
     }
 
@@ -127,6 +133,24 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
                 .name(entity.getName())
                 .address(entity.getAddress())
                 .totalFloors(entity.getTotalFloors())
+                .occupiedRooms(0L)
+                .maintenanceRooms(0L)
+                .availableRooms(0L)
+                .build();
+    }
+
+    private PropertyResponse toPropertyResponse(PropertyRoomStatsProjection p) {
+        if (p == null) {
+            return null;
+        }
+        return PropertyResponse.builder()
+                .id(p.getId())
+                .name(p.getName())
+                .address(p.getAddress())
+                .totalFloors(p.getTotalFloors())
+                .occupiedRooms(p.getOccupiedRooms() != null ? p.getOccupiedRooms() : 0L)
+                .maintenanceRooms(p.getMaintenanceRooms() != null ? p.getMaintenanceRooms() : 0L)
+                .availableRooms(p.getAvailableRooms() != null ? p.getAvailableRooms() : 0L)
                 .build();
     }
 

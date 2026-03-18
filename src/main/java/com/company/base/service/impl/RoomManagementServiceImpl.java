@@ -59,7 +59,7 @@ public class RoomManagementServiceImpl implements RoomManagementService {
         entityRoomManager.setFloor(roomManagerCreateReqDTO.getFloor());
         entityRoomManager.setPropertiesId(property.getId());
         entityRoomManager.setDelYn("N");
-        entityRoomManager.setType(roomManagerCreateReqDTO.getType());
+        entityRoomManager.setTypeRoom(roomManagerCreateReqDTO.getTypeRoom());
         roomManagementRepository.save(entityRoomManager);
 
         if (roomManagerCreateReqDTO.getRoomAssetCreateReqDTOS() != null
@@ -221,7 +221,7 @@ public class RoomManagementServiceImpl implements RoomManagementService {
                 .price(room.getPrice())
                 .roomNumber(room.getRoomNumber())
                 .status(room.getStatus())
-                .type(room.getType())
+                .type(room.getTypeRoom())
                 .assets(assets)
                 .build();
     }
@@ -253,7 +253,7 @@ public class RoomManagementServiceImpl implements RoomManagementService {
         entity.setRoomNumber(request.getRoomNumber());
         entity.setStatus(normalize(request.getStatus()));
         if (request.getType() != null) {
-            entity.setType(request.getType().trim());
+            entity.setTypeRoom(request.getType().trim());
         }
     }
 

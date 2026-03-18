@@ -1,49 +1,52 @@
 package com.company.base.service;
 
+import com.company.base.common.pagination.PageDTO;
+import com.company.base.common.pagination.PageResponse;
 import com.company.base.dto.request.host.PropertyRequest;
 import com.company.base.dto.request.host.PropertySearchRequest;
 import com.company.base.dto.response.host.PropertyResponse;
 import com.company.base.dto.response.host.RoomBasicInfoResponse;
-
-import com.company.base.common.pagination.PageResponse;
 import com.company.base.dto.response.host.roomManager.ListRoomResDTO;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 /**
- * Service quản lý bất động sản/tòa nhà và phòng.
+ * Service quáº£n lÃ½ báº¥t Ä‘á»™ng sáº£n/tÃ²a nhÃ  vÃ  phÃ²ng.
  */
 public interface PropertyManagementService {
     /**
-     * Tạo mới tòa nhà/bất động sản.
+     * Táº¡o má»›i tÃ²a nhÃ /báº¥t Ä‘á»™ng sáº£n.
      */
     PropertyResponse createProperty(PropertyRequest request);
 
     /**
-     * Cập nhật thông tin tòa nhà/bất động sản theo ID.
+     * Cáº­p nháº­t thÃ´ng tin tÃ²a nhÃ /báº¥t Ä‘á»™ng sáº£n theo ID.
      */
     PropertyResponse updateProperty(Long id, PropertyRequest request);
 
     /**
-     * Lấy chi tiết tòa nhà/bất động sản theo ID.
+     * Láº¥y chi tiáº¿t tÃ²a nhÃ /báº¥t Ä‘á»™ng sáº£n theo ID.
      */
     PropertyResponse getPropertyById(Long id);
 
     /**
-     * Lấy danh sách toàn bộ tòa nhà/bất động sản.
+     * Láº¥y danh sÃ¡ch toÃ n bá»™ tÃ²a nhÃ /báº¥t Ä‘á»™ng sáº£n.
      */
     PageResponse<ListRoomResDTO> getAllProperties(PropertySearchRequest propertySearchRequest, Pageable pageable);
 
     List<PropertyResponse> getAllProperties();
 
+    PageDTO<PropertyResponse> getAllProperties(Pageable pageable);
+
     /**
-     * Xóa tòa nhà/bất động sản theo ID.
+     * XÃ³a tÃ²a nhÃ /báº¥t Ä‘á»™ng sáº£n theo ID.
      */
     void deleteProperty(Long id);
 
     /**
-     * Lấy ma trận phòng (tầng/phòng/trạng thái) theo propertyId để hiển thị dạng lưới.
+     * Láº¥y ma tráº­n phÃ²ng (táº§ng/phÃ²ng/tráº¡ng thÃ¡i) theo propertyId Ä‘á»ƒ hiá»ƒn thá»‹ dáº¡ng lÆ°á»›i.
      */
     PageResponse<RoomBasicInfoResponse> getRoomMatrix(Long propertyId, Pageable pageable);
 }
+

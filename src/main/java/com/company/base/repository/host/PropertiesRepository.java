@@ -1,5 +1,6 @@
 package com.company.base.repository.host;
 
+import com.company.base.dto.response.host.PropertyRoomStatsProjection;
 import com.company.base.dto.response.host.roomManager.ListRoomResProjection;
 import com.company.base.entity.PropertiesManager;
 import org.springframework.data.domain.Page;
@@ -24,10 +25,37 @@ public interface PropertiesRepository extends JpaRepository<PropertiesManager, L
     @Query(
             value = """
                     select
+                        p.id as id,
+                        p.name as name,
+                        p.address as address,
+                        p.total_floors as totalFloors,
+                        coalesce(sum(case when lower(r.status) = 'occupied' then 1 else 0 end), 0) as occupiedRooms,
+                        coalesce(sum(case when lower(r.status) = 'maintenance' then 1 else 0 end), 0) as maintenanceRooms,
+                        coalesce(sum(case when lower(r.status) = 'available' then 1 else 0 end), 0) as availableRooms
+                    from properties p
+                    left join rooms r
+                      on r.properties_id = p.id
+                     and (r.del_yn is null or r.del_yn <> 'Y')
+                    where (p.del_yn is null or p.del_yn <> 'Y')
+                    group by p.id, p.name, p.address, p.total_floors
+                    order by p.name asc
+                    """,
+            countQuery = """
+                    select count(*)
+                    from properties p
+                    where (p.del_yn is null or p.del_yn <> 'Y')
+                    """,
+            nativeQuery = true
+    )
+    Page<PropertyRoomStatsProjection> findAllWithRoomStats(Pageable pageable);
+
+    @Query(
+            value = """
+                    select
                         r.id as id,
                         r.room_number as roomNumber,
                         p.name as propertyName,
-                        r.type as typeRoom,
+                        r.type_room as typeRoom,
                         r.price as price,
                         t.full_name as tenantName,
                         t.id_card_number as tenantIdCardNumber,

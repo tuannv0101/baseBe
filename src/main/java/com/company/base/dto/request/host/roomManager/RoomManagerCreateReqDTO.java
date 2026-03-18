@@ -24,7 +24,7 @@ public class RoomManagerCreateReqDTO {
 
     private String status;
 
-    private String type;
+    private String typeRoom;
 
     private List<RoomAssetCreateReqDTO> roomAssetCreateReqDTOS;
 }

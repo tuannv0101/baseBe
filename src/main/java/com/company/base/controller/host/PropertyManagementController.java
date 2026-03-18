@@ -12,9 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
+import com.company.base.common.pagination.PageDTO;
 import com.company.base.common.pagination.PageResponse;
-
-import java.util.List;
 
 /**
  * REST controller that exposes API endpoints for this module.
@@ -51,8 +50,10 @@ public class PropertyManagementController {
     }
 
     @GetMapping("/properties/all")
-    public ApiResponse<List<PropertyResponse>> getAllPropertiesNoConditions() {
-        return ApiResponse.success(propertyManagementService.getAllProperties());
+    public ApiResponse<PageDTO<PropertyResponse>> getAllPropertiesNoConditions(
+            @PageableDefault(size = 20) Pageable pageable
+    ) {
+        return ApiResponse.success(propertyManagementService.getAllProperties(pageable));
     }
 
     @PutMapping("/properties/{id}/delete")

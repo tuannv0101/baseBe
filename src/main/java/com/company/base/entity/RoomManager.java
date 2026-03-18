@@ -26,5 +26,5 @@ public class RoomManager extends BaseEntity {
     // Trạng thái phòng: AVAILABLE, OCCUPIED, MAINTENANCE.
     private String status; // AVAILABLE, OCCUPIED, MAINTENANCE
     // Loại phòng
-    private String type;
+    private String typeRoom;
 }
