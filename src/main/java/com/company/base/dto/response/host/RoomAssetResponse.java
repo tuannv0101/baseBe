@@ -14,13 +14,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RoomAssetResponse {
-    private Long id;
+    private String id;
 
-    private Long roomId;
+    private String roomId;
 
-    private Long categoryId;
+    private String categoryId;
 
     private String serialNumber;
 
     private String status;
 }
+

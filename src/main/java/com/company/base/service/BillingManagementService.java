@@ -25,12 +25,12 @@ public interface BillingManagementService {
     /**
      * Cập nhật thông tin dịch vụ theo ID.
      */
-    BillingServiceResponse updateService(Long id, BillingServiceRequest request);
+    BillingServiceResponse updateService(String id, BillingServiceRequest request);
 
     /**
      * Lấy chi tiết dịch vụ theo ID.
      */
-    BillingServiceResponse getServiceById(Long id);
+    BillingServiceResponse getServiceById(String id);
 
     /**
      * Lấy danh sách toàn bộ dịch vụ đang khai báo.
@@ -40,7 +40,7 @@ public interface BillingManagementService {
     /**
      * Xóa dịch vụ theo ID.
      */
-    void deleteService(Long id);
+    void deleteService(String id);
 
     /**
      * Lưu hàng loạt chỉ số/định mức sử dụng (bulk meter readings) cho nhiều phòng/dịch vụ.
@@ -50,7 +50,7 @@ public interface BillingManagementService {
     /**
      * Lấy danh sách sử dụng dịch vụ theo tháng/năm (có thể lọc theo serviceId).
      */
-    PageResponse<ServiceUsageResponse> getServiceUsage(Integer month, Integer year, Long serviceId, Pageable pageable);
+    PageResponse<ServiceUsageResponse> getServiceUsage(Integer month, Integer year, String serviceId, Pageable pageable);
 
     /**
      * Tạo hóa đơn theo yêu cầu nghiệp vụ.
@@ -60,12 +60,12 @@ public interface BillingManagementService {
     /**
      * Cập nhật hóa đơn theo ID.
      */
-    InvoiceResponse updateInvoice(Long id, InvoiceRequest request);
+    InvoiceResponse updateInvoice(String id, InvoiceRequest request);
 
     /**
      * Lấy chi tiết hóa đơn theo ID.
      */
-    InvoiceResponse getInvoiceById(Long id);
+    InvoiceResponse getInvoiceById(String id);
 
     /**
      * Lấy danh sách hóa đơn của một tháng/năm chỉ định (thường là tháng hiện tại).
@@ -87,3 +87,4 @@ public interface BillingManagementService {
      */
     PageResponse<PaymentReceiptResponse> getPaymentHistory(Pageable pageable);
 }
+

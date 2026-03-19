@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TenantMaintenanceResponse {
-    private Long id;
+    private String id;
 
     private String title;
 
@@ -27,7 +27,7 @@ public class TenantMaintenanceResponse {
 
     private String assignedTechnician;
 
-    private Long attachmentFileId;
+    private String attachmentFileId;
 
     private String attachmentUrl;
 
@@ -37,3 +37,4 @@ public class TenantMaintenanceResponse {
 
     private String note;
 }
+

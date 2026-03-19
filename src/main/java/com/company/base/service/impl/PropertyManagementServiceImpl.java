@@ -44,7 +44,7 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
     }
 
     @Override
-    public PropertyResponse updateProperty(Long id, PropertyRequest request) {
+    public PropertyResponse updateProperty(String id, PropertyRequest request) {
         PropertiesManager entity = getPropertyEntity(id);
         entity.setName(request.getName());
         entity.setAddress(request.getAddress());
@@ -53,7 +53,7 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
     }
 
     @Override
-    public PropertyResponse getPropertyById(Long id) {
+    public PropertyResponse getPropertyById(String id) {
         return toPropertyResponse(getPropertyEntity(id));
     }
 
@@ -99,14 +99,14 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
     }
 
     @Override
-    public void deleteProperty(Long id) {
+    public void deleteProperty(String id) {
         PropertiesManager entity = getPropertyEntity(id);
         entity.setDelYn("Y");
         propertiesRepository.save(entity);
     }
 
     @Override
-    public PageResponse<RoomBasicInfoResponse> getRoomMatrix(Long propertyId, Pageable pageable) {
+    public PageResponse<RoomBasicInfoResponse> getRoomMatrix(String propertyId, Pageable pageable) {
         Page<RoomBasicInfoResponse> dtoPage = roomManagementRepository.getRoomMatrix(propertyId, pageable)
                 .map(this::toRoomBasicInfoResponse);
         return PageResponse.of(dtoPage);
@@ -154,8 +154,9 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
                 .build();
     }
 
-    private PropertiesManager getPropertyEntity(Long id) {
+    private PropertiesManager getPropertyEntity(String id) {
         return propertiesRepository.findById(id)
                 .orElseThrow(() -> new AppException(HttpStatus.NOT_FOUND.value(), "Property not found"));
     }
 }
+

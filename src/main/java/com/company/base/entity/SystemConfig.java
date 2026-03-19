@@ -1,6 +1,8 @@
 package com.company.base.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.Data;
 import org.hibernate.annotations.Where;
 
@@ -10,11 +12,7 @@ import org.hibernate.annotations.Where;
 @Data
 public class SystemConfig extends BaseEntity {
     // ID duy nhất của cấu hình hệ thống.
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    // Khóa cấu hình (duy nhất) để tra cứu theo nghiệp vụ.
+// Khóa cấu hình (duy nhất) để tra cứu theo nghiệp vụ.
     @Column(unique = true, nullable = false)
     private String configKey;
 
@@ -24,4 +22,11 @@ public class SystemConfig extends BaseEntity {
 
     // Mô tả ý nghĩa cấu hình.
     private String description;
+
+    @Override
+    protected String getIdPrefix() {
+        return "SYS";
+    }
 }
+
+

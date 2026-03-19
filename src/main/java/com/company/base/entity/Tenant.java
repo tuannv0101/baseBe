@@ -1,9 +1,6 @@
 package com.company.base.entity;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
 import org.hibernate.annotations.Where;
@@ -16,10 +13,7 @@ import java.time.LocalDate;
 @Data
 public class Tenant extends BaseEntity {
     // Unique tenant ID.
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    // Full name of tenant.
+// Full name of tenant.
     private String fullName;
     // Contact phone number.
     private String phone;
@@ -28,9 +22,15 @@ public class Tenant extends BaseEntity {
     // National ID / citizen ID number.
     private String idCardNumber;
     // Portrait image reference (file metadata ID).
-    private Long portraitImageId;
+    private String portraitImageId;
     // Temporary residence registration status with authorities.
     private Boolean temporaryResidenceDeclared;
     // Date of temporary residence declaration.
     private LocalDate temporaryResidenceDeclaredAt;
+
+    @Override
+    protected String getIdPrefix() {
+        return "TEN";
+    }
 }
+

@@ -17,13 +17,13 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PaymentReceiptResponse {
-    private Long id;
+    private String id;
 
-    private Long invoiceId;
+    private String invoiceId;
 
     private String receiptCode;
 
-    private Long roomId;
+    private String roomId;
 
     private String payerName;
 
@@ -35,3 +35,4 @@ public class PaymentReceiptResponse {
 
     private String note;
 }
+

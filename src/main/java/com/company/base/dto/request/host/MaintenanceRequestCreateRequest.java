@@ -14,9 +14,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MaintenanceRequestCreateRequest {
-    private Long roomId;
+    private String roomId;
 
-    private Long tenantId;
+    private String tenantId;
 
     private String title;
 
@@ -24,3 +24,4 @@ public class MaintenanceRequestCreateRequest {
 
     private String priority;
 }
+

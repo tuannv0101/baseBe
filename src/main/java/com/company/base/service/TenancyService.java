@@ -23,12 +23,12 @@ public interface TenancyService {
     /**
      * Cập nhật thông tin người thuê theo ID.
      */
-    TenantResponse updateTenant(Long id, TenantRequest request);
+    TenantResponse updateTenant(String id, TenantRequest request);
 
     /**
      * Lấy chi tiết người thuê theo ID.
      */
-    TenantResponse getTenantById(Long id);
+    TenantResponse getTenantById(String id);
 
     TenantResponse getTenantByIdCardNumber(String idCardNumber);
 
@@ -45,13 +45,13 @@ public interface TenancyService {
     /**
      * Xóa người thuê theo ID.
      */
-    void deleteTenant(Long id);
+    void deleteTenant(String id);
 
     /**
      * Upload ảnh (hoặc file) cho tenant và lưu metadata vào bảng file_metadata.
      * Tenant hiện tham chiếu file qua portraitImageId.
      */
-    TenantResponse uploadTenantPortrait(Long tenantId, MultipartFile file);
+    TenantResponse uploadTenantPortrait(String tenantId, MultipartFile file);
 
     /**
      * Tạo mới hợp đồng thuê.
@@ -61,17 +61,17 @@ public interface TenancyService {
     /**
      * Cập nhật hợp đồng thuê theo ID.
      */
-    ContractResponse updateContract(Long id, ContractRequest request);
+    ContractResponse updateContract(String id, ContractRequest request);
 
     /**
      * Lấy chi tiết hợp đồng thuê theo ID.
      */
-    ContractResponse getContractById(Long id);
+    ContractResponse getContractById(String id);
 
     /**
      * Lấy danh sách toàn bộ hợp đồng.
      */
-    PageResponse<ContractResponse> getAllContracts(Pageable pageable);
+    PageResponse<ContractResponse> getAllContracts(String textSearch, Pageable pageable);
 
     /**
      * Lấy danh sách hợp đồng đang hiệu lực (effective).
@@ -86,12 +86,12 @@ public interface TenancyService {
     /**
      * Xóa hợp đồng theo ID.
      */
-    void deleteContract(Long id);
+    void deleteContract(String id);
 
     /**
      * Thanh lý hợp đồng và tạo lịch sử thanh lý.
      */
-    ContractLiquidationResponse liquidateContract(Long contractId, ContractLiquidationRequest request);
+    ContractLiquidationResponse liquidateContract(String contractId, ContractLiquidationRequest request);
 
     /**
      * Lấy danh sách lịch sử thanh lý hợp đồng.

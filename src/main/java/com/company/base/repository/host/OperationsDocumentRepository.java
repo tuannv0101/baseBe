@@ -11,7 +11,7 @@ import java.util.List;
  * Repository for data access operations.
  */
 
-public interface OperationsDocumentRepository extends JpaRepository<OperationsDocument, Long> {
+public interface OperationsDocumentRepository extends JpaRepository<OperationsDocument, String> {
     List<OperationsDocument> findAllByOrderByDocumentTypeAscTitleAsc();
 
     List<OperationsDocument> findByDocumentTypeIgnoreCaseOrderByTitleAsc(String documentType);
@@ -22,3 +22,4 @@ public interface OperationsDocumentRepository extends JpaRepository<OperationsDo
 
     Page<OperationsDocument> findByDocumentTypeIgnoreCaseOrderByTitleAsc(String documentType, Pageable pageable);
 }
+

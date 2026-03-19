@@ -43,7 +43,7 @@ public class RoomManagementServiceImpl implements RoomManagementService {
     private final TenantRepository tenantRepository;
     @Override
     @Transactional
-    public Long createRoom(RoomManagerCreateReqDTO roomManagerCreateReqDTO) {
+    public String createRoom(RoomManagerCreateReqDTO roomManagerCreateReqDTO) {
         if (roomManagerCreateReqDTO.getPropertiesId() == null) {
             throw new AppException(HttpStatus.BAD_REQUEST.value(), "propertyId is required");
         }
@@ -65,7 +65,7 @@ public class RoomManagementServiceImpl implements RoomManagementService {
         if (roomManagerCreateReqDTO.getRoomAssetCreateReqDTOS() != null
                 && !roomManagerCreateReqDTO.getRoomAssetCreateReqDTOS().isEmpty()) {
             List<RoomAsset> assets = new ArrayList<>(roomManagerCreateReqDTO.getRoomAssetCreateReqDTOS().size());
-            Long roomId = entityRoomManager.getId();
+            String roomId = entityRoomManager.getId();
 
             for (RoomAssetCreateReqDTO a : roomManagerCreateReqDTO.getRoomAssetCreateReqDTOS()) {
                 if (a == null) {
@@ -90,14 +90,14 @@ public class RoomManagementServiceImpl implements RoomManagementService {
 
     @Override
     @Transactional
-    public RoomResponse updateRoom(Long id, RoomRequest request) {
+    public RoomResponse updateRoom(String id, RoomRequest request) {
         RoomManager entity = getRoomEntity(id);
         applyUpdate(entity, request);
         RoomManager saved = roomManagementRepository.save(entity);
 
         // Replace assets if caller provides the list (including empty list meaning clear assets).
         if (request.getRoomAssetCreateReqDTOS() != null) {
-            Long roomId =saved.getId();
+            String roomId = saved.getId();
 
             List<RoomAsset> existing = roomAssetRepository.findByRoomIdAndDelYn(roomId, "N");
 
@@ -189,12 +189,12 @@ public class RoomManagementServiceImpl implements RoomManagementService {
     }
 
     @Override
-    public RoomResponse getRoomById(Long id) {
+    public RoomResponse getRoomById(String id) {
         return toResponse(getRoomEntity(id));
     }
 
     @Override
-    public RoomDetailResDTO getRoomDetail(Long id) {
+    public RoomDetailResDTO getRoomDetail(String id) {
         RoomManager room = getRoomEntity(id);
 
         PropertiesManager property = null;
@@ -227,7 +227,7 @@ public class RoomManagementServiceImpl implements RoomManagementService {
     }
 
     @Override
-    public PageResponse<RoomResponse> getRooms(Long propertyId, Pageable pageable) {
+    public PageResponse<RoomResponse> getRooms(String propertyId, Pageable pageable) {
         Page<RoomResponse> page = (propertyId == null)
                 ? roomManagementRepository.findAllByOrderByIdDesc(pageable).map(this::toResponse)
                 : roomManagementRepository.findByPropertiesIdOrderByFloorAscRoomNumberAsc(propertyId, pageable).map(this::toResponse);
@@ -235,7 +235,7 @@ public class RoomManagementServiceImpl implements RoomManagementService {
     }
 
     @Override
-    public void deleteRoom(Long id) {
+    public void deleteRoom(String id) {
         RoomManager entity = getRoomEntity(id);
         entity.setDelYn("Y");
         roomManagementRepository.save(entity);
@@ -261,7 +261,7 @@ public class RoomManagementServiceImpl implements RoomManagementService {
         return value == null ? null : value.trim().toUpperCase();
     }
 
-    private RoomManager getRoomEntity(Long id) {
+    private RoomManager getRoomEntity(String id) {
         return roomManagementRepository.findById(id)
                 .orElseThrow(() -> new AppException(HttpStatus.NOT_FOUND.value(), "Room not found"));
     }
@@ -291,7 +291,7 @@ public class RoomManagementServiceImpl implements RoomManagementService {
                 .build();
     }
 
-    private TenantInfo getActiveTenantInfoByRoomId(Long roomId) {
+    private TenantInfo getActiveTenantInfoByRoomId(String roomId) {
         if (roomId == null) {
             return new TenantInfo(null, null);
         }
@@ -307,6 +307,8 @@ public class RoomManagementServiceImpl implements RoomManagementService {
         return new TenantInfo(active.getTenantId(), tenant != null ? tenant.getFullName() : null);
     }
 
-    private record TenantInfo(Long tenantId, String tenantFullName) {
+    private record TenantInfo(String tenantId, String tenantFullName) {
     }
 }
+
+

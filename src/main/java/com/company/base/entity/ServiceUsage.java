@@ -1,6 +1,7 @@
 package com.company.base.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.Data;
 import org.hibernate.annotations.Where;
 
@@ -10,15 +11,11 @@ import org.hibernate.annotations.Where;
 @Data
 public class ServiceUsage extends BaseEntity {
     // ID duy nhất của bản ghi sử dụng dịch vụ.
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    // ID phòng sử dụng dịch vụ.
-    private Long roomId;
+// ID phòng sử dụng dịch vụ.
+    private String roomId;
 
     // ID dịch vụ được sử dụng.
-    private Long serviceId;
+    private String serviceId;
 
     // Tháng ghi nhận chỉ số.
     private Integer month;
@@ -31,4 +28,11 @@ public class ServiceUsage extends BaseEntity {
 
     // Chỉ số mới.
     private Double newValue;
+
+    @Override
+    protected String getIdPrefix() {
+        return "SUS";
+    }
 }
+
+

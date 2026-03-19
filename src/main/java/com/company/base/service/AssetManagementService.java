@@ -22,12 +22,12 @@ public interface AssetManagementService {
     /**
      * Cập nhật thông tin danh mục thiết bị theo ID.
      */
-    EquipmentCategoryResponse updateCategory(Long id, EquipmentCategoryRequest request);
+    EquipmentCategoryResponse updateCategory(String id, EquipmentCategoryRequest request);
 
     /**
      * Lấy chi tiết danh mục thiết bị theo ID.
      */
-    EquipmentCategoryResponse getCategoryById(Long id);
+    EquipmentCategoryResponse getCategoryById(String id);
 
     /**
      * Lấy danh sách toàn bộ danh mục thiết bị.
@@ -37,7 +37,7 @@ public interface AssetManagementService {
     /**
      * Xóa danh mục thiết bị theo ID.
      */
-    void deleteCategory(Long id);
+    void deleteCategory(String id);
 
     /**
      * Tạo mới tài sản gắn với một phòng (room asset).
@@ -47,40 +47,41 @@ public interface AssetManagementService {
     /**
      * Cập nhật thông tin tài sản trong phòng theo ID.
      */
-    RoomAssetResponse updateRoomAsset(Long id, RoomAssetRequest request);
+    RoomAssetResponse updateRoomAsset(String id, RoomAssetRequest request);
 
     /**
      * Lấy chi tiết tài sản trong phòng theo ID.
      */
-    RoomAssetResponse getRoomAssetById(Long id);
+    RoomAssetResponse getRoomAssetById(String id);
 
     /**
      * Lấy danh sách tài sản theo phòng.
      */
-    PageResponse<RoomAssetResponse> getRoomAssetsByRoom(Long roomId, Pageable pageable);
+    PageResponse<RoomAssetResponse> getRoomAssetsByRoom(String roomId, Pageable pageable);
 
     /**
      * Xóa tài sản trong phòng theo ID.
      */
-    void deleteRoomAsset(Long id);
+    void deleteRoomAsset(String id);
 
     /**
      * Tạo lịch sử bảo trì cho một tài sản trong phòng.
      */
-    AssetMaintenanceHistoryResponse createMaintenanceHistory(Long roomAssetId, AssetMaintenanceHistoryRequest request);
+    AssetMaintenanceHistoryResponse createMaintenanceHistory(String roomAssetId, AssetMaintenanceHistoryRequest request);
 
     /**
      * Cập nhật lịch sử bảo trì theo ID bản ghi.
      */
-    AssetMaintenanceHistoryResponse updateMaintenanceHistory(Long id, AssetMaintenanceHistoryRequest request);
+    AssetMaintenanceHistoryResponse updateMaintenanceHistory(String id, AssetMaintenanceHistoryRequest request);
 
     /**
      * Lấy lịch sử bảo trì theo ID tài sản trong phòng.
      */
-    PageResponse<AssetMaintenanceHistoryResponse> getMaintenanceHistoryByRoomAsset(Long roomAssetId, Pageable pageable);
+    PageResponse<AssetMaintenanceHistoryResponse> getMaintenanceHistoryByRoomAsset(String roomAssetId, Pageable pageable);
 
     /**
      * Lấy lịch sử bảo trì theo phòng (tổng hợp từ các tài sản trong phòng).
      */
-    PageResponse<AssetMaintenanceHistoryResponse> getMaintenanceHistoryByRoom(Long roomId, Pageable pageable);
+    PageResponse<AssetMaintenanceHistoryResponse> getMaintenanceHistoryByRoom(String roomId, Pageable pageable);
 }
+

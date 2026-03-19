@@ -12,10 +12,11 @@ import java.util.Optional;
  * Repository for data access operations.
  */
 
-public interface TenantRepository extends JpaRepository<Tenant, Long> {
+public interface TenantRepository extends JpaRepository<Tenant, String> {
     Optional<Tenant> findByIdCardNumber(String idCardNumber);
 
     Page<Tenant> findAllByOrderByFullNameAsc(Pageable pageable);
 
     Page<Tenant> findByTemporaryResidenceDeclaredOrderByFullNameAsc(Boolean temporaryResidenceDeclared, Pageable pageable);
 }
+

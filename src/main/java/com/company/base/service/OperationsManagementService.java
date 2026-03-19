@@ -23,12 +23,12 @@ public interface OperationsManagementService {
     /**
      * Phân công yêu cầu bảo trì cho kỹ thuật viên/nhân sự xử lý.
      */
-    MaintenanceRequestResponse assignMaintenanceRequest(Long id, MaintenanceAssignmentRequest request);
+    MaintenanceRequestResponse assignMaintenanceRequest(String id, MaintenanceAssignmentRequest request);
 
     /**
      * Lấy chi tiết yêu cầu bảo trì theo ID.
      */
-    MaintenanceRequestResponse getMaintenanceRequestById(Long id);
+    MaintenanceRequestResponse getMaintenanceRequestById(String id);
 
     /**
      * Lấy danh sách yêu cầu bảo trì (có thể lọc theo trạng thái).
@@ -43,12 +43,12 @@ public interface OperationsManagementService {
     /**
      * Cập nhật bản ghi chi phí theo ID.
      */
-    ExpenseRecordResponse updateExpenseRecord(Long id, ExpenseRecordRequest request);
+    ExpenseRecordResponse updateExpenseRecord(String id, ExpenseRecordRequest request);
 
     /**
      * Lấy chi tiết bản ghi chi phí theo ID.
      */
-    ExpenseRecordResponse getExpenseRecordById(Long id);
+    ExpenseRecordResponse getExpenseRecordById(String id);
 
     /**
      * Lấy danh sách chi phí theo tháng/năm.
@@ -58,7 +58,7 @@ public interface OperationsManagementService {
     /**
      * Xóa bản ghi chi phí theo ID.
      */
-    void deleteExpenseRecord(Long id);
+    void deleteExpenseRecord(String id);
 
     /**
      * Tạo mới tài liệu vận hành.
@@ -68,12 +68,12 @@ public interface OperationsManagementService {
     /**
      * Cập nhật tài liệu vận hành theo ID.
      */
-    OperationsDocumentResponse updateDocument(Long id, OperationsDocumentRequest request);
+    OperationsDocumentResponse updateDocument(String id, OperationsDocumentRequest request);
 
     /**
      * Lấy chi tiết tài liệu vận hành theo ID.
      */
-    OperationsDocumentResponse getDocumentById(Long id);
+    OperationsDocumentResponse getDocumentById(String id);
 
     /**
      * Lấy danh sách tài liệu vận hành (có thể lọc theo loại tài liệu).
@@ -83,5 +83,5 @@ public interface OperationsManagementService {
     /**
      * Xóa tài liệu vận hành theo ID.
      */
-    void deleteDocument(Long id);
+    void deleteDocument(String id);
 }

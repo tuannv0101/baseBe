@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RoomRequest {
-    private Long propertyId;
+    private String propertyId;
 
     private Float area;
 
@@ -30,3 +30,4 @@ public class RoomRequest {
     // If provided (even empty), assets will be replaced.
     private List<RoomAssetCreateReqDTO> roomAssetCreateReqDTOS;
 }
+

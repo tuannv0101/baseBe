@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ExpenseRecordResponse {
-    private Long id;
+    private String id;
 
     private LocalDate expenseDate;
 
@@ -33,3 +33,4 @@ public class ExpenseRecordResponse {
 
     private String note;
 }
+

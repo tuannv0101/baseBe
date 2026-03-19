@@ -18,9 +18,10 @@ public class OperationsDocumentRequest {
 
     private String documentType;
 
-    private Long fileId;
+    private String fileId;
 
     private Boolean active;
 
     private String note;
 }
+

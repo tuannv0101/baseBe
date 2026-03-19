@@ -14,10 +14,10 @@ import java.util.List;
  * Repository for data access operations.
  */
 
-public interface RoomManagementRepository extends JpaRepository<RoomManager, Long> {
-    List<RoomManager> findByPropertiesIdOrderByFloorAscRoomNumberAsc(Long propertiesId);
+public interface RoomManagementRepository extends JpaRepository<RoomManager, String> {
+    List<RoomManager> findByPropertiesIdOrderByFloorAscRoomNumberAsc(String propertiesId);
 
-    Page<RoomManager> findByPropertiesIdOrderByFloorAscRoomNumberAsc(Long propertiesId, Pageable pageable);
+    Page<RoomManager> findByPropertiesIdOrderByFloorAscRoomNumberAsc(String propertiesId, Pageable pageable);
 
     Page<RoomManager> findAllByOrderByIdDesc(Pageable pageable);
 
@@ -39,11 +39,17 @@ public interface RoomManagementRepository extends JpaRepository<RoomManager, Lon
                       on p.id = r.properties_id
                      and (p.del_yn is null or p.del_yn <> 'Y')
                     left join contracts c
-                      on cast(c.room_id as unsigned) = r.id
-                     and (c.del_yn is null or c.del_yn <> 'Y')
-                     and lower(c.status) = 'active'
+                      on c.id = (
+                            select c2.id
+                            from contracts c2
+                            where c2.room_id = r.id
+                              and (c2.del_yn is null or c2.del_yn <> 'Y')
+                              and lower(c2.status) = 'active'
+                            order by c2.start_date desc, c2.id desc
+                            limit 1
+                      )
                     left join tenants t
-                      on cast(c.tenant_id as unsigned) = t.id
+                      on c.tenant_id = t.id
                      and (t.del_yn is null or t.del_yn <> 'Y')
                     where (r.del_yn is null or r.del_yn <> 'Y')
                       and (:propertyId is null or r.properties_id = :propertyId)
@@ -55,17 +61,12 @@ public interface RoomManagementRepository extends JpaRepository<RoomManager, Lon
                     join properties p
                       on p.id = r.properties_id
                      and (p.del_yn is null or p.del_yn <> 'Y')
-                    left join contracts c
-                      on cast(c.room_id as unsigned) = r.id
-                     and (c.del_yn is null or c.del_yn <> 'Y')
-                     and lower(c.status) = 'active'
-                    left join tenants t
-                      on cast(c.tenant_id as unsigned) = t.id
-                     and (t.del_yn is null or t.del_yn <> 'Y')
                     where (r.del_yn is null or r.del_yn <> 'Y')
                       and (:propertyId is null or r.properties_id = :propertyId)
                     """,
             nativeQuery = true
     )
-    Page<RoomMatrixProjection> getRoomMatrix(@Param("propertyId") Long propertyId, Pageable pageable);
+    Page<RoomMatrixProjection> getRoomMatrix(@Param("propertyId") String propertyId, Pageable pageable);
 }
+
+

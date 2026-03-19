@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SupportTicketRequest {
-    private Long landlordProfileId;
+    private String landlordProfileId;
 
     private String title;
 
@@ -21,3 +21,4 @@ public class SupportTicketRequest {
 
     private String priority;
 }
+

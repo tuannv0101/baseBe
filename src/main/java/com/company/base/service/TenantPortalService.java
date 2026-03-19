@@ -19,40 +19,42 @@ public interface TenantPortalService {
     /**
      * Lấy dữ liệu dashboard của người thuê theo tenantId.
      */
-    TenantDashboardResponse getDashboard(Long tenantId);
+    TenantDashboardResponse getDashboard(String tenantId);
 
     /**
      * Lấy danh sách hóa đơn của người thuê.
      */
-    PageResponse<TenantInvoiceSummaryResponse> getMyInvoices(Long tenantId, Pageable pageable);
+    PageResponse<TenantInvoiceSummaryResponse> getMyInvoices(String tenantId, Pageable pageable);
 
     /**
      * Lấy chi tiết 1 hóa đơn của người thuê (có kiểm tra quyền sở hữu theo tenantId).
      */
-    TenantInvoiceDetailResponse getInvoiceDetail(Long tenantId, Long invoiceId);
+    TenantInvoiceDetailResponse getInvoiceDetail(String tenantId, String invoiceId);
 
     /**
      * Lấy danh sách các yêu cầu bảo trì do người thuê tạo.
      */
-    PageResponse<TenantMaintenanceResponse> getMyMaintenanceRequests(Long tenantId, Pageable pageable);
+    PageResponse<TenantMaintenanceResponse> getMyMaintenanceRequests(String tenantId, Pageable pageable);
 
     /**
      * Người thuê tạo yêu cầu bảo trì mới.
      */
-    TenantMaintenanceResponse createMaintenanceRequest(Long tenantId, TenantMaintenanceRequest request);
+    TenantMaintenanceResponse createMaintenanceRequest(String tenantId, TenantMaintenanceRequest request);
 
     /**
      * Lấy tổng quan chi phí tiện ích/dịch vụ của người thuê.
      */
-    TenantUtilityOverviewResponse getUtilities(Long tenantId);
+    TenantUtilityOverviewResponse getUtilities(String tenantId);
 
     /**
      * Cập nhật trạng thái khai báo tạm trú của người thuê.
      */
-    TenantUtilityOverviewResponse updateTemporaryResidence(Long tenantId, TemporaryResidenceRequest request);
+    TenantUtilityOverviewResponse updateTemporaryResidence(String tenantId, TemporaryResidenceRequest request);
 
     /**
      * Đăng ký phương tiện của người thuê (xe máy/ô tô...).
      */
-    TenantUtilityOverviewResponse registerVehicle(Long tenantId, VehicleRegistrationRequest request);
+    TenantUtilityOverviewResponse registerVehicle(String tenantId, VehicleRegistrationRequest request);
 }
+
+

@@ -11,9 +11,10 @@ import java.util.Optional;
 /**
  * Repository for data access operations.
  */
-public interface SystemConfigRepository extends JpaRepository<SystemConfig, Long> {
+public interface SystemConfigRepository extends JpaRepository<SystemConfig, String> {
     Optional<SystemConfig> findByConfigKey(String configKey);
     List<SystemConfig> findAllByOrderByConfigKeyAsc();
 
     Page<SystemConfig> findAllByOrderByConfigKeyAsc(Pageable pageable);
 }
+

@@ -8,15 +8,16 @@ import com.company.base.dto.response.host.roomManager.RoomDetailResDTO;
 import org.springframework.data.domain.Pageable;
 
 public interface RoomManagementService {
-    Long createRoom(RoomManagerCreateReqDTO roomManagerCreateReqDTO);
+    String createRoom(RoomManagerCreateReqDTO roomManagerCreateReqDTO);
 
-    RoomResponse updateRoom(Long id, RoomRequest request);
+    RoomResponse updateRoom(String id, RoomRequest request);
 
-    RoomResponse getRoomById(Long id);
+    RoomResponse getRoomById(String id);
 
-    RoomDetailResDTO getRoomDetail(Long id);
+    RoomDetailResDTO getRoomDetail(String id);
 
-    PageResponse<RoomResponse> getRooms(Long propertyId, Pageable pageable);
+    PageResponse<RoomResponse> getRooms(String propertyId, Pageable pageable);
 
-    void deleteRoom(Long id);
+    void deleteRoom(String id);
 }
+

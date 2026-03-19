@@ -111,7 +111,7 @@ public class SuperAdminServiceImpl implements SuperAdminService {
     }
 
     @Override
-    public LandlordProfileResponse approveLandlord(Long landlordProfileId) {
+    public LandlordProfileResponse approveLandlord(String landlordProfileId) {
         LandlordProfile profile = getLandlordProfile(landlordProfileId);
         User user = getUser(profile.getUserId());
         profile.setStatus("APPROVED");
@@ -122,7 +122,7 @@ public class SuperAdminServiceImpl implements SuperAdminService {
     }
 
     @Override
-    public LandlordProfileResponse lockLandlord(Long landlordProfileId, String note) {
+    public LandlordProfileResponse lockLandlord(String landlordProfileId, String note) {
         LandlordProfile profile = getLandlordProfile(landlordProfileId);
         User user = getUser(profile.getUserId());
         profile.setStatus("LOCKED");
@@ -134,7 +134,7 @@ public class SuperAdminServiceImpl implements SuperAdminService {
     }
 
     @Override
-    public LandlordProfileResponse unlockLandlord(Long landlordProfileId) {
+    public LandlordProfileResponse unlockLandlord(String landlordProfileId) {
         LandlordProfile profile = getLandlordProfile(landlordProfileId);
         User user = getUser(profile.getUserId());
         profile.setStatus("APPROVED");
@@ -152,7 +152,7 @@ public class SuperAdminServiceImpl implements SuperAdminService {
     }
 
     @Override
-    public SubscriptionPlanResponse updatePlan(Long planId, SubscriptionPlanRequest request) {
+    public SubscriptionPlanResponse updatePlan(String planId, SubscriptionPlanRequest request) {
         SubscriptionPlan plan = getPlan(planId);
         applyPlanUpdate(plan, request);
         return toPlanResponse(subscriptionPlanRepository.save(plan));
@@ -166,7 +166,7 @@ public class SuperAdminServiceImpl implements SuperAdminService {
     }
 
     @Override
-    public void deletePlan(Long planId) {
+    public void deletePlan(String planId) {
         SubscriptionPlan plan = getPlan(planId);
         plan.setDelYn("Y");
         subscriptionPlanRepository.save(plan);
@@ -187,7 +187,7 @@ public class SuperAdminServiceImpl implements SuperAdminService {
     }
 
     @Override
-    public PageResponse<LandlordSubscriptionResponse> getSubscriptions(Long landlordProfileId, Pageable pageable) {
+    public PageResponse<LandlordSubscriptionResponse> getSubscriptions(String landlordProfileId, Pageable pageable) {
         Page<LandlordSubscriptionResponse> page = landlordSubscriptionRepository
                 .findByLandlordProfileIdOrderByStartDateDescIdDesc(landlordProfileId, pageable)
                 .map(this::toSubscriptionResponse);
@@ -224,7 +224,7 @@ public class SuperAdminServiceImpl implements SuperAdminService {
     }
 
     @Override
-    public SupportTicketResponse updateSupportTicket(Long ticketId, SupportTicketUpdateRequest request) {
+    public SupportTicketResponse updateSupportTicket(String ticketId, SupportTicketUpdateRequest request) {
         SupportTicket ticket = supportTicketRepository.findById(ticketId)
                 .orElseThrow(() -> new AppException(HttpStatus.NOT_FOUND.value(), "Ticket not found"));
         if (request.getStatus() != null) {
@@ -248,7 +248,7 @@ public class SuperAdminServiceImpl implements SuperAdminService {
     }
 
     private List<LandlordProfileResponse> toLandlordResponses(List<LandlordProfile> profiles) {
-        Map<Long, User> users = userRepository.findAllById(
+        Map<String, User> users = userRepository.findAllById(
                 profiles.stream().map(LandlordProfile::getUserId).filter(Objects::nonNull).toList()
         ).stream().collect(Collectors.toMap(User::getId, u -> u));
         return profiles.stream()
@@ -320,17 +320,17 @@ public class SuperAdminServiceImpl implements SuperAdminService {
                 .build();
     }
 
-    private LandlordProfile getLandlordProfile(Long id) {
+    private LandlordProfile getLandlordProfile(String id) {
         return landlordProfileRepository.findById(id)
                 .orElseThrow(() -> new AppException(HttpStatus.NOT_FOUND.value(), "Landlord profile not found"));
     }
 
-    private User getUser(Long id) {
+    private User getUser(String id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new AppException(HttpStatus.NOT_FOUND.value(), "User not found"));
     }
 
-    private SubscriptionPlan getPlan(Long id) {
+    private SubscriptionPlan getPlan(String id) {
         return subscriptionPlanRepository.findById(id)
                 .orElseThrow(() -> new AppException(HttpStatus.NOT_FOUND.value(), "Subscription plan not found"));
     }
@@ -379,3 +379,5 @@ public class SuperAdminServiceImpl implements SuperAdminService {
     private record MonthRange(YearMonth start, YearMonth end, List<YearMonth> months) {
     }
 }
+
+

@@ -16,11 +16,11 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MaintenanceRequestResponse {
-    private Long id;
+    private String id;
 
-    private Long roomId;
+    private String roomId;
 
-    private Long tenantId;
+    private String tenantId;
 
     private String title;
 
@@ -38,3 +38,4 @@ public class MaintenanceRequestResponse {
 
     private String note;
 }
+

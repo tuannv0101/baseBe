@@ -56,17 +56,17 @@ public class SuperAdminController {
     }
 
     @PutMapping("/landlords/{id}/approve")
-    public ApiResponse<LandlordProfileResponse> approveLandlord(@PathVariable Long id) {
+    public ApiResponse<LandlordProfileResponse> approveLandlord(@PathVariable String id) {
         return ApiResponse.success(superAdminService.approveLandlord(id));
     }
 
     @PutMapping("/landlords/{id}/lock")
-    public ApiResponse<LandlordProfileResponse> lockLandlord(@PathVariable Long id, @RequestParam(required = false) String note) {
+    public ApiResponse<LandlordProfileResponse> lockLandlord(@PathVariable String id, @RequestParam(required = false) String note) {
         return ApiResponse.success(superAdminService.lockLandlord(id, note));
     }
 
     @PutMapping("/landlords/{id}/unlock")
-    public ApiResponse<LandlordProfileResponse> unlockLandlord(@PathVariable Long id) {
+    public ApiResponse<LandlordProfileResponse> unlockLandlord(@PathVariable String id) {
         return ApiResponse.success(superAdminService.unlockLandlord(id));
     }
 
@@ -76,7 +76,7 @@ public class SuperAdminController {
     }
 
     @PutMapping("/plans/{id}")
-    public ApiResponse<SubscriptionPlanResponse> updatePlan(@PathVariable Long id, @RequestBody SubscriptionPlanRequest request) {
+    public ApiResponse<SubscriptionPlanResponse> updatePlan(@PathVariable String id, @RequestBody SubscriptionPlanRequest request) {
         return ApiResponse.success(superAdminService.updatePlan(id, request));
     }
 
@@ -86,7 +86,7 @@ public class SuperAdminController {
     }
 
     @PutMapping("/plans/{id}/delete")
-    public ApiResponse<Void> deletePlan(@PathVariable Long id) {
+    public ApiResponse<Void> deletePlan(@PathVariable String id) {
         superAdminService.deletePlan(id);
         return ApiResponse.success(null);
     }
@@ -98,7 +98,7 @@ public class SuperAdminController {
 
     @GetMapping("/subscriptions")
     public ApiResponse<PageResponse<LandlordSubscriptionResponse>> getSubscriptions(
-            @RequestParam Long landlordProfileId,
+            @RequestParam String landlordProfileId,
             @PageableDefault(size = 20) Pageable pageable
     ) {
         return ApiResponse.success(superAdminService.getSubscriptions(landlordProfileId, pageable));
@@ -120,7 +120,7 @@ public class SuperAdminController {
     }
 
     @PutMapping("/tickets/{id}")
-    public ApiResponse<SupportTicketResponse> updateSupportTicket(@PathVariable Long id, @RequestBody SupportTicketUpdateRequest request) {
+    public ApiResponse<SupportTicketResponse> updateSupportTicket(@PathVariable String id, @RequestBody SupportTicketUpdateRequest request) {
         return ApiResponse.success(superAdminService.updateSupportTicket(id, request));
     }
 
@@ -132,3 +132,4 @@ public class SuperAdminController {
         return ApiResponse.success(superAdminService.getSupportTickets(status, pageable));
     }
 }
+

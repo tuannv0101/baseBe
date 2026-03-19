@@ -55,14 +55,14 @@ public class BillingManagementServiceImpl implements BillingManagementService {
     }
 
     @Override
-    public BillingServiceResponse updateService(Long id, BillingServiceRequest request) {
+    public BillingServiceResponse updateService(String id, BillingServiceRequest request) {
         ServiceManager entity = getServiceEntity(id);
         applyServiceUpdate(entity, request);
         return toServiceResponse(serviceRepository.save(entity));
     }
 
     @Override
-    public BillingServiceResponse getServiceById(Long id) {
+    public BillingServiceResponse getServiceById(String id) {
         return toServiceResponse(getServiceEntity(id));
     }
 
@@ -74,7 +74,7 @@ public class BillingManagementServiceImpl implements BillingManagementService {
     }
 
     @Override
-    public void deleteService(Long id) {
+    public void deleteService(String id) {
         ServiceManager entity = getServiceEntity(id);
         entity.setDelYn("Y");
         serviceRepository.save(entity);
@@ -107,7 +107,7 @@ public class BillingManagementServiceImpl implements BillingManagementService {
     }
 
     @Override
-    public PageResponse<ServiceUsageResponse> getServiceUsage(Integer month, Integer year, Long serviceId, Pageable pageable) {
+    public PageResponse<ServiceUsageResponse> getServiceUsage(Integer month, Integer year, String serviceId, Pageable pageable) {
         Page<ServiceUsageResponse> page;
         if (serviceId == null) {
             page = serviceUsageRepository.findByMonthAndYearOrderByRoomIdAsc(month, year, pageable)
@@ -127,14 +127,14 @@ public class BillingManagementServiceImpl implements BillingManagementService {
     }
 
     @Override
-    public InvoiceResponse updateInvoice(Long id, InvoiceRequest request) {
+    public InvoiceResponse updateInvoice(String id, InvoiceRequest request) {
         InvoiceManager entity = getInvoiceEntity(id);
         applyInvoiceUpdate(entity, request);
         return toInvoiceResponse(invoiceRepository.save(entity));
     }
 
     @Override
-    public InvoiceResponse getInvoiceById(Long id) {
+    public InvoiceResponse getInvoiceById(String id) {
         return toInvoiceResponse(getInvoiceEntity(id));
     }
 
@@ -213,12 +213,12 @@ public class BillingManagementServiceImpl implements BillingManagementService {
         return status == null ? null : status.trim().toUpperCase();
     }
 
-    private ServiceManager getServiceEntity(Long id) {
+    private ServiceManager getServiceEntity(String id) {
         return serviceRepository.findById(id)
                 .orElseThrow(() -> new AppException(HttpStatus.NOT_FOUND.value(), "Service not found"));
     }
 
-    private InvoiceManager getInvoiceEntity(Long id) {
+    private InvoiceManager getInvoiceEntity(String id) {
         return invoiceRepository.findById(id)
                 .orElseThrow(() -> new AppException(HttpStatus.NOT_FOUND.value(), "Invoice not found"));
     }
@@ -274,3 +274,4 @@ public class BillingManagementServiceImpl implements BillingManagementService {
                 .build();
     }
 }
+

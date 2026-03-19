@@ -16,13 +16,13 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ContractLiquidationResponse {
-    private Long id;
+    private String id;
 
-    private Long contractId;
+    private String contractId;
 
-    private Long roomId;
+    private String roomId;
 
-    private Long tenantId;
+    private String tenantId;
 
     private LocalDate liquidationDate;
 
@@ -30,3 +30,4 @@ public class ContractLiquidationResponse {
 
     private String note;
 }
+

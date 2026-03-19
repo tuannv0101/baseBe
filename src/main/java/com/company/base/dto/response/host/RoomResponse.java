@@ -10,11 +10,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RoomResponse {
-    private Long roomId;
+    private String roomId;
 
-    private Long propertyId;
+    private String propertyId;
 
-    private Long tenantId;
+    private String tenantId;
 
     private String tenantFullName;
 
@@ -28,3 +28,4 @@ public class RoomResponse {
 
     private String status;
 }
+

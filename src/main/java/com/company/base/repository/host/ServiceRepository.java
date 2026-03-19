@@ -11,8 +11,9 @@ import java.util.List;
  * Repository for data access operations.
  */
 
-public interface ServiceRepository extends JpaRepository<ServiceManager, Long> {
+public interface ServiceRepository extends JpaRepository<ServiceManager, String> {
     List<ServiceManager> findAllByOrderByNameAsc();
 
     Page<ServiceManager> findAllByOrderByNameAsc(Pageable pageable);
 }
+

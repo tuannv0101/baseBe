@@ -15,9 +15,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SupportTicketResponse {
-    private Long id;
+    private String id;
 
-    private Long landlordProfileId;
+    private String landlordProfileId;
 
     private String title;
 
@@ -35,3 +35,4 @@ public class SupportTicketResponse {
 
     private LocalDateTime updatedAt;
 }
+

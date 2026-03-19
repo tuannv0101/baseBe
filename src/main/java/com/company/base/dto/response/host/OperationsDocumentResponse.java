@@ -14,13 +14,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OperationsDocumentResponse {
-    private Long id;
+    private String id;
 
     private String title;
 
     private String documentType;
 
-    private Long fileId;
+    private String fileId;
 
     private String fileUrl;
 
@@ -28,3 +28,4 @@ public class OperationsDocumentResponse {
 
     private String note;
 }
+

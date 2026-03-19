@@ -1,6 +1,7 @@
 package com.company.base.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.Data;
 import org.hibernate.annotations.Where;
 
@@ -13,15 +14,11 @@ import java.time.LocalDate;
 @Data
 public class LandlordSubscription extends BaseEntity {
     // ID duy nhất của bản ghi đăng ký gói.
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    // ID hồ sơ chủ nhà đăng ký.
-    private Long landlordProfileId;
+// ID hồ sơ chủ nhà đăng ký.
+    private String landlordProfileId;
 
     // ID gói đăng ký (subscription_plans).
-    private Long planId;
+    private String planId;
 
     // Ngày bắt đầu hiệu lực gói.
     private LocalDate startDate;
@@ -34,4 +31,11 @@ public class LandlordSubscription extends BaseEntity {
 
     // Số tiền đã thanh toán cho gói.
     private BigDecimal amountPaid;
+
+    @Override
+    protected String getIdPrefix() {
+        return "LSU";
+    }
 }
+
+

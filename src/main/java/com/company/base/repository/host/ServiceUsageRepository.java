@@ -12,16 +12,17 @@ import java.util.Optional;
  * Repository for data access operations.
  */
 
-public interface ServiceUsageRepository extends JpaRepository<ServiceUsage, Long> {
-    Optional<ServiceUsage> findByRoomIdAndServiceIdAndMonthAndYear(Long roomId, Long serviceId, Integer month, Integer year);
+public interface ServiceUsageRepository extends JpaRepository<ServiceUsage, String> {
+    Optional<ServiceUsage> findByRoomIdAndServiceIdAndMonthAndYear(String roomId, String serviceId, Integer month, Integer year);
 
     List<ServiceUsage> findByMonthAndYearOrderByRoomIdAsc(Integer month, Integer year);
 
-    List<ServiceUsage> findByServiceIdAndMonthAndYearOrderByRoomIdAsc(Long serviceId, Integer month, Integer year);
+    List<ServiceUsage> findByServiceIdAndMonthAndYearOrderByRoomIdAsc(String serviceId, Integer month, Integer year);
 
-    List<ServiceUsage> findByRoomIdAndMonthAndYearOrderByServiceIdAsc(Long roomId, Integer month, Integer year);
+    List<ServiceUsage> findByRoomIdAndMonthAndYearOrderByServiceIdAsc(String roomId, Integer month, Integer year);
 
     Page<ServiceUsage> findByMonthAndYearOrderByRoomIdAsc(Integer month, Integer year, Pageable pageable);
 
-    Page<ServiceUsage> findByServiceIdAndMonthAndYearOrderByRoomIdAsc(Long serviceId, Integer month, Integer year, Pageable pageable);
+    Page<ServiceUsage> findByServiceIdAndMonthAndYearOrderByRoomIdAsc(String serviceId, Integer month, Integer year, Pageable pageable);
 }
+

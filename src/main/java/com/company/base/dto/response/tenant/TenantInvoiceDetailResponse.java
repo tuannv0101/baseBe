@@ -18,11 +18,11 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TenantInvoiceDetailResponse {
-    private Long id;
+    private String id;
 
     private String invoiceCode;
 
-    private Long contractId;
+    private String contractId;
 
     private BigDecimal totalAmount;
 
@@ -41,7 +41,7 @@ public class TenantInvoiceDetailResponse {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class ServiceItem {
-        private Long serviceId;
+        private String serviceId;
 
         private String serviceName;
 
@@ -63,7 +63,7 @@ public class TenantInvoiceDetailResponse {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class PaymentItem {
-        private Long receiptId;
+        private String receiptId;
 
         private String receiptCode;
 
@@ -74,3 +74,4 @@ public class TenantInvoiceDetailResponse {
         private LocalDateTime paymentTime;
     }
 }
+

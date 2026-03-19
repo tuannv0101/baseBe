@@ -1,6 +1,7 @@
 package com.company.base.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.Data;
 import org.hibernate.annotations.Where;
 
@@ -13,18 +14,14 @@ import java.time.LocalDateTime;
 @Data
 public class PaymentReceipt extends BaseEntity {
     // ID duy nhất của phiếu thu.
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    // ID hóa đơn liên quan.
-    private Long invoiceId;
+// ID hóa đơn liên quan.
+    private String invoiceId;
 
     // Mã phiếu thu nghiệp vụ.
     private String receiptCode;
 
     // ID phòng liên quan đến khoản thu.
-    private Long roomId;
+    private String roomId;
 
     // Tên người nộp tiền.
     private String payerName;
@@ -40,4 +37,11 @@ public class PaymentReceipt extends BaseEntity {
 
     // Ghi chú bổ sung.
     private String note;
+
+    @Override
+    protected String getIdPrefix() {
+        return "PRC";
+    }
 }
+
+

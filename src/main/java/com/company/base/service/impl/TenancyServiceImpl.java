@@ -5,16 +5,21 @@ import com.company.base.common.pagination.PaginationUtils;
 import com.company.base.dto.request.host.ContractLiquidationRequest;
 import com.company.base.dto.request.host.ContractRequest;
 import com.company.base.dto.request.host.TenantRequest;
+import com.company.base.dto.response.host.ContractListProjection;
 import com.company.base.dto.response.host.ContractLiquidationResponse;
 import com.company.base.dto.response.host.ContractResponse;
 import com.company.base.dto.response.host.TenantResponse;
 import com.company.base.entity.Contract;
 import com.company.base.entity.ContractLiquidationHistory;
 import com.company.base.entity.FileMetadata;
+import com.company.base.entity.PropertiesManager;
+import com.company.base.entity.RoomManager;
 import com.company.base.entity.Tenant;
 import com.company.base.exception.AppException;
 import com.company.base.repository.host.ContractLiquidationHistoryRepository;
 import com.company.base.repository.host.ContractRepository;
+import com.company.base.repository.host.PropertiesRepository;
+import com.company.base.repository.host.RoomManagementRepository;
 import com.company.base.repository.host.TenantRepository;
 import com.company.base.service.FileService;
 import com.company.base.service.TenancyService;
@@ -39,11 +44,15 @@ public class TenancyServiceImpl implements TenancyService {
 
     private static final String STATUS_ACTIVE = "ACTIVE";
     private static final String STATUS_TERMINATED = "TERMINATED";
+    private static final String ROOM_STATUS_OCCUPIED = "OCCUPIED";
+    private static final String ROOM_STATUS_AVAILABLE = "AVAILABLE";
     private static final Set<String> PENDING_STATUSES = Set.of("PENDING_SIGN", "PENDING_RENEWAL");
 
     private final TenantRepository tenantRepository;
     private final ContractRepository contractRepository;
     private final ContractLiquidationHistoryRepository liquidationHistoryRepository;
+    private final PropertiesRepository propertiesRepository;
+    private final RoomManagementRepository roomManagementRepository;
     private final FileService fileService;
 
     @Override
@@ -54,14 +63,14 @@ public class TenancyServiceImpl implements TenancyService {
     }
 
     @Override
-    public TenantResponse updateTenant(Long id, TenantRequest request) {
+    public TenantResponse updateTenant(String id, TenantRequest request) {
         Tenant entity = getTenantEntity(id);
         applyTenantUpdate(entity, request);
         return toTenantResponse(tenantRepository.save(entity));
     }
 
     @Override
-    public TenantResponse getTenantById(Long id) {
+    public TenantResponse getTenantById(String id) {
         return toTenantResponse(getTenantEntity(id));
     }
 
@@ -90,14 +99,14 @@ public class TenancyServiceImpl implements TenancyService {
     }
 
     @Override
-    public void deleteTenant(Long id) {
+    public void deleteTenant(String id) {
         Tenant entity = getTenantEntity(id);
         entity.setDelYn("Y");
         tenantRepository.save(entity);
     }
 
     @Override
-    public TenantResponse uploadTenantPortrait(Long tenantId, MultipartFile file) {
+    public TenantResponse uploadTenantPortrait(String tenantId, MultipartFile file) {
         if (file == null || file.isEmpty()) {
             throw new AppException(HttpStatus.BAD_REQUEST.value(), "File is required");
         }
@@ -112,25 +121,31 @@ public class TenancyServiceImpl implements TenancyService {
     public ContractResponse createContract(ContractRequest request) {
         Contract entity = new Contract();
         applyContractUpdate(entity, request);
-        return toContractResponse(contractRepository.save(entity));
+        Contract saved = contractRepository.save(entity);
+        syncRoomStatusAfterContractChange(null, saved.getRoomId(), saved.getId(), saved.getStatus());
+        return toContractResponse(saved);
     }
 
     @Override
-    public ContractResponse updateContract(Long id, ContractRequest request) {
+    public ContractResponse updateContract(String id, ContractRequest request) {
         Contract entity = getContractEntity(id);
+        String previousRoomId = entity.getRoomId();
         applyContractUpdate(entity, request);
-        return toContractResponse(contractRepository.save(entity));
+        Contract saved = contractRepository.save(entity);
+        syncRoomStatusAfterContractChange(previousRoomId, saved.getRoomId(), saved.getId(), saved.getStatus());
+        return toContractResponse(saved);
     }
 
     @Override
-    public ContractResponse getContractById(Long id) {
+    public ContractResponse getContractById(String id) {
         return toContractResponse(getContractEntity(id));
     }
 
     @Override
-    public PageResponse<ContractResponse> getAllContracts(Pageable pageable) {
-        Page<ContractResponse> page = contractRepository.findAllByOrderByStartDateDescIdDesc(pageable)
-                .map(this::toContractResponse);
+    public PageResponse<ContractResponse> getAllContracts(String textSearch, Pageable pageable) {
+        Page<ContractResponse> page = contractRepository
+                .searchContracts(textSearch, pageable)
+                .map(this::toContractListResponse);
         return PageResponse.of(page);
     }
 
@@ -154,17 +169,20 @@ public class TenancyServiceImpl implements TenancyService {
     }
 
     @Override
-    public void deleteContract(Long id) {
+    public void deleteContract(String id) {
         Contract entity = getContractEntity(id);
+        String roomId = entity.getRoomId();
         entity.setDelYn("Y");
         contractRepository.save(entity);
+        refreshRoomAvailability(roomId, entity.getId());
     }
 
     @Override
-    public ContractLiquidationResponse liquidateContract(Long contractId, ContractLiquidationRequest request) {
+    public ContractLiquidationResponse liquidateContract(String contractId, ContractLiquidationRequest request) {
         Contract contract = getContractEntity(contractId);
         contract.setStatus(STATUS_TERMINATED);
         contractRepository.save(contract);
+        refreshRoomAvailability(contract.getRoomId(), contract.getId());
 
         ContractLiquidationHistory history = new ContractLiquidationHistory();
         history.setContractId(contract.getId());
@@ -216,14 +234,43 @@ public class TenancyServiceImpl implements TenancyService {
         return status == null ? null : status.trim().toUpperCase();
     }
 
-    private Tenant getTenantEntity(Long id) {
+    private Tenant getTenantEntity(String id) {
         return tenantRepository.findById(id)
                 .orElseThrow(() -> new AppException(HttpStatus.NOT_FOUND.value(), "Tenant not found"));
     }
 
-    private Contract getContractEntity(Long id) {
+    private Contract getContractEntity(String id) {
         return contractRepository.findById(id)
                 .orElseThrow(() -> new AppException(HttpStatus.NOT_FOUND.value(), "Contract not found"));
+    }
+
+    private void syncRoomStatusAfterContractChange(String previousRoomId, String currentRoomId, String contractId, String contractStatus) {
+        if (STATUS_ACTIVE.equalsIgnoreCase(contractStatus) && currentRoomId != null) {
+            updateRoomStatus(currentRoomId, ROOM_STATUS_OCCUPIED);
+        } else if (currentRoomId != null) {
+            refreshRoomAvailability(currentRoomId, contractId);
+        }
+
+        if (previousRoomId != null && !previousRoomId.equals(currentRoomId)) {
+            refreshRoomAvailability(previousRoomId, contractId);
+        }
+    }
+
+    private void refreshRoomAvailability(String roomId, String currentContractId) {
+        if (roomId == null) {
+            return;
+        }
+        boolean hasOtherActiveContract = currentContractId == null
+                ? contractRepository.existsByRoomIdAndStatusIgnoreCase(roomId, STATUS_ACTIVE)
+                : contractRepository.existsByRoomIdAndStatusIgnoreCaseAndIdNot(roomId, STATUS_ACTIVE, currentContractId);
+        updateRoomStatus(roomId, hasOtherActiveContract ? ROOM_STATUS_OCCUPIED : ROOM_STATUS_AVAILABLE);
+    }
+
+    private void updateRoomStatus(String roomId, String status) {
+        RoomManager room = roomManagementRepository.findById(roomId)
+                .orElseThrow(() -> new AppException(HttpStatus.NOT_FOUND.value(), "Room not found"));
+        room.setStatus(status);
+        roomManagementRepository.save(room);
     }
 
     private TenantResponse toTenantResponse(Tenant entity) {
@@ -241,15 +288,45 @@ public class TenancyServiceImpl implements TenancyService {
     }
 
     private ContractResponse toContractResponse(Contract entity) {
+        RoomManager room = entity.getRoomId() != null ? roomManagementRepository.findById(entity.getRoomId()).orElse(null) : null;
+        PropertiesManager property = room != null && room.getPropertiesId() != null
+                ? propertiesRepository.findById(room.getPropertiesId()).orElse(null)
+                : null;
+        Tenant tenant = entity.getTenantId() != null ? tenantRepository.findById(entity.getTenantId()).orElse(null) : null;
+
         return ContractResponse.builder()
                 .id(entity.getId())
+                .contractCode(entity.getId())
                 .roomId(entity.getRoomId())
+                .roomNumber(room != null ? room.getRoomNumber() : null)
+                .propertyName(property != null ? property.getName() : null)
                 .tenantId(entity.getTenantId())
+                .tenantName(tenant != null ? tenant.getFullName() : null)
+                .tenantIdCardNumber(tenant != null ? tenant.getIdCardNumber() : null)
                 .startDate(entity.getStartDate())
                 .endDate(entity.getEndDate())
                 .depositAmount(entity.getDepositAmount())
                 .actualRent(entity.getActualRent())
+                .rentAmount(entity.getActualRent())
                 .status(entity.getStatus())
+                .build();
+    }
+
+    private ContractResponse toContractListResponse(ContractListProjection projection) {
+        return ContractResponse.builder()
+                .id(projection.getId())
+                .contractCode(projection.getContractCode())
+                .roomId(projection.getRoomId())
+                .roomNumber(projection.getRoomNumber())
+                .propertyName(projection.getPropertyName())
+                .tenantId(projection.getTenantId())
+                .tenantName(projection.getTenantName())
+                .tenantIdCardNumber(projection.getTenantIdCardNumber())
+                .startDate(projection.getStartDate())
+                .endDate(projection.getEndDate())
+                .rentAmount(projection.getRentAmount())
+                .actualRent(projection.getRentAmount())
+                .status(projection.getStatus())
                 .build();
     }
 
@@ -265,3 +342,4 @@ public class TenancyServiceImpl implements TenancyService {
                 .build();
     }
 }
+

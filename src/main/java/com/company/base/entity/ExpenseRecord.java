@@ -1,6 +1,7 @@
 package com.company.base.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.Data;
 import org.hibernate.annotations.Where;
 
@@ -13,11 +14,7 @@ import java.time.LocalDate;
 @Data
 public class ExpenseRecord extends BaseEntity {
     // ID duy nhất của khoản chi.
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    // Ngày phát sinh khoản chi.
+// Ngày phát sinh khoản chi.
     private LocalDate expenseDate;
 
     // Nhóm/hạng mục chi (ví dụ: sửa chữa, điện nước, vật tư...).
@@ -37,4 +34,11 @@ public class ExpenseRecord extends BaseEntity {
 
     // Ghi chú bổ sung.
     private String note;
+
+    @Override
+    protected String getIdPrefix() {
+        return "EXP";
+    }
 }
+
+

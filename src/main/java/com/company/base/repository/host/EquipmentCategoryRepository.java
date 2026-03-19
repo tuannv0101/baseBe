@@ -11,8 +11,9 @@ import java.util.List;
  * Repository for data access operations.
  */
 
-public interface EquipmentCategoryRepository extends JpaRepository<EquipmentCategory, Long> {
+public interface EquipmentCategoryRepository extends JpaRepository<EquipmentCategory, String> {
     List<EquipmentCategory> findAllByOrderByNameAsc();
 
     Page<EquipmentCategory> findAllByOrderByNameAsc(Pageable pageable);
 }
+

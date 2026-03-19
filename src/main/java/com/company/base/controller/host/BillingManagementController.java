@@ -35,12 +35,12 @@ public class BillingManagementController {
     }
 
     @PutMapping("/services/{id}")
-    public ApiResponse<BillingServiceResponse> updateService(@PathVariable Long id, @RequestBody BillingServiceRequest request) {
+    public ApiResponse<BillingServiceResponse> updateService(@PathVariable String id, @RequestBody BillingServiceRequest request) {
         return ApiResponse.success(billingManagementService.updateService(id, request));
     }
 
     @GetMapping("/services/{id}")
-    public ApiResponse<BillingServiceResponse> getServiceById(@PathVariable Long id) {
+    public ApiResponse<BillingServiceResponse> getServiceById(@PathVariable String id) {
         return ApiResponse.success(billingManagementService.getServiceById(id));
     }
 
@@ -50,7 +50,7 @@ public class BillingManagementController {
     }
 
     @PutMapping("/services/{id}/delete")
-    public ApiResponse<Void> deleteService(@PathVariable Long id) {
+    public ApiResponse<Void> deleteService(@PathVariable String id) {
         billingManagementService.deleteService(id);
         return ApiResponse.success(null);
     }
@@ -64,7 +64,7 @@ public class BillingManagementController {
     public ApiResponse<PageResponse<ServiceUsageResponse>> getServiceUsage(
             @RequestParam Integer month,
             @RequestParam Integer year,
-            @RequestParam(required = false) Long serviceId,
+            @RequestParam(required = false) String serviceId,
             @PageableDefault(size = 20) Pageable pageable
     ) {
         return ApiResponse.success(billingManagementService.getServiceUsage(month, year, serviceId, pageable));
@@ -76,12 +76,12 @@ public class BillingManagementController {
     }
 
     @PutMapping("/invoices/{id}")
-    public ApiResponse<InvoiceResponse> updateInvoice(@PathVariable Long id, @RequestBody InvoiceRequest request) {
+    public ApiResponse<InvoiceResponse> updateInvoice(@PathVariable String id, @RequestBody InvoiceRequest request) {
         return ApiResponse.success(billingManagementService.updateInvoice(id, request));
     }
 
     @GetMapping("/invoices/{id}")
-    public ApiResponse<InvoiceResponse> getInvoiceById(@PathVariable Long id) {
+    public ApiResponse<InvoiceResponse> getInvoiceById(@PathVariable String id) {
         return ApiResponse.success(billingManagementService.getInvoiceById(id));
     }
 
@@ -109,3 +109,4 @@ public class BillingManagementController {
         return ApiResponse.success(billingManagementService.getPaymentHistory(pageable));
     }
 }
+

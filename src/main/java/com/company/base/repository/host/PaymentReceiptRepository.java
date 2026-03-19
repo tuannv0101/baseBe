@@ -12,14 +12,15 @@ import java.util.List;
  * Repository for data access operations.
  */
 
-public interface PaymentReceiptRepository extends JpaRepository<PaymentReceipt, Long> {
+public interface PaymentReceiptRepository extends JpaRepository<PaymentReceipt, String> {
     List<PaymentReceipt> findAllByOrderByPaymentTimeDescIdDesc();
 
     List<PaymentReceipt> findByPaymentTimeBetweenOrderByPaymentTimeAscIdAsc(LocalDateTime fromDateTime, LocalDateTime toDateTime);
 
-    List<PaymentReceipt> findByRoomIdOrderByPaymentTimeDescIdDesc(Long roomId);
+    List<PaymentReceipt> findByRoomIdOrderByPaymentTimeDescIdDesc(String roomId);
 
-    List<PaymentReceipt> findByInvoiceIdOrderByPaymentTimeDescIdDesc(Long invoiceId);
+    List<PaymentReceipt> findByInvoiceIdOrderByPaymentTimeDescIdDesc(String invoiceId);
 
     Page<PaymentReceipt> findAllByOrderByPaymentTimeDescIdDesc(Pageable pageable);
 }
+

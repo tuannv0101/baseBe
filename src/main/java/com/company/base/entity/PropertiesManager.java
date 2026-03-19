@@ -1,6 +1,7 @@
 package com.company.base.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.Data;
 import org.hibernate.annotations.Where;
 
@@ -10,10 +11,7 @@ import org.hibernate.annotations.Where;
 @Data
 public class PropertiesManager extends BaseEntity {
     // ID duy nhất của tòa nhà/bất động sản.
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    // Tên tòa nhà/bất động sản.
+// Tên tòa nhà/bất động sản.
     private String name;
     // Địa chỉ tòa nhà/bất động sản.
     private String address;
@@ -21,4 +19,11 @@ public class PropertiesManager extends BaseEntity {
     private Integer totalFloors;
     // Trạng thái tòa nhà
     private String status;
+
+    @Override
+    protected String getIdPrefix() {
+        return "PRO";
+    }
 }
+
+

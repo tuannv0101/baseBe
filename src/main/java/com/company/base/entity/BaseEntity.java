@@ -1,9 +1,13 @@
 package com.company.base.entity;
 
+import com.company.base.common.util.SpringContextHolder;
+import com.company.base.common.util.StringIdGenerator;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedBy;
@@ -19,21 +23,21 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseEntity {
-    // Thời điểm bản ghi được tạo.
+    @Id
+    @Column(length = 11, nullable = false, updatable = false)
+    private String id;
+
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
-    // Thời điểm bản ghi được cập nhật gần nhất.
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    // Định danh người tạo bản ghi.
     @CreatedBy
     @Column(updatable = false)
     private String createdBy;
 
-    // Định danh người cập nhật bản ghi gần nhất.
     @LastModifiedBy
     private String updatedBy;
 
@@ -41,9 +45,22 @@ public abstract class BaseEntity {
 
     @PrePersist
     protected void prePersist() {
-        // Default to non-deleted when creating new rows.
+        if (id == null || id.isBlank()) {
+            StringIdGenerator generator = SpringContextHolder.getBean(StringIdGenerator.class);
+            id = generator.nextId(resolveTableName(), getIdPrefix());
+        }
         if (delYn == null || delYn.isBlank()) {
             delYn = "N";
         }
+    }
+
+    protected abstract String getIdPrefix();
+
+    private String resolveTableName() {
+        Table table = this.getClass().getAnnotation(Table.class);
+        if (table == null || table.name().isBlank()) {
+            throw new IllegalStateException("Missing @Table(name=...) on " + this.getClass().getName());
+        }
+        return table.name();
     }
 }

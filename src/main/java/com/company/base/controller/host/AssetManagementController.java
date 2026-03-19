@@ -38,12 +38,12 @@ public class AssetManagementController {
     }
 
     @PutMapping("/categories/{id}")
-    public ApiResponse<EquipmentCategoryResponse> updateCategory(@PathVariable Long id, @RequestBody EquipmentCategoryRequest request) {
+    public ApiResponse<EquipmentCategoryResponse> updateCategory(@PathVariable String id, @RequestBody EquipmentCategoryRequest request) {
         return ApiResponse.success(assetManagementService.updateCategory(id, request));
     }
 
     @GetMapping("/categories/{id}")
-    public ApiResponse<EquipmentCategoryResponse> getCategoryById(@PathVariable Long id) {
+    public ApiResponse<EquipmentCategoryResponse> getCategoryById(@PathVariable String id) {
         return ApiResponse.success(assetManagementService.getCategoryById(id));
     }
 
@@ -53,7 +53,7 @@ public class AssetManagementController {
     }
 
     @PutMapping("/categories/{id}/delete")
-    public ApiResponse<Void> deleteCategory(@PathVariable Long id) {
+    public ApiResponse<Void> deleteCategory(@PathVariable String id) {
         assetManagementService.deleteCategory(id);
         return ApiResponse.success(null);
     }
@@ -64,24 +64,24 @@ public class AssetManagementController {
     }
 
     @PutMapping("/room-assets/{id}")
-    public ApiResponse<RoomAssetResponse> updateRoomAsset(@PathVariable Long id, @RequestBody RoomAssetRequest request) {
+    public ApiResponse<RoomAssetResponse> updateRoomAsset(@PathVariable String id, @RequestBody RoomAssetRequest request) {
         return ApiResponse.success(assetManagementService.updateRoomAsset(id, request));
     }
 
     @GetMapping("/room-assets/{id}")
-    public ApiResponse<RoomAssetResponse> getRoomAssetById(@PathVariable Long id) {
+    public ApiResponse<RoomAssetResponse> getRoomAssetById(@PathVariable String id) {
         return ApiResponse.success(assetManagementService.getRoomAssetById(id));
     }
 
     @PutMapping("/room-assets/{id}/delete")
-    public ApiResponse<Void> deleteRoomAsset(@PathVariable Long id) {
+    public ApiResponse<Void> deleteRoomAsset(@PathVariable String id) {
         assetManagementService.deleteRoomAsset(id);
         return ApiResponse.success(null);
     }
 
     @GetMapping("/rooms/{roomId}/inventory")
     public ApiResponse<PageResponse<RoomAssetResponse>> getRoomInventory(
-            @PathVariable Long roomId,
+            @PathVariable String roomId,
             @PageableDefault(size = 20) Pageable pageable
     ) {
         return ApiResponse.success(assetManagementService.getRoomAssetsByRoom(roomId, pageable));
@@ -89,7 +89,7 @@ public class AssetManagementController {
 
     @PostMapping("/room-assets/{roomAssetId}/maintenance-history")
     public ApiResponse<AssetMaintenanceHistoryResponse> createMaintenanceHistory(
-            @PathVariable Long roomAssetId,
+            @PathVariable String roomAssetId,
             @RequestBody AssetMaintenanceHistoryRequest request
     ) {
         return ApiResponse.success(assetManagementService.createMaintenanceHistory(roomAssetId, request));
@@ -97,7 +97,7 @@ public class AssetManagementController {
 
     @PutMapping("/maintenance-history/{id}")
     public ApiResponse<AssetMaintenanceHistoryResponse> updateMaintenanceHistory(
-            @PathVariable Long id,
+            @PathVariable String id,
             @RequestBody AssetMaintenanceHistoryRequest request
     ) {
         return ApiResponse.success(assetManagementService.updateMaintenanceHistory(id, request));
@@ -105,7 +105,7 @@ public class AssetManagementController {
 
     @GetMapping("/room-assets/{roomAssetId}/maintenance-history")
     public ApiResponse<PageResponse<AssetMaintenanceHistoryResponse>> getMaintenanceHistoryByRoomAsset(
-            @PathVariable Long roomAssetId,
+            @PathVariable String roomAssetId,
             @PageableDefault(size = 20) Pageable pageable
     ) {
         return ApiResponse.success(assetManagementService.getMaintenanceHistoryByRoomAsset(roomAssetId, pageable));
@@ -113,9 +113,10 @@ public class AssetManagementController {
 
     @GetMapping("/rooms/{roomId}/maintenance-history")
     public ApiResponse<PageResponse<AssetMaintenanceHistoryResponse>> getMaintenanceHistoryByRoom(
-            @PathVariable Long roomId,
+            @PathVariable String roomId,
             @PageableDefault(size = 20) Pageable pageable
     ) {
         return ApiResponse.success(assetManagementService.getMaintenanceHistoryByRoom(roomId, pageable));
     }
 }
+

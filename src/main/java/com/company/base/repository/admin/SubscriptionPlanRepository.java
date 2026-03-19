@@ -11,9 +11,10 @@ import java.util.Optional;
 /**
  * Repository for data access operations.
  */
-public interface SubscriptionPlanRepository extends JpaRepository<SubscriptionPlan, Long> {
+public interface SubscriptionPlanRepository extends JpaRepository<SubscriptionPlan, String> {
     Optional<SubscriptionPlan> findByCodeIgnoreCase(String code);
     List<SubscriptionPlan> findAllByOrderByMonthlyPriceAsc();
 
     Page<SubscriptionPlan> findAllByOrderByMonthlyPriceAsc(Pageable pageable);
 }
+

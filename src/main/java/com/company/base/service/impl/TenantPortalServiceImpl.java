@@ -57,10 +57,10 @@ public class TenantPortalServiceImpl implements TenantPortalService {
     private final TenantVehicleRegistrationRepository vehicleRegistrationRepository;
 
     @Override
-    public TenantDashboardResponse getDashboard(Long tenantId) {
+    public TenantDashboardResponse getDashboard(String tenantId) {
         Tenant tenant = getTenant(tenantId);
         Contract activeContract = getActiveContract(tenantId);
-        Long roomId = activeContract != null ? activeContract.getRoomId() : null;
+        String roomId = activeContract != null ? activeContract.getRoomId() : null;
         List<InvoiceManager> debtInvoiceManagers = getInvoicesByTenant(tenantId).stream()
                 .filter(i -> i.getStatus() != null && INVOICE_DEBT_STATUSES.contains(i.getStatus().toUpperCase()))
                 .toList();
@@ -98,9 +98,9 @@ public class TenantPortalServiceImpl implements TenantPortalService {
     }
 
     @Override
-    public PageResponse<TenantInvoiceSummaryResponse> getMyInvoices(Long tenantId, Pageable pageable) {
+    public PageResponse<TenantInvoiceSummaryResponse> getMyInvoices(String tenantId, Pageable pageable) {
         getTenant(tenantId);
-        List<Long> contractIds = contractRepository.findByTenantIdOrderByStartDateDescIdDesc(tenantId)
+        List<String> contractIds = contractRepository.findByTenantIdOrderByStartDateDescIdDesc(tenantId)
                 .stream()
                 .map(Contract::getId)
                 .toList();
@@ -114,7 +114,7 @@ public class TenantPortalServiceImpl implements TenantPortalService {
     }
 
     @Override
-    public TenantInvoiceDetailResponse getInvoiceDetail(Long tenantId, Long invoiceId) {
+    public TenantInvoiceDetailResponse getInvoiceDetail(String tenantId, String invoiceId) {
         List<InvoiceManager> invoiceManagers = getInvoicesByTenant(tenantId);
         InvoiceManager invoiceManager = invoiceManagers.stream()
                 .filter(i -> i.getId().equals(invoiceId))
@@ -123,11 +123,11 @@ public class TenantPortalServiceImpl implements TenantPortalService {
 
         Contract contract = contractRepository.findById(invoiceManager.getContractId())
                 .orElseThrow(() -> new AppException(HttpStatus.NOT_FOUND.value(), "Contract not found"));
-        Long roomId = contract.getRoomId();
+        String roomId = contract.getRoomId();
         int month = invoiceManager.getDueDate() != null ? invoiceManager.getDueDate().getMonthValue() : LocalDate.now().getMonthValue();
         int year = invoiceManager.getDueDate() != null ? invoiceManager.getDueDate().getYear() : LocalDate.now().getYear();
 
-        Map<Long, ServiceManager> serviceMap = serviceRepository.findAll().stream()
+        Map<String, ServiceManager> serviceMap = serviceRepository.findAll().stream()
                 .collect(Collectors.toMap(ServiceManager::getId, s -> s, (a, b) -> a));
         List<TenantInvoiceDetailResponse.ServiceItem> items = serviceUsageRepository
                 .findByRoomIdAndMonthAndYearOrderByServiceIdAsc(roomId, month, year)
@@ -161,7 +161,7 @@ public class TenantPortalServiceImpl implements TenantPortalService {
     }
 
     @Override
-    public PageResponse<TenantMaintenanceResponse> getMyMaintenanceRequests(Long tenantId, Pageable pageable) {
+    public PageResponse<TenantMaintenanceResponse> getMyMaintenanceRequests(String tenantId, Pageable pageable) {
         getTenant(tenantId);
         Page<TenantMaintenanceResponse> page = maintenanceRequestRepository
                 .findByTenantIdOrderByRequestedAtDescIdDesc(tenantId, pageable)
@@ -170,7 +170,7 @@ public class TenantPortalServiceImpl implements TenantPortalService {
     }
 
     @Override
-    public TenantMaintenanceResponse createMaintenanceRequest(Long tenantId, TenantMaintenanceRequest request) {
+    public TenantMaintenanceResponse createMaintenanceRequest(String tenantId, TenantMaintenanceRequest request) {
         Contract activeContract = getActiveContract(tenantId);
         if (activeContract == null) {
             throw new AppException(HttpStatus.BAD_REQUEST.value(), "Tenant has no active contract");
@@ -189,14 +189,14 @@ public class TenantPortalServiceImpl implements TenantPortalService {
     }
 
     @Override
-    public TenantUtilityOverviewResponse getUtilities(Long tenantId) {
+    public TenantUtilityOverviewResponse getUtilities(String tenantId) {
         Tenant tenant = getTenant(tenantId);
-        Long roomId = getActiveContract(tenantId) != null ? getActiveContract(tenantId).getRoomId() : null;
+        String roomId = getActiveContract(tenantId) != null ? getActiveContract(tenantId).getRoomId() : null;
         return buildUtilityOverview(tenant, roomId);
     }
 
     @Override
-    public TenantUtilityOverviewResponse updateTemporaryResidence(Long tenantId, TemporaryResidenceRequest request) {
+    public TenantUtilityOverviewResponse updateTemporaryResidence(String tenantId, TemporaryResidenceRequest request) {
         Tenant tenant = getTenant(tenantId);
         boolean declared = Boolean.TRUE.equals(request.getDeclared());
         tenant.setTemporaryResidenceDeclared(declared);
@@ -204,15 +204,15 @@ public class TenantPortalServiceImpl implements TenantPortalService {
                 ? (request.getDeclaredAt() != null ? request.getDeclaredAt() : LocalDate.now())
                 : null);
         tenantRepository.save(tenant);
-        Long roomId = getActiveContract(tenantId) != null ? getActiveContract(tenantId).getRoomId() : null;
+        String roomId = getActiveContract(tenantId) != null ? getActiveContract(tenantId).getRoomId() : null;
         return buildUtilityOverview(tenant, roomId);
     }
 
     @Override
-    public TenantUtilityOverviewResponse registerVehicle(Long tenantId, VehicleRegistrationRequest request) {
+    public TenantUtilityOverviewResponse registerVehicle(String tenantId, VehicleRegistrationRequest request) {
         Tenant tenant = getTenant(tenantId);
         Contract activeContract = getActiveContract(tenantId);
-        Long roomId = activeContract != null ? activeContract.getRoomId() : null;
+        String roomId = activeContract != null ? activeContract.getRoomId() : null;
 
         TenantVehicleRegistration vehicle = new TenantVehicleRegistration();
         vehicle.setTenantId(tenantId);
@@ -227,7 +227,7 @@ public class TenantPortalServiceImpl implements TenantPortalService {
         return buildUtilityOverview(tenant, roomId);
     }
 
-    private TenantUtilityOverviewResponse buildUtilityOverview(Tenant tenant, Long roomId) {
+    private TenantUtilityOverviewResponse buildUtilityOverview(Tenant tenant, String roomId) {
         List<OperationsDocument> docs = operationsDocumentRepository
                 .findByDocumentTypeIgnoreCaseAndActiveTrueOrderByTitleAsc("RULE");
         List<TenantVehicleRegistration> vehicles = vehicleRegistrationRepository
@@ -257,9 +257,9 @@ public class TenantPortalServiceImpl implements TenantPortalService {
                 .build();
     }
 
-    private List<InvoiceManager> getInvoicesByTenant(Long tenantId) {
+    private List<InvoiceManager> getInvoicesByTenant(String tenantId) {
         getTenant(tenantId);
-        List<Long> contractIds = contractRepository.findByTenantIdOrderByStartDateDescIdDesc(tenantId)
+        List<String> contractIds = contractRepository.findByTenantIdOrderByStartDateDescIdDesc(tenantId)
                 .stream()
                 .map(Contract::getId)
                 .toList();
@@ -269,12 +269,12 @@ public class TenantPortalServiceImpl implements TenantPortalService {
         return invoiceRepository.findByContractIdInOrderByDueDateDescIdDesc(contractIds);
     }
 
-    private Tenant getTenant(Long tenantId) {
+    private Tenant getTenant(String tenantId) {
         return tenantRepository.findById(tenantId)
                 .orElseThrow(() -> new AppException(HttpStatus.NOT_FOUND.value(), "Tenant not found"));
     }
 
-    private Contract getActiveContract(Long tenantId) {
+    private Contract getActiveContract(String tenantId) {
         return contractRepository.findFirstByTenantIdAndStatusIgnoreCaseOrderByStartDateDescIdDesc(tenantId, "ACTIVE")
                 .orElse(null);
     }
@@ -292,7 +292,7 @@ public class TenantPortalServiceImpl implements TenantPortalService {
 
     private TenantInvoiceDetailResponse.ServiceItem toServiceItem(
             ServiceUsage usage,
-            Map<Long, ServiceManager> serviceMap
+            Map<String, ServiceManager> serviceMap
     ) {
         ServiceManager serviceManager = usage.getServiceId() != null ? serviceMap.get(usage.getServiceId()) : null;
         Double consumption = (usage.getOldValue() != null && usage.getNewValue() != null)
@@ -333,3 +333,5 @@ public class TenantPortalServiceImpl implements TenantPortalService {
         return value == null ? null : value.trim().toUpperCase();
     }
 }
+
+

@@ -1,6 +1,7 @@
 package com.company.base.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.Data;
 import org.hibernate.annotations.Where;
 
@@ -12,18 +13,14 @@ import java.time.LocalDate;
 @Data
 public class ContractLiquidationHistory extends BaseEntity {
     // Unique liquidation history ID.
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    // Linked contract ID.
-    private Long contractId;
+// Linked contract ID.
+    private String contractId;
 
     // Related room ID.
-    private Long roomId;
+    private String roomId;
 
     // Related tenant ID.
-    private Long tenantId;
+    private String tenantId;
 
     // Liquidation date.
     private LocalDate liquidationDate;
@@ -33,4 +30,11 @@ public class ContractLiquidationHistory extends BaseEntity {
 
     // Additional note.
     private String note;
+
+    @Override
+    protected String getIdPrefix() {
+        return "CLH";
+    }
 }
+
+

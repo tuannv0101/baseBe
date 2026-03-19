@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BillingServiceResponse {
-    private Long id;
+    private String id;
 
     private String name;
 
@@ -24,3 +24,4 @@ public class BillingServiceResponse {
 
     private String unitType;
 }
+

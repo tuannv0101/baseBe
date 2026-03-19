@@ -12,12 +12,13 @@ import java.util.List;
  * Repository for data access operations.
  */
 
-public interface AssetMaintenanceHistoryRepository extends JpaRepository<AssetMaintenanceHistory, Long> {
-    List<AssetMaintenanceHistory> findByRoomAssetIdOrderByMaintenanceDateDescIdDesc(Long roomAssetId);
+public interface AssetMaintenanceHistoryRepository extends JpaRepository<AssetMaintenanceHistory, String> {
+    List<AssetMaintenanceHistory> findByRoomAssetIdOrderByMaintenanceDateDescIdDesc(String roomAssetId);
 
-    List<AssetMaintenanceHistory> findByRoomAssetIdInOrderByMaintenanceDateDescIdDesc(Collection<Long> roomAssetIds);
+    List<AssetMaintenanceHistory> findByRoomAssetIdInOrderByMaintenanceDateDescIdDesc(Collection<String> roomAssetIds);
 
-    Page<AssetMaintenanceHistory> findByRoomAssetIdOrderByMaintenanceDateDescIdDesc(Long roomAssetId, Pageable pageable);
+    Page<AssetMaintenanceHistory> findByRoomAssetIdOrderByMaintenanceDateDescIdDesc(String roomAssetId, Pageable pageable);
 
-    Page<AssetMaintenanceHistory> findByRoomAssetIdInOrderByMaintenanceDateDescIdDesc(Collection<Long> roomAssetIds, Pageable pageable);
+    Page<AssetMaintenanceHistory> findByRoomAssetIdInOrderByMaintenanceDateDescIdDesc(Collection<String> roomAssetIds, Pageable pageable);
 }
+

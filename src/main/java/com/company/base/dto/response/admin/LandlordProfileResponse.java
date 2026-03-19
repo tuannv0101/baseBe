@@ -15,9 +15,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LandlordProfileResponse {
-    private Long id;
+    private String id;
 
-    private Long userId;
+    private String userId;
 
     private String username;
 
@@ -35,3 +35,4 @@ public class LandlordProfileResponse {
 
     private String note;
 }
+

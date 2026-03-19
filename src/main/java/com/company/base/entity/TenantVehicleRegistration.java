@@ -1,6 +1,7 @@
 package com.company.base.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.Data;
 import org.hibernate.annotations.Where;
 
@@ -12,15 +13,11 @@ import java.time.LocalDate;
 @Data
 public class TenantVehicleRegistration extends BaseEntity {
     // ID duy nhất của đăng ký phương tiện.
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    // ID người thuê đăng ký phương tiện.
-    private Long tenantId;
+// ID người thuê đăng ký phương tiện.
+    private String tenantId;
 
     // ID phòng người thuê đang ở (liên quan đến đăng ký).
-    private Long roomId;
+    private String roomId;
 
     // Loại phương tiện: MOTORBIKE, CAR...
     private String vehicleType;
@@ -36,4 +33,11 @@ public class TenantVehicleRegistration extends BaseEntity {
 
     // Ghi chú bổ sung.
     private String note;
+
+    @Override
+    protected String getIdPrefix() {
+        return "TVR";
+    }
 }
+
+

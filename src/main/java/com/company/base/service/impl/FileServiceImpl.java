@@ -18,11 +18,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.UUID;
-
-/**
- * Service implementation containing business logic for this module.
- */
 
 @Service
 @RequiredArgsConstructor
@@ -35,9 +32,18 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public FileMetadata upload(MultipartFile file) {
+        return upload(file, null);
+    }
+
+    @Override
+    public FileMetadata upload(MultipartFile file, String refId) {
+        if (file == null || file.isEmpty()) {
+            throw new AppException(400, "File is required");
+        }
+
         try {
             String originalFileName = StringUtils.cleanPath(file.getOriginalFilename());
-            String fileName = UUID.randomUUID().toString() + "_" + originalFileName;
+            String fileName = UUID.randomUUID() + "_" + originalFileName;
             Path targetLocation = Paths.get(uploadDir).toAbsolutePath().normalize().resolve(fileName);
 
             Files.createDirectories(targetLocation.getParent());
@@ -48,6 +54,7 @@ public class FileServiceImpl implements FileService {
                     .fileType(file.getContentType())
                     .fileSize(file.getSize())
                     .filePath(targetLocation.toString())
+                    .refId(StringUtils.hasText(refId) ? refId.trim() : null)
                     .build();
 
             return fileRepository.save(metadata);
@@ -57,21 +64,35 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public Resource download(Long fileId) {
+    public List<FileMetadata> upload(List<MultipartFile> files, String refId) {
+        if (files == null || files.isEmpty()) {
+            throw new AppException(400, "At least one file is required");
+        }
+
+        return files.stream()
+                .filter(file -> file != null && !file.isEmpty())
+                .map(file -> upload(file, refId))
+                .toList();
+    }
+
+    @Override
+    public Resource download(String fileId) {
         FileMetadata metadata = fileRepository.findById(fileId)
                 .orElseThrow(() -> new AppException(404, "File not found"));
         try {
             Path filePath = Paths.get(metadata.getFilePath()).normalize();
             Resource resource = new UrlResource(filePath.toUri());
-            if (resource.exists()) return resource;
-            else throw new AppException(404, "File not found on disk");
+            if (resource.exists()) {
+                return resource;
+            }
+            throw new AppException(404, "File not found on disk");
         } catch (MalformedURLException ex) {
             throw new AppException(500, "File path is invalid");
         }
     }
 
     @Override
-    public void delete(Long fileId) {
+    public void delete(String fileId) {
         FileMetadata metadata = fileRepository.findById(fileId)
                 .orElseThrow(() -> new AppException(404, "File not found"));
         try {

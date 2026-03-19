@@ -8,6 +8,7 @@ import java.util.List;
 /**
  * Repository for data access operations.
  */
-public interface TenantVehicleRegistrationRepository extends JpaRepository<TenantVehicleRegistration, Long> {
-    List<TenantVehicleRegistration> findByTenantIdOrderByRegisteredDateDescIdDesc(Long tenantId);
+public interface TenantVehicleRegistrationRepository extends JpaRepository<TenantVehicleRegistration, String> {
+    List<TenantVehicleRegistration> findByTenantIdOrderByRegisteredDateDescIdDesc(String tenantId);
 }
+

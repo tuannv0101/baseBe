@@ -13,9 +13,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RoomBasicInfoResponse {
-    private Long roomId;
+    private String roomId;
 
-    private Long propertyId;
+    private String propertyId;
 
     private Integer floor;
 
@@ -33,3 +33,4 @@ public class RoomBasicInfoResponse {
 
     private String tenantIdCardNumber;
 }
+

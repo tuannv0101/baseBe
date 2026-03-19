@@ -1,6 +1,7 @@
 package com.company.base.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.Data;
 import org.hibernate.annotations.Where;
 
@@ -10,12 +11,8 @@ import org.hibernate.annotations.Where;
 @Data
 public class LandlordProfile extends BaseEntity {
     // ID duy nhất của hồ sơ chủ nhà.
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    // ID tài khoản người dùng liên kết (bảng users).
-    private Long userId;
+// ID tài khoản người dùng liên kết (bảng users).
+    private String userId;
 
     // Tên cá nhân/doanh nghiệp cho mục đích hiển thị/xuất hóa đơn (nếu có).
     private String businessName;
@@ -28,4 +25,11 @@ public class LandlordProfile extends BaseEntity {
 
     // Ghi chú nội bộ.
     private String note;
+
+    @Override
+    protected String getIdPrefix() {
+        return "LPR";
+    }
 }
+
+

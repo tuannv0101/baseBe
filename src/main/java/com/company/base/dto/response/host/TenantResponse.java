@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TenantResponse {
-    private Long id;
+    private String id;
 
     private String fullName;
 
@@ -26,7 +26,7 @@ public class TenantResponse {
 
     private String idCardNumber;
 
-    private Long portraitImageId;
+    private String portraitImageId;
 
     private String portraitImageUrl;
 
@@ -34,3 +34,4 @@ public class TenantResponse {
 
     private LocalDate temporaryResidenceDeclaredAt;
 }
+

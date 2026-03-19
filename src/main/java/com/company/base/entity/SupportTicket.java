@@ -1,6 +1,7 @@
 package com.company.base.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.Data;
 import org.hibernate.annotations.Where;
 
@@ -10,12 +11,8 @@ import org.hibernate.annotations.Where;
 @Data
 public class SupportTicket extends BaseEntity {
     // ID duy nhất của ticket hỗ trợ.
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    // ID hồ sơ chủ nhà gửi yêu cầu hỗ trợ.
-    private Long landlordProfileId;
+// ID hồ sơ chủ nhà gửi yêu cầu hỗ trợ.
+    private String landlordProfileId;
 
     // Tiêu đề yêu cầu hỗ trợ.
     private String title;
@@ -34,4 +31,11 @@ public class SupportTicket extends BaseEntity {
 
     // Ghi chú kết quả/hướng xử lý sau khi giải quyết.
     private String resolutionNote;
+
+    @Override
+    protected String getIdPrefix() {
+        return "STK";
+    }
 }
+
+

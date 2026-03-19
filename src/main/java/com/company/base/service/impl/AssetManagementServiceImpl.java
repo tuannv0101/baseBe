@@ -44,7 +44,7 @@ public class AssetManagementServiceImpl implements AssetManagementService {
     }
 
     @Override
-    public EquipmentCategoryResponse updateCategory(Long id, EquipmentCategoryRequest request) {
+    public EquipmentCategoryResponse updateCategory(String id, EquipmentCategoryRequest request) {
         EquipmentCategory entity = getCategoryEntity(id);
         entity.setName(request.getName());
         entity.setBrand(request.getBrand());
@@ -52,7 +52,7 @@ public class AssetManagementServiceImpl implements AssetManagementService {
     }
 
     @Override
-    public EquipmentCategoryResponse getCategoryById(Long id) {
+    public EquipmentCategoryResponse getCategoryById(String id) {
         return toCategoryResponse(getCategoryEntity(id));
     }
 
@@ -64,7 +64,7 @@ public class AssetManagementServiceImpl implements AssetManagementService {
     }
 
     @Override
-    public void deleteCategory(Long id) {
+    public void deleteCategory(String id) {
         EquipmentCategory entity = getCategoryEntity(id);
         entity.setDelYn("Y");
         equipmentCategoryRepository.save(entity);
@@ -80,7 +80,7 @@ public class AssetManagementServiceImpl implements AssetManagementService {
     }
 
     @Override
-    public RoomAssetResponse updateRoomAsset(Long id, RoomAssetRequest request) {
+    public RoomAssetResponse updateRoomAsset(String id, RoomAssetRequest request) {
         RoomAsset entity = getRoomAssetEntity(id);
         entity.setRoomId(request.getRoomId());
         entity.setSerialNumber(request.getSerialNumber());
@@ -89,26 +89,26 @@ public class AssetManagementServiceImpl implements AssetManagementService {
     }
 
     @Override
-    public RoomAssetResponse getRoomAssetById(Long id) {
+    public RoomAssetResponse getRoomAssetById(String id) {
         return toRoomAssetResponse(getRoomAssetEntity(id));
     }
 
     @Override
-    public PageResponse<RoomAssetResponse> getRoomAssetsByRoom(Long roomId, Pageable pageable) {
+    public PageResponse<RoomAssetResponse> getRoomAssetsByRoom(String roomId, Pageable pageable) {
         Page<RoomAssetResponse> page = roomAssetRepository.findByRoomIdOrderByIdAsc(roomId, pageable)
                 .map(this::toRoomAssetResponse);
         return PageResponse.of(page);
     }
 
     @Override
-    public void deleteRoomAsset(Long id) {
+    public void deleteRoomAsset(String id) {
         RoomAsset entity = getRoomAssetEntity(id);
         entity.setDelYn("Y");
         roomAssetRepository.save(entity);
     }
 
     @Override
-    public AssetMaintenanceHistoryResponse createMaintenanceHistory(Long roomAssetId, AssetMaintenanceHistoryRequest request) {
+    public AssetMaintenanceHistoryResponse createMaintenanceHistory(String roomAssetId, AssetMaintenanceHistoryRequest request) {
         if (!roomAssetRepository.existsById(roomAssetId)) {
             throw new AppException(HttpStatus.NOT_FOUND.value(), "Room asset not found");
         }
@@ -120,14 +120,14 @@ public class AssetManagementServiceImpl implements AssetManagementService {
     }
 
     @Override
-    public AssetMaintenanceHistoryResponse updateMaintenanceHistory(Long id, AssetMaintenanceHistoryRequest request) {
+    public AssetMaintenanceHistoryResponse updateMaintenanceHistory(String id, AssetMaintenanceHistoryRequest request) {
         AssetMaintenanceHistory entity = getMaintenanceEntity(id);
         applyMaintenanceUpdate(entity, request);
         return toMaintenanceResponse(maintenanceHistoryRepository.save(entity));
     }
 
     @Override
-    public PageResponse<AssetMaintenanceHistoryResponse> getMaintenanceHistoryByRoomAsset(Long roomAssetId, Pageable pageable) {
+    public PageResponse<AssetMaintenanceHistoryResponse> getMaintenanceHistoryByRoomAsset(String roomAssetId, Pageable pageable) {
         if (!roomAssetRepository.existsById(roomAssetId)) {
             throw new AppException(HttpStatus.NOT_FOUND.value(), "Room asset not found");
         }
@@ -138,8 +138,8 @@ public class AssetManagementServiceImpl implements AssetManagementService {
     }
 
     @Override
-    public PageResponse<AssetMaintenanceHistoryResponse> getMaintenanceHistoryByRoom(Long roomId, Pageable pageable) {
-        List<Long> roomAssetIds = roomAssetRepository.findByRoomId(roomId).stream()
+    public PageResponse<AssetMaintenanceHistoryResponse> getMaintenanceHistoryByRoom(String roomId, Pageable pageable) {
+        List<String> roomAssetIds = roomAssetRepository.findByRoomId(roomId).stream()
                 .map(RoomAsset::getId)
                 .toList();
         if (roomAssetIds.isEmpty()) {
@@ -161,17 +161,17 @@ public class AssetManagementServiceImpl implements AssetManagementService {
         entity.setNote(request.getNote());
     }
 
-    private EquipmentCategory getCategoryEntity(Long id) {
+    private EquipmentCategory getCategoryEntity(String id) {
         return equipmentCategoryRepository.findById(id)
                 .orElseThrow(() -> new AppException(HttpStatus.NOT_FOUND.value(), "Equipment category not found"));
     }
 
-    private RoomAsset getRoomAssetEntity(Long id) {
+    private RoomAsset getRoomAssetEntity(String id) {
         return roomAssetRepository.findById(id)
                 .orElseThrow(() -> new AppException(HttpStatus.NOT_FOUND.value(), "Room asset not found"));
     }
 
-    private AssetMaintenanceHistory getMaintenanceEntity(Long id) {
+    private AssetMaintenanceHistory getMaintenanceEntity(String id) {
         return maintenanceHistoryRepository.findById(id)
                 .orElseThrow(() -> new AppException(HttpStatus.NOT_FOUND.value(), "Maintenance history not found"));
     }
@@ -207,3 +207,5 @@ public class AssetManagementServiceImpl implements AssetManagementService {
                 .build();
     }
 }
+
+

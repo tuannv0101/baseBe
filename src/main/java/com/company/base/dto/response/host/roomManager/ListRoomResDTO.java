@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ListRoomResDTO {
-    private Long id;
+    private String id;
 
     private String roomNumber;
 
@@ -26,3 +26,4 @@ public class ListRoomResDTO {
 
     private String statusRoom;
 }
+

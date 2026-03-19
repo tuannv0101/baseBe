@@ -23,12 +23,12 @@ public interface PropertyManagementService {
     /**
      * Cáº­p nháº­t thÃ´ng tin tÃ²a nhÃ /báº¥t Ä‘á»™ng sáº£n theo ID.
      */
-    PropertyResponse updateProperty(Long id, PropertyRequest request);
+    PropertyResponse updateProperty(String id, PropertyRequest request);
 
     /**
      * Láº¥y chi tiáº¿t tÃ²a nhÃ /báº¥t Ä‘á»™ng sáº£n theo ID.
      */
-    PropertyResponse getPropertyById(Long id);
+    PropertyResponse getPropertyById(String id);
 
     /**
      * Láº¥y danh sÃ¡ch toÃ n bá»™ tÃ²a nhÃ /báº¥t Ä‘á»™ng sáº£n.
@@ -42,11 +42,12 @@ public interface PropertyManagementService {
     /**
      * XÃ³a tÃ²a nhÃ /báº¥t Ä‘á»™ng sáº£n theo ID.
      */
-    void deleteProperty(Long id);
+    void deleteProperty(String id);
 
     /**
      * Láº¥y ma tráº­n phÃ²ng (táº§ng/phÃ²ng/tráº¡ng thÃ¡i) theo propertyId Ä‘á»ƒ hiá»ƒn thá»‹ dáº¡ng lÆ°á»›i.
      */
-    PageResponse<RoomBasicInfoResponse> getRoomMatrix(Long propertyId, Pageable pageable);
+    PageResponse<RoomBasicInfoResponse> getRoomMatrix(String propertyId, Pageable pageable);
 }
+
 

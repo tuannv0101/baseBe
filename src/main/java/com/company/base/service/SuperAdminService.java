@@ -32,17 +32,17 @@ public interface SuperAdminService {
     /**
      * Duyệt hồ sơ chủ nhà (chuyển sang trạng thái được phép sử dụng hệ thống).
      */
-    LandlordProfileResponse approveLandlord(Long landlordProfileId);
+    LandlordProfileResponse approveLandlord(String landlordProfileId);
 
     /**
      * Khóa chủ nhà (thường do vi phạm/đang điều tra), kèm ghi chú.
      */
-    LandlordProfileResponse lockLandlord(Long landlordProfileId, String note);
+    LandlordProfileResponse lockLandlord(String landlordProfileId, String note);
 
     /**
      * Mở khóa chủ nhà.
      */
-    LandlordProfileResponse unlockLandlord(Long landlordProfileId);
+    LandlordProfileResponse unlockLandlord(String landlordProfileId);
 
     /**
      * Tạo mới gói đăng ký (subscription plan).
@@ -52,7 +52,7 @@ public interface SuperAdminService {
     /**
      * Cập nhật gói đăng ký theo ID.
      */
-    SubscriptionPlanResponse updatePlan(Long planId, SubscriptionPlanRequest request);
+    SubscriptionPlanResponse updatePlan(String planId, SubscriptionPlanRequest request);
 
     /**
      * Lấy danh sách các gói đăng ký.
@@ -62,7 +62,7 @@ public interface SuperAdminService {
     /**
      * Xóa gói đăng ký theo ID.
      */
-    void deletePlan(Long planId);
+    void deletePlan(String planId);
 
     /**
      * Tạo đăng ký gói cho một chủ nhà.
@@ -72,7 +72,7 @@ public interface SuperAdminService {
     /**
      * Lấy danh sách đăng ký gói theo chủ nhà (nếu truyền landlordProfileId).
      */
-    PageResponse<LandlordSubscriptionResponse> getSubscriptions(Long landlordProfileId, Pageable pageable);
+    PageResponse<LandlordSubscriptionResponse> getSubscriptions(String landlordProfileId, Pageable pageable);
 
     /**
      * Tạo mới hoặc cập nhật (upsert) cấu hình hệ thống theo configKey.
@@ -92,10 +92,11 @@ public interface SuperAdminService {
     /**
      * Cập nhật ticket hỗ trợ (trạng thái, người xử lý, ghi chú...).
      */
-    SupportTicketResponse updateSupportTicket(Long ticketId, SupportTicketUpdateRequest request);
+    SupportTicketResponse updateSupportTicket(String ticketId, SupportTicketUpdateRequest request);
 
     /**
      * Lấy danh sách ticket hỗ trợ (có thể lọc theo trạng thái).
      */
     PageResponse<SupportTicketResponse> getSupportTickets(String status, Pageable pageable);
 }
+

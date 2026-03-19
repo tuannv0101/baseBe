@@ -16,11 +16,11 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LandlordSubscriptionResponse {
-    private Long id;
+    private String id;
 
-    private Long landlordProfileId;
+    private String landlordProfileId;
 
-    private Long planId;
+    private String planId;
 
     private LocalDate startDate;
 
@@ -30,3 +30,4 @@ public class LandlordSubscriptionResponse {
 
     private BigDecimal amountPaid;
 }
+

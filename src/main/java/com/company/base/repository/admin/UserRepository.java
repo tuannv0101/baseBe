@@ -9,6 +9,7 @@ import java.util.Optional;
  * Repository for data access operations.
  */
 
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, String> {
     Optional<User> findByUsername(String username);
 }
+

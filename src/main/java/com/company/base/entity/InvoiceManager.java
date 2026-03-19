@@ -1,6 +1,7 @@
 package com.company.base.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.Data;
 import org.hibernate.annotations.Where;
 
@@ -14,12 +15,8 @@ import java.time.LocalDateTime;
 @Data
 public class InvoiceManager extends BaseEntity {
     // ID duy nhất của hóa đơn.
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    // ID hợp đồng liên quan.
-    private Long contractId;
+// ID hợp đồng liên quan.
+    private String contractId;
 
     // Mã hóa đơn nghiệp vụ.
     private String invoiceCode;
@@ -35,4 +32,11 @@ public class InvoiceManager extends BaseEntity {
 
     // Thời điểm thanh toán thực tế.
     private LocalDateTime paymentDate;
+
+    @Override
+    protected String getIdPrefix() {
+        return "INV";
+    }
 }
+
+

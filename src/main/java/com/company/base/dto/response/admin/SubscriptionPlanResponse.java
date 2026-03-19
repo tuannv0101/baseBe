@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SubscriptionPlanResponse {
-    private Long id;
+    private String id;
 
     private String code;
 
@@ -29,3 +29,4 @@ public class SubscriptionPlanResponse {
 
     private String description;
 }
+

@@ -31,15 +31,15 @@ public class DebtReportResponse {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class DebtItem {
-        private Long invoiceId;
+        private String invoiceId;
 
         private String invoiceCode;
 
-        private Long contractId;
+        private String contractId;
 
-        private Long tenantId;
+        private String tenantId;
 
-        private Long roomId;
+        private String roomId;
 
         private BigDecimal amount;
 
@@ -50,3 +50,4 @@ public class DebtReportResponse {
         private Long daysPastDue;
     }
 }
+

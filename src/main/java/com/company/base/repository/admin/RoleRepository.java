@@ -9,6 +9,7 @@ import java.util.Optional;
  * Repository for data access operations.
  */
 
-public interface RoleRepository extends JpaRepository<Role, Long> {
+public interface RoleRepository extends JpaRepository<Role, String> {
     Optional<Role> findByName(String name);
 }
+

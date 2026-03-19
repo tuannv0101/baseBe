@@ -12,13 +12,13 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RoomDetailResDTO {
-    private Long roomId;
+    private String roomId;
 
-    private Long propertyId;
+    private String propertyId;
     private String propertyName;
     private String propertyAddress;
 
-    private Long tenantId;
+    private String tenantId;
     private String tenantFullName;
 
     private Float area;
@@ -30,3 +30,4 @@ public class RoomDetailResDTO {
 
     private List<RoomAssetDetailResDTO> assets;
 }
+

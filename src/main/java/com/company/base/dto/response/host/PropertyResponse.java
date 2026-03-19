@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PropertyResponse {
-    private Long id;
+    private String id;
 
     private String name;
 
@@ -29,3 +29,4 @@ public class PropertyResponse {
 
     private Long availableRooms;    // đang trống
 }
+

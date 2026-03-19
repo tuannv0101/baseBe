@@ -18,9 +18,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class InvoiceResponse {
-    private Long id;
+    private String id;
 
-    private Long contractId;
+    private String contractId;
 
     private String invoiceCode;
 
@@ -32,3 +32,4 @@ public class InvoiceResponse {
 
     private LocalDateTime paymentDate;
 }
+

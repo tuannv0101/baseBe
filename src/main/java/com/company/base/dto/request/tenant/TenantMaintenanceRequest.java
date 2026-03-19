@@ -19,5 +19,6 @@ public class TenantMaintenanceRequest {
 
     private String priority;
 
-    private Long attachmentFileId;
+    private String attachmentFileId;
 }
+

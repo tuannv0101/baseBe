@@ -34,14 +34,14 @@ public class OperationsManagementController {
 
     @PutMapping("/maintenance-requests/{id}/assign")
     public ApiResponse<MaintenanceRequestResponse> assignMaintenanceRequest(
-            @PathVariable Long id,
+            @PathVariable String id,
             @RequestBody MaintenanceAssignmentRequest request
     ) {
         return ApiResponse.success(operationsManagementService.assignMaintenanceRequest(id, request));
     }
 
     @GetMapping("/maintenance-requests/{id}")
-    public ApiResponse<MaintenanceRequestResponse> getMaintenanceRequestById(@PathVariable Long id) {
+    public ApiResponse<MaintenanceRequestResponse> getMaintenanceRequestById(@PathVariable String id) {
         return ApiResponse.success(operationsManagementService.getMaintenanceRequestById(id));
     }
 
@@ -59,12 +59,12 @@ public class OperationsManagementController {
     }
 
     @PutMapping("/expenses/{id}")
-    public ApiResponse<ExpenseRecordResponse> updateExpenseRecord(@PathVariable Long id, @RequestBody ExpenseRecordRequest request) {
+    public ApiResponse<ExpenseRecordResponse> updateExpenseRecord(@PathVariable String id, @RequestBody ExpenseRecordRequest request) {
         return ApiResponse.success(operationsManagementService.updateExpenseRecord(id, request));
     }
 
     @GetMapping("/expenses/{id}")
-    public ApiResponse<ExpenseRecordResponse> getExpenseRecordById(@PathVariable Long id) {
+    public ApiResponse<ExpenseRecordResponse> getExpenseRecordById(@PathVariable String id) {
         return ApiResponse.success(operationsManagementService.getExpenseRecordById(id));
     }
 
@@ -78,7 +78,7 @@ public class OperationsManagementController {
     }
 
     @PutMapping("/expenses/{id}/delete")
-    public ApiResponse<Void> deleteExpenseRecord(@PathVariable Long id) {
+    public ApiResponse<Void> deleteExpenseRecord(@PathVariable String id) {
         operationsManagementService.deleteExpenseRecord(id);
         return ApiResponse.success(null);
     }
@@ -89,12 +89,12 @@ public class OperationsManagementController {
     }
 
     @PutMapping("/documents/{id}")
-    public ApiResponse<OperationsDocumentResponse> updateDocument(@PathVariable Long id, @RequestBody OperationsDocumentRequest request) {
+    public ApiResponse<OperationsDocumentResponse> updateDocument(@PathVariable String id, @RequestBody OperationsDocumentRequest request) {
         return ApiResponse.success(operationsManagementService.updateDocument(id, request));
     }
 
     @GetMapping("/documents/{id}")
-    public ApiResponse<OperationsDocumentResponse> getDocumentById(@PathVariable Long id) {
+    public ApiResponse<OperationsDocumentResponse> getDocumentById(@PathVariable String id) {
         return ApiResponse.success(operationsManagementService.getDocumentById(id));
     }
 
@@ -107,8 +107,9 @@ public class OperationsManagementController {
     }
 
     @PutMapping("/documents/{id}/delete")
-    public ApiResponse<Void> deleteDocument(@PathVariable Long id) {
+    public ApiResponse<Void> deleteDocument(@PathVariable String id) {
         operationsManagementService.deleteDocument(id);
         return ApiResponse.success(null);
     }
 }
+

@@ -14,11 +14,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ServiceUsageResponse {
-    private Long id;
+    private String id;
 
-    private Long roomId;
+    private String roomId;
 
-    private Long serviceId;
+    private String serviceId;
 
     private Integer month;
 
@@ -30,3 +30,4 @@ public class ServiceUsageResponse {
 
     private Double consumption;
 }
+

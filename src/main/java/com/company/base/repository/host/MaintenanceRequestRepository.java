@@ -12,18 +12,19 @@ import java.util.List;
  * Repository for data access operations.
  */
 
-public interface MaintenanceRequestRepository extends JpaRepository<MaintenanceRequest, Long> {
+public interface MaintenanceRequestRepository extends JpaRepository<MaintenanceRequest, String> {
     List<MaintenanceRequest> findAllByOrderByRequestedAtDescIdDesc();
 
     List<MaintenanceRequest> findByStatusIgnoreCaseOrderByRequestedAtDescIdDesc(String status);
 
     List<MaintenanceRequest> findTop20ByStatusInOrderByRequestedAtDescIdDesc(Collection<String> statuses);
 
-    List<MaintenanceRequest> findByTenantIdOrderByRequestedAtDescIdDesc(Long tenantId);
+    List<MaintenanceRequest> findByTenantIdOrderByRequestedAtDescIdDesc(String tenantId);
 
     Page<MaintenanceRequest> findAllByOrderByRequestedAtDescIdDesc(Pageable pageable);
 
     Page<MaintenanceRequest> findByStatusIgnoreCaseOrderByRequestedAtDescIdDesc(String status, Pageable pageable);
 
-    Page<MaintenanceRequest> findByTenantIdOrderByRequestedAtDescIdDesc(Long tenantId, Pageable pageable);
+    Page<MaintenanceRequest> findByTenantIdOrderByRequestedAtDescIdDesc(String tenantId, Pageable pageable);
 }
+

@@ -33,12 +33,12 @@ public class TenancyController {
     }
 
     @PutMapping("/tenants/{id}")
-    public ApiResponse<TenantResponse> updateTenant(@PathVariable Long id, @RequestBody TenantRequest request) {
+    public ApiResponse<TenantResponse> updateTenant(@PathVariable String id, @RequestBody TenantRequest request) {
         return ApiResponse.success(tenancyService.updateTenant(id, request));
     }
 
     @GetMapping("/tenants/{id}")
-    public ApiResponse<TenantResponse> getTenantById(@PathVariable Long id) {
+    public ApiResponse<TenantResponse> getTenantById(@PathVariable String id) {
         return ApiResponse.success(tenancyService.getTenantById(id));
     }
 
@@ -53,14 +53,14 @@ public class TenancyController {
     }
 
     @PutMapping("/tenants/{id}/delete")
-    public ApiResponse<Void> deleteTenant(@PathVariable Long id) {
+    public ApiResponse<Void> deleteTenant(@PathVariable String id) {
         tenancyService.deleteTenant(id);
         return ApiResponse.success(null);
     }
 
     @PostMapping("/tenants/{id}/portrait")
     public ApiResponse<TenantResponse> uploadTenantPortrait(
-            @PathVariable Long id,
+            @PathVariable String id,
             @RequestParam("file") MultipartFile file
     ) {
         return ApiResponse.success(tenancyService.uploadTenantPortrait(id, file));
@@ -80,18 +80,21 @@ public class TenancyController {
     }
 
     @PutMapping("/contracts/{id}")
-    public ApiResponse<ContractResponse> updateContract(@PathVariable Long id, @RequestBody ContractRequest request) {
+    public ApiResponse<ContractResponse> updateContract(@PathVariable String id, @RequestBody ContractRequest request) {
         return ApiResponse.success(tenancyService.updateContract(id, request));
     }
 
     @GetMapping("/contracts/{id}")
-    public ApiResponse<ContractResponse> getContractById(@PathVariable Long id) {
+    public ApiResponse<ContractResponse> getContractById(@PathVariable String id) {
         return ApiResponse.success(tenancyService.getContractById(id));
     }
 
     @GetMapping("/contracts")
-    public ApiResponse<PageResponse<ContractResponse>> getAllContracts(@PageableDefault(size = 20) Pageable pageable) {
-        return ApiResponse.success(tenancyService.getAllContracts(pageable));
+    public ApiResponse<PageResponse<ContractResponse>> getAllContracts(
+            @RequestParam(required = false) String textSearch,
+            @PageableDefault(size = 20) Pageable pageable
+    ) {
+        return ApiResponse.success(tenancyService.getAllContracts(textSearch, pageable));
     }
 
     @GetMapping("/contracts/effective")
@@ -105,14 +108,14 @@ public class TenancyController {
     }
 
     @PutMapping("/contracts/{id}/delete")
-    public ApiResponse<Void> deleteContract(@PathVariable Long id) {
+    public ApiResponse<Void> deleteContract(@PathVariable String id) {
         tenancyService.deleteContract(id);
         return ApiResponse.success(null);
     }
 
     @PostMapping("/contracts/{id}/liquidate")
     public ApiResponse<ContractLiquidationResponse> liquidateContract(
-            @PathVariable Long id,
+            @PathVariable String id,
             @RequestBody ContractLiquidationRequest request
     ) {
         return ApiResponse.success(tenancyService.liquidateContract(id, request));
@@ -123,3 +126,4 @@ public class TenancyController {
         return ApiResponse.success(tenancyService.getLiquidationHistory(pageable));
     }
 }
+

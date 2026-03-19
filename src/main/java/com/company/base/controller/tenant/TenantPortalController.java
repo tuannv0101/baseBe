@@ -35,13 +35,13 @@ public class TenantPortalController {
     private final TenantPortalService tenantPortalService;
 
     @GetMapping("/dashboard")
-    public ApiResponse<TenantDashboardResponse> getDashboard(@RequestParam Long tenantId) {
+    public ApiResponse<TenantDashboardResponse> getDashboard(@RequestParam String tenantId) {
         return ApiResponse.success(tenantPortalService.getDashboard(tenantId));
     }
 
     @GetMapping("/invoices")
     public ApiResponse<PageResponse<TenantInvoiceSummaryResponse>> getMyInvoices(
-            @RequestParam Long tenantId,
+            @RequestParam String tenantId,
             @PageableDefault(size = 20) Pageable pageable
     ) {
         return ApiResponse.success(tenantPortalService.getMyInvoices(tenantId, pageable));
@@ -49,15 +49,15 @@ public class TenantPortalController {
 
     @GetMapping("/invoices/{invoiceId}")
     public ApiResponse<TenantInvoiceDetailResponse> getInvoiceDetail(
-            @RequestParam Long tenantId,
-            @PathVariable Long invoiceId
+            @RequestParam String tenantId,
+            @PathVariable String invoiceId
     ) {
         return ApiResponse.success(tenantPortalService.getInvoiceDetail(tenantId, invoiceId));
     }
 
     @GetMapping("/maintenance")
     public ApiResponse<PageResponse<TenantMaintenanceResponse>> getMyMaintenanceRequests(
-            @RequestParam Long tenantId,
+            @RequestParam String tenantId,
             @PageableDefault(size = 20) Pageable pageable
     ) {
         return ApiResponse.success(tenantPortalService.getMyMaintenanceRequests(tenantId, pageable));
@@ -65,20 +65,20 @@ public class TenantPortalController {
 
     @PostMapping("/maintenance")
     public ApiResponse<TenantMaintenanceResponse> createMaintenanceRequest(
-            @RequestParam Long tenantId,
+            @RequestParam String tenantId,
             @RequestBody TenantMaintenanceRequest request
     ) {
         return ApiResponse.success(tenantPortalService.createMaintenanceRequest(tenantId, request));
     }
 
     @GetMapping("/utilities")
-    public ApiResponse<TenantUtilityOverviewResponse> getUtilities(@RequestParam Long tenantId) {
+    public ApiResponse<TenantUtilityOverviewResponse> getUtilities(@RequestParam String tenantId) {
         return ApiResponse.success(tenantPortalService.getUtilities(tenantId));
     }
 
     @PutMapping("/utilities/temporary-residence")
     public ApiResponse<TenantUtilityOverviewResponse> updateTemporaryResidence(
-            @RequestParam Long tenantId,
+            @RequestParam String tenantId,
             @RequestBody TemporaryResidenceRequest request
     ) {
         return ApiResponse.success(tenantPortalService.updateTemporaryResidence(tenantId, request));
@@ -86,9 +86,10 @@ public class TenantPortalController {
 
     @PostMapping("/utilities/vehicles")
     public ApiResponse<TenantUtilityOverviewResponse> registerVehicle(
-            @RequestParam Long tenantId,
+            @RequestParam String tenantId,
             @RequestBody VehicleRegistrationRequest request
     ) {
         return ApiResponse.success(tenantPortalService.registerVehicle(tenantId, request));
     }
 }
+

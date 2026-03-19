@@ -17,9 +17,9 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AssetMaintenanceHistoryResponse {
-    private Long id;
+    private String id;
 
-    private Long roomAssetId;
+    private String roomAssetId;
 
     private LocalDate maintenanceDate;
 
@@ -35,3 +35,4 @@ public class AssetMaintenanceHistoryResponse {
 
     private String note;
 }
+

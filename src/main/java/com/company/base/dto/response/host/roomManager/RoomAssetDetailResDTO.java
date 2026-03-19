@@ -10,10 +10,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RoomAssetDetailResDTO {
-    private Long id;
+    private String id;
     private String name;
     private String brand;
     private String serialNumber;
     private String status;
 }
+
 

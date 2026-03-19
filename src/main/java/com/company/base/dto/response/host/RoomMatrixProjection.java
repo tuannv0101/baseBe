@@ -5,9 +5,9 @@ package com.company.base.dto.response.host;
  * Spring Data maps column aliases (snake_case ok) to these getters.
  */
 public interface RoomMatrixProjection {
-    Long getRoomId();
+    String getRoomId();
 
-    Long getPropertyId();
+    String getPropertyId();
 
     Integer getFloor();
 
@@ -25,4 +25,5 @@ public interface RoomMatrixProjection {
 
     String getTenantIdCardNumber();
 }
+
 

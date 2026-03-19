@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RoomManagerCreateReqDTO {
-    private Long propertiesId;
+    private String propertiesId;
 
     private Float area;
 
@@ -28,3 +28,4 @@ public class RoomManagerCreateReqDTO {
 
     private List<RoomAssetCreateReqDTO> roomAssetCreateReqDTOS;
 }
+

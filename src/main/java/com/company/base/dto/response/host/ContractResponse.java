@@ -17,11 +17,21 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ContractResponse {
-    private Long id;
+    private String id;
 
-    private Long roomId;
+    private String contractCode;
 
-    private Long tenantId;
+    private String roomId;
+
+    private String roomNumber;
+
+    private String propertyName;
+
+    private String tenantId;
+
+    private String tenantName;
+
+    private String tenantIdCardNumber;
 
     private LocalDate startDate;
 
@@ -31,5 +41,8 @@ public class ContractResponse {
 
     private BigDecimal actualRent;
 
+    private BigDecimal rentAmount;
+
     private String status;
 }
+

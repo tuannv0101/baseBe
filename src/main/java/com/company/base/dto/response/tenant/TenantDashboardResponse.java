@@ -18,9 +18,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TenantDashboardResponse {
-    private Long tenantId;
+    private String tenantId;
 
-    private Long roomId;
+    private String roomId;
 
     private BigDecimal amountDueNow;
 
@@ -33,7 +33,7 @@ public class TenantDashboardResponse {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class AnnouncementItem {
-        private Long id;
+        private String id;
 
         private String title;
 
@@ -42,3 +42,4 @@ public class TenantDashboardResponse {
         private LocalDateTime createdAt;
     }
 }
+

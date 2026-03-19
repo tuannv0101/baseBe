@@ -11,9 +11,10 @@ import java.util.List;
 /**
  * Repository for data access operations.
  */
-public interface LandlordSubscriptionRepository extends JpaRepository<LandlordSubscription, Long> {
-    List<LandlordSubscription> findByLandlordProfileIdOrderByStartDateDescIdDesc(Long landlordProfileId);
+public interface LandlordSubscriptionRepository extends JpaRepository<LandlordSubscription, String> {
+    List<LandlordSubscription> findByLandlordProfileIdOrderByStartDateDescIdDesc(String landlordProfileId);
     List<LandlordSubscription> findByStartDateBetweenOrderByStartDateAscIdAsc(LocalDate fromDate, LocalDate toDate);
 
-    Page<LandlordSubscription> findByLandlordProfileIdOrderByStartDateDescIdDesc(Long landlordProfileId, Pageable pageable);
+    Page<LandlordSubscription> findByLandlordProfileIdOrderByStartDateDescIdDesc(String landlordProfileId, Pageable pageable);
 }
+

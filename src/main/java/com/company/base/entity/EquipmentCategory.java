@@ -1,6 +1,7 @@
 package com.company.base.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.Data;
 import org.hibernate.annotations.Where;
 
@@ -10,13 +11,16 @@ import org.hibernate.annotations.Where;
 @Data
 public class EquipmentCategory extends BaseEntity {
     // ID duy nhất của danh mục thiết bị.
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    // Tên danh mục thiết bị.
+// Tên danh mục thiết bị.
     private String name;
 
     // Thương hiệu thiết bị.
     private String brand;
+
+    @Override
+    protected String getIdPrefix() {
+        return "EQC";
+    }
 }
+
+

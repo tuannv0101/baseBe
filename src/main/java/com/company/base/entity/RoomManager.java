@@ -1,6 +1,7 @@
 package com.company.base.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.Data;
 import org.hibernate.annotations.Where;
 
@@ -10,11 +11,8 @@ import org.hibernate.annotations.Where;
 @Data
 public class RoomManager extends BaseEntity {
     // ID duy nhất của phòng.
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    // ID tòa nhà/bất động sản chứa phòng.
-    private Long propertiesId;
+// ID tòa nhà/bất động sản chứa phòng.
+    private String propertiesId;
     // Số/ký hiệu phòng.
     private String roomNumber;
     // Tầng của phòng.
@@ -27,4 +25,11 @@ public class RoomManager extends BaseEntity {
     private String status; // AVAILABLE, OCCUPIED, MAINTENANCE
     // Loại phòng
     private String typeRoom;
+
+    @Override
+    protected String getIdPrefix() {
+        return "ROO";
+    }
 }
+
+

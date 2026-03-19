@@ -11,8 +11,9 @@ import java.util.List;
  * Repository for data access operations.
  */
 
-public interface ContractLiquidationHistoryRepository extends JpaRepository<ContractLiquidationHistory, Long> {
+public interface ContractLiquidationHistoryRepository extends JpaRepository<ContractLiquidationHistory, String> {
     List<ContractLiquidationHistory> findAllByOrderByLiquidationDateDescIdDesc();
 
     Page<ContractLiquidationHistory> findAllByOrderByLiquidationDateDescIdDesc(Pageable pageable);
 }
+

@@ -15,7 +15,7 @@ import java.util.List;
  * Repository for data access operations.
  */
 
-public interface PropertiesRepository extends JpaRepository<PropertiesManager, Long> {
+public interface PropertiesRepository extends JpaRepository<PropertiesManager, String> {
     Page<PropertiesManager> findAllByOrderByNameAsc(Pageable pageable);
 
     List<PropertiesManager> findAllByOrderByNameAsc();
@@ -65,11 +65,11 @@ public interface PropertiesRepository extends JpaRepository<PropertiesManager, L
                       on p.id = r.properties_id
                      and (p.del_yn is null or p.del_yn <> 'Y')
                     left join contracts c
-                      on cast(c.room_id as unsigned) = r.id
+                      on c.room_id = r.id
                      and (c.del_yn is null or c.del_yn <> 'Y')
                      and lower(c.status) = 'active'
                     left join tenants t
-                      on cast(c.tenant_id as unsigned) = t.id
+                      on c.tenant_id = t.id
                      and (t.del_yn is null or t.del_yn <> 'Y')
                     where (r.del_yn is null or r.del_yn <> 'Y')
                       and (:nameProperty is null or :nameProperty = '' or lower(p.name) like concat('%', lower(:nameProperty), '%'))
@@ -86,11 +86,11 @@ public interface PropertiesRepository extends JpaRepository<PropertiesManager, L
                   on p.id = r.properties_id
                  and (p.del_yn is null or p.del_yn <> 'Y')
                 left join contracts c
-                  on cast(c.room_id as unsigned) = r.id
+                  on c.room_id = r.id
                  and (c.del_yn is null or c.del_yn <> 'Y')
                  and lower(c.status) = 'active'
                 left join tenants t
-                  on cast(c.tenant_id as unsigned) = t.id
+                  on c.tenant_id = t.id
                  and (t.del_yn is null or t.del_yn <> 'Y')
                 where (r.del_yn is null or r.del_yn <> 'Y')
                   and (:nameProperty is null or :nameProperty = '' or lower(p.name) like concat('%', lower(:nameProperty), '%'))
@@ -110,3 +110,5 @@ public interface PropertiesRepository extends JpaRepository<PropertiesManager, L
             Pageable pageable
     );
 }
+
+

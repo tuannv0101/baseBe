@@ -26,36 +26,37 @@ public class RoomManagementController {
     private final RoomManagementService roomManagementService;
 
     @PostMapping
-    public ApiResponse<Long> createRoom(@RequestBody RoomManagerCreateReqDTO roomManagerCreateReqDTO) {
+    public ApiResponse<String> createRoom(@RequestBody RoomManagerCreateReqDTO roomManagerCreateReqDTO) {
         return ApiResponse.success(roomManagementService.createRoom(roomManagerCreateReqDTO));
     }
 
     @PutMapping("/{id}")
-    public ApiResponse<RoomResponse> updateRoom(@PathVariable Long id, @RequestBody RoomRequest request) {
+    public ApiResponse<RoomResponse> updateRoom(@PathVariable String id, @RequestBody RoomRequest request) {
         return ApiResponse.success(roomManagementService.updateRoom(id, request));
     }
 
     @GetMapping("/{id}")
-    public ApiResponse<RoomResponse> getRoomById(@PathVariable Long id) {
+    public ApiResponse<RoomResponse> getRoomById(@PathVariable String id) {
         return ApiResponse.success(roomManagementService.getRoomById(id));
     }
 
     @GetMapping("/{id}/detail")
-    public ApiResponse<RoomDetailResDTO> getRoomDetail(@PathVariable Long id) {
+    public ApiResponse<RoomDetailResDTO> getRoomDetail(@PathVariable String id) {
         return ApiResponse.success(roomManagementService.getRoomDetail(id));
     }
 
     @GetMapping
     public ApiResponse<PageResponse<RoomResponse>> getRooms(
-            @RequestParam(required = false) Long propertyId,
+            @RequestParam(required = false) String propertyId,
             @PageableDefault(size = 20) Pageable pageable
     ) {
         return ApiResponse.success(roomManagementService.getRooms(propertyId, pageable));
     }
 
     @PutMapping("/{id}/delete")
-    public ApiResponse<Void> deleteRoom(@PathVariable Long id) {
+    public ApiResponse<Void> deleteRoom(@PathVariable String id) {
         roomManagementService.deleteRoom(id);
         return ApiResponse.success(null);
     }
 }
+

@@ -1,6 +1,7 @@
 package com.company.base.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.Data;
 import org.hibernate.annotations.Where;
 
@@ -12,15 +13,11 @@ import java.time.LocalDateTime;
 @Data
 public class MaintenanceRequest extends BaseEntity {
     // ID duy nhất của yêu cầu bảo trì/sửa chữa.
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    // ID phòng phát sinh yêu cầu.
-    private Long roomId;
+// ID phòng phát sinh yêu cầu.
+    private String roomId;
 
     // ID người thuê tạo yêu cầu.
-    private Long tenantId;
+    private String tenantId;
 
     // Tiêu đề yêu cầu.
     private String title;
@@ -38,7 +35,7 @@ public class MaintenanceRequest extends BaseEntity {
     private String assignedTechnician;
 
     // ID tệp đính kèm (tham chiếu file_metadata).
-    private Long attachmentFileId;
+    private String attachmentFileId;
 
     // Thời điểm ghi nhận yêu cầu.
     private LocalDateTime requestedAt;
@@ -48,4 +45,11 @@ public class MaintenanceRequest extends BaseEntity {
 
     // Ghi chú bổ sung (nội bộ hoặc phản hồi cho người thuê).
     private String note;
+
+    @Override
+    protected String getIdPrefix() {
+        return "MRQ";
+    }
 }
+
+

@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MeterReadingBulkRequest {
-    private Long serviceId;
+    private String serviceId;
 
     private Integer month;
 
@@ -29,10 +29,11 @@ public class MeterReadingBulkRequest {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class ReadingRow {
-        private Long roomId;
+        private String roomId;
 
         private Double oldValue;
 
         private Double newValue;
     }
 }
+

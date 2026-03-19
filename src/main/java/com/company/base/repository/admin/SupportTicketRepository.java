@@ -10,10 +10,11 @@ import java.util.List;
 /**
  * Repository for data access operations.
  */
-public interface SupportTicketRepository extends JpaRepository<SupportTicket, Long> {
+public interface SupportTicketRepository extends JpaRepository<SupportTicket, String> {
     List<SupportTicket> findAllByOrderByCreatedAtDesc();
     List<SupportTicket> findByStatusIgnoreCaseOrderByCreatedAtDesc(String status);
 
     Page<SupportTicket> findAllByOrderByCreatedAtDesc(Pageable pageable);
     Page<SupportTicket> findByStatusIgnoreCaseOrderByCreatedAtDesc(String status, Pageable pageable);
 }
+

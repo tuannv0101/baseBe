@@ -29,11 +29,11 @@ public class TenantUtilityOverviewResponse {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class RuleDocumentItem {
-        private Long id;
+        private String id;
 
         private String title;
 
-        private Long fileId;
+        private String fileId;
 
         private String fileUrl;
     }
@@ -43,7 +43,7 @@ public class TenantUtilityOverviewResponse {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class VehicleItem {
-        private Long id;
+        private String id;
 
         private String vehicleType;
 
@@ -56,3 +56,4 @@ public class TenantUtilityOverviewResponse {
         private String note;
     }
 }
+

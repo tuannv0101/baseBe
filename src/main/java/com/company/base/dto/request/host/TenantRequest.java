@@ -24,9 +24,10 @@ public class TenantRequest {
 
     private String idCardNumber;
 
-    private Long portraitImageId;
+    private String portraitImageId;
 
     private Boolean temporaryResidenceDeclared;
 
     private LocalDate temporaryResidenceDeclaredAt;
 }
+

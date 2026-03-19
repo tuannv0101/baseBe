@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RoomMatrixResponse {
-    private Long propertyId;
+    private String propertyId;
 
     private String propertyName;
 
@@ -41,7 +41,7 @@ public class RoomMatrixResponse {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class RoomCell {
-        private Long id;
+        private String id;
 
         private String roomNumber;
 
@@ -66,3 +66,4 @@ public class RoomMatrixResponse {
         private int maintenanceRooms;
     }
 }
+

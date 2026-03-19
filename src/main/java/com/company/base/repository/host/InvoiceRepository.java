@@ -13,20 +13,21 @@ import java.util.List;
  * Repository for data access operations.
  */
 
-public interface InvoiceRepository extends JpaRepository<InvoiceManager, Long> {
+public interface InvoiceRepository extends JpaRepository<InvoiceManager, String> {
     List<InvoiceManager> findByDueDateBetweenOrderByDueDateAscIdDesc(LocalDate fromDate, LocalDate toDate);
 
     List<InvoiceManager> findByStatusInAndDueDateBeforeOrderByDueDateAscIdDesc(Collection<String> statuses, LocalDate dueDate);
 
     List<InvoiceManager> findByStatusInOrderByDueDateAscIdDesc(Collection<String> statuses);
 
-    List<InvoiceManager> findByContractIdOrderByDueDateDescIdDesc(Long contractId);
+    List<InvoiceManager> findByContractIdOrderByDueDateDescIdDesc(String contractId);
 
-    List<InvoiceManager> findByContractIdInOrderByDueDateDescIdDesc(Collection<Long> contractIds);
+    List<InvoiceManager> findByContractIdInOrderByDueDateDescIdDesc(Collection<String> contractIds);
 
     Page<InvoiceManager> findByDueDateBetweenOrderByDueDateAscIdDesc(LocalDate fromDate, LocalDate toDate, Pageable pageable);
 
     Page<InvoiceManager> findByStatusInAndDueDateBeforeOrderByDueDateAscIdDesc(Collection<String> statuses, LocalDate dueDate, Pageable pageable);
 
-    Page<InvoiceManager> findByContractIdInOrderByDueDateDescIdDesc(Collection<Long> contractIds, Pageable pageable);
+    Page<InvoiceManager> findByContractIdInOrderByDueDateDescIdDesc(Collection<String> contractIds, Pageable pageable);
 }
+

@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SystemConfigResponse {
-    private Long id;
+    private String id;
 
     private String configKey;
 
@@ -21,3 +21,4 @@ public class SystemConfigResponse {
 
     private String description;
 }
+

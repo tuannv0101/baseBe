@@ -1,6 +1,7 @@
 package com.company.base.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.Data;
 import org.hibernate.annotations.Where;
 
@@ -12,11 +13,7 @@ import java.math.BigDecimal;
 @Data
 public class SubscriptionPlan extends BaseEntity {
     // ID duy nhất của gói đăng ký.
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    // Mã gói (dùng cho nghiệp vụ/hiển thị, nên là duy nhất).
+// Mã gói (dùng cho nghiệp vụ/hiển thị, nên là duy nhất).
     private String code;
 
     // Tên gói.
@@ -33,4 +30,11 @@ public class SubscriptionPlan extends BaseEntity {
 
     // Mô tả chi tiết quyền lợi/nội dung gói.
     private String description;
+
+    @Override
+    protected String getIdPrefix() {
+        return "SPL";
+    }
 }
+
+

@@ -1,7 +1,12 @@
 package com.company.base.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Where;
 
 @Entity
@@ -13,20 +18,18 @@ import org.hibernate.annotations.Where;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FileMetadata extends BaseEntity {
-    // ID duy nhất của tệp.
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    // Tên hiển thị của tệp.
     private String fileName;
 
-    // Loại/MIME type của tệp.
     private String fileType;
 
-    // Kích thước tệp (byte).
     private long fileSize;
 
-    // Đường dẫn lưu trữ tệp trên hệ thống.
     private String filePath;
+
+    private String refId;
+
+    @Override
+    protected String getIdPrefix() {
+        return "FMD";
+    }
 }

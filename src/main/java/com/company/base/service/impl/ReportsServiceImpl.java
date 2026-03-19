@@ -143,7 +143,7 @@ public class ReportsServiceImpl implements ReportsService {
     public DebtReportResponse getDebtReport() {
         LocalDate today = LocalDate.now();
         List<InvoiceManager> debtInvoiceManagers = invoiceRepository.findByStatusInOrderByDueDateAscIdDesc(DEBT_STATUSES);
-        Map<Long, Contract> contractById = contractRepository.findAll().stream()
+        Map<String, Contract> contractById = contractRepository.findAll().stream()
                 .collect(Collectors.toMap(Contract::getId, contract -> contract, (a, b) -> a));
 
         List<DebtReportResponse.DebtItem> items = debtInvoiceManagers.stream()
@@ -246,3 +246,4 @@ public class ReportsServiceImpl implements ReportsService {
     private record MonthRange(YearMonth start, YearMonth end, List<YearMonth> months) {
     }
 }
+

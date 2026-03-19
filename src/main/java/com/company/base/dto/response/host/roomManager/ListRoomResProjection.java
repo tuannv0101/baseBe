@@ -5,7 +5,7 @@ package com.company.base.dto.response.host.roomManager;
  * Spring Data maps column aliases (snake_case ok) to these getters.
  */
 public interface ListRoomResProjection {
-    Long getId();
+    String getId();
 
     String getRoomNumber();
 
@@ -21,4 +21,5 @@ public interface ListRoomResProjection {
 
     String getStatusRoom();
 }
+
 

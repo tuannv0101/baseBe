@@ -12,7 +12,7 @@ import java.util.List;
  * Repository for data access operations.
  */
 
-public interface ExpenseRecordRepository extends JpaRepository<ExpenseRecord, Long> {
+public interface ExpenseRecordRepository extends JpaRepository<ExpenseRecord, String> {
     List<ExpenseRecord> findAllByOrderByExpenseDateDescIdDesc();
 
     List<ExpenseRecord> findByExpenseDateBetweenOrderByExpenseDateDescIdDesc(LocalDate fromDate, LocalDate toDate);
@@ -21,3 +21,4 @@ public interface ExpenseRecordRepository extends JpaRepository<ExpenseRecord, Lo
 
     Page<ExpenseRecord> findByExpenseDateBetweenOrderByExpenseDateDescIdDesc(LocalDate fromDate, LocalDate toDate, Pageable pageable);
 }
+

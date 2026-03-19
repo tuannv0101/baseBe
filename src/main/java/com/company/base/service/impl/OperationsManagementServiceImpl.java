@@ -55,7 +55,7 @@ public class OperationsManagementServiceImpl implements OperationsManagementServ
     }
 
     @Override
-    public MaintenanceRequestResponse assignMaintenanceRequest(Long id, MaintenanceAssignmentRequest request) {
+    public MaintenanceRequestResponse assignMaintenanceRequest(String id, MaintenanceAssignmentRequest request) {
         MaintenanceRequest entity = getMaintenanceEntity(id);
         entity.setAssignedTechnician(request.getAssignedTechnician());
         entity.setNote(request.getNote());
@@ -70,7 +70,7 @@ public class OperationsManagementServiceImpl implements OperationsManagementServ
     }
 
     @Override
-    public MaintenanceRequestResponse getMaintenanceRequestById(Long id) {
+    public MaintenanceRequestResponse getMaintenanceRequestById(String id) {
         return toMaintenanceResponse(getMaintenanceEntity(id));
     }
 
@@ -90,14 +90,14 @@ public class OperationsManagementServiceImpl implements OperationsManagementServ
     }
 
     @Override
-    public ExpenseRecordResponse updateExpenseRecord(Long id, ExpenseRecordRequest request) {
+    public ExpenseRecordResponse updateExpenseRecord(String id, ExpenseRecordRequest request) {
         ExpenseRecord entity = getExpenseEntity(id);
         applyExpenseUpdate(entity, request);
         return toExpenseResponse(expenseRecordRepository.save(entity));
     }
 
     @Override
-    public ExpenseRecordResponse getExpenseRecordById(Long id) {
+    public ExpenseRecordResponse getExpenseRecordById(String id) {
         return toExpenseResponse(getExpenseEntity(id));
     }
 
@@ -117,7 +117,7 @@ public class OperationsManagementServiceImpl implements OperationsManagementServ
     }
 
     @Override
-    public void deleteExpenseRecord(Long id) {
+    public void deleteExpenseRecord(String id) {
         ExpenseRecord entity = getExpenseEntity(id);
         entity.setDelYn("Y");
         expenseRecordRepository.save(entity);
@@ -132,7 +132,7 @@ public class OperationsManagementServiceImpl implements OperationsManagementServ
     }
 
     @Override
-    public OperationsDocumentResponse updateDocument(Long id, OperationsDocumentRequest request) {
+    public OperationsDocumentResponse updateDocument(String id, OperationsDocumentRequest request) {
         validateFileId(request.getFileId());
         OperationsDocument entity = getDocumentEntity(id);
         applyDocumentUpdate(entity, request);
@@ -140,7 +140,7 @@ public class OperationsManagementServiceImpl implements OperationsManagementServ
     }
 
     @Override
-    public OperationsDocumentResponse getDocumentById(Long id) {
+    public OperationsDocumentResponse getDocumentById(String id) {
         return toDocumentResponse(getDocumentEntity(id));
     }
 
@@ -153,7 +153,7 @@ public class OperationsManagementServiceImpl implements OperationsManagementServ
     }
 
     @Override
-    public void deleteDocument(Long id) {
+    public void deleteDocument(String id) {
         OperationsDocument entity = getDocumentEntity(id);
         entity.setDelYn("Y");
         operationsDocumentRepository.save(entity);
@@ -177,7 +177,7 @@ public class OperationsManagementServiceImpl implements OperationsManagementServ
         entity.setNote(request.getNote());
     }
 
-    private void validateFileId(Long fileId) {
+    private void validateFileId(String fileId) {
         if (fileId == null || !fileMetadataRepository.existsById(fileId)) {
             throw new AppException(HttpStatus.NOT_FOUND.value(), "File not found");
         }
@@ -187,17 +187,17 @@ public class OperationsManagementServiceImpl implements OperationsManagementServ
         return value == null ? null : value.trim().toUpperCase();
     }
 
-    private MaintenanceRequest getMaintenanceEntity(Long id) {
+    private MaintenanceRequest getMaintenanceEntity(String id) {
         return maintenanceRequestRepository.findById(id)
                 .orElseThrow(() -> new AppException(HttpStatus.NOT_FOUND.value(), "Maintenance request not found"));
     }
 
-    private ExpenseRecord getExpenseEntity(Long id) {
+    private ExpenseRecord getExpenseEntity(String id) {
         return expenseRecordRepository.findById(id)
                 .orElseThrow(() -> new AppException(HttpStatus.NOT_FOUND.value(), "Expense record not found"));
     }
 
-    private OperationsDocument getDocumentEntity(Long id) {
+    private OperationsDocument getDocumentEntity(String id) {
         return operationsDocumentRepository.findById(id)
                 .orElseThrow(() -> new AppException(HttpStatus.NOT_FOUND.value(), "Document not found"));
     }
@@ -243,3 +243,4 @@ public class OperationsManagementServiceImpl implements OperationsManagementServ
                 .build();
     }
 }
+

@@ -14,11 +14,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RoomAssetRequest {
-    private Long roomId;
+    private String roomId;
 
-    private Long categoryId;
+    private String categoryId;
 
     private String serialNumber;
 
     private String status;
 }
+

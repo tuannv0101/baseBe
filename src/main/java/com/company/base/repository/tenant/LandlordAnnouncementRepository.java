@@ -8,7 +8,8 @@ import java.util.List;
 /**
  * Repository for data access operations.
  */
-public interface LandlordAnnouncementRepository extends JpaRepository<LandlordAnnouncement, Long> {
-    List<LandlordAnnouncement> findTop10ByRoomIdAndActiveTrueOrderByCreatedAtDescIdDesc(Long roomId);
+public interface LandlordAnnouncementRepository extends JpaRepository<LandlordAnnouncement, String> {
+    List<LandlordAnnouncement> findTop10ByRoomIdAndActiveTrueOrderByCreatedAtDescIdDesc(String roomId);
     List<LandlordAnnouncement> findTop10ByActiveTrueOrderByCreatedAtDescIdDesc();
 }
+

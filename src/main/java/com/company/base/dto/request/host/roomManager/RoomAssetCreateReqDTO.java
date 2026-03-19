@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RoomAssetCreateReqDTO {
     // ID phòng sở hữu tài sản.
-    private Long roomId;
+    private String roomId;
     // Tên danh mục thiết bị.
     private String name;
     // Thương hiệu thiết bị.
@@ -21,3 +21,4 @@ public class RoomAssetCreateReqDTO {
     // Trạng thái tài sản: NEW, GOOD, BROKEN, REPAIRING.
     private String status; // NEW, GOOD, BROKEN, REPAIRING
 }
+

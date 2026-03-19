@@ -32,12 +32,12 @@ public class PropertyManagementController {
     }
 
     @PutMapping("/properties/{id}")
-    public ApiResponse<PropertyResponse> updateProperty(@PathVariable Long id, @RequestBody PropertyRequest request) {
+    public ApiResponse<PropertyResponse> updateProperty(@PathVariable String id, @RequestBody PropertyRequest request) {
         return ApiResponse.success(propertyManagementService.updateProperty(id, request));
     }
 
     @GetMapping("/properties/{id}")
-    public ApiResponse<PropertyResponse> getPropertyById(@PathVariable Long id) {
+    public ApiResponse<PropertyResponse> getPropertyById(@PathVariable String id) {
         return ApiResponse.success(propertyManagementService.getPropertyById(id));
     }
 
@@ -57,16 +57,17 @@ public class PropertyManagementController {
     }
 
     @PutMapping("/properties/{id}/delete")
-    public ApiResponse<Void> deleteProperty(@PathVariable Long id) {
+    public ApiResponse<Void> deleteProperty(@PathVariable String id) {
         propertyManagementService.deleteProperty(id);
         return ApiResponse.success(null);
     }
 
     @GetMapping("/room-matrix")
     public ApiResponse<PageResponse<RoomBasicInfoResponse>> getRoomMatrix(
-            @RequestParam(required = false) Long propertyId,
+            @RequestParam(required = false) String propertyId,
             @PageableDefault(size = 999) Pageable pageable
     ) {
         return ApiResponse.success(propertyManagementService.getRoomMatrix(propertyId, pageable));
     }
 }
+

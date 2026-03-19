@@ -1,6 +1,7 @@
 package com.company.base.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.Data;
 import org.hibernate.annotations.Where;
 
@@ -13,12 +14,8 @@ import java.time.LocalDate;
 @Data
 public class AssetMaintenanceHistory extends BaseEntity {
     // ID duy nhat cua lich su bao tri.
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    // ID tai san duoc bao tri.
-    private Long roomAssetId;
+// ID tai san duoc bao tri.
+    private String roomAssetId;
 
     // Ngay thuc hien bao tri.
     private LocalDate maintenanceDate;
@@ -40,4 +37,11 @@ public class AssetMaintenanceHistory extends BaseEntity {
 
     // Ghi chu bo sung.
     private String note;
+
+    @Override
+    protected String getIdPrefix() {
+        return "AMH";
+    }
 }
+
+
