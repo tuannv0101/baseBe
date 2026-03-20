@@ -45,8 +45,11 @@ public class BillingManagementController {
     }
 
     @GetMapping("/services")
-    public ApiResponse<PageResponse<BillingServiceResponse>> getAllServices(@PageableDefault(size = 20) Pageable pageable) {
-        return ApiResponse.success(billingManagementService.getAllServices(pageable));
+    public ApiResponse<PageResponse<BillingServiceResponse>> getAllServices(
+            @RequestParam(required = false) String propertyId,
+            @PageableDefault(size = 20) Pageable pageable
+    ) {
+        return ApiResponse.success(billingManagementService.getAllServices(propertyId, pageable));
     }
 
     @PutMapping("/services/{id}/delete")

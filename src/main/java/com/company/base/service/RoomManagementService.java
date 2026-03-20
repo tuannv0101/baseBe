@@ -20,4 +20,3 @@ public interface RoomManagementService {
 
     void deleteRoom(String id);
 }
-

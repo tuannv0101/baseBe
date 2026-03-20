@@ -11,12 +11,14 @@ import com.company.base.entity.Contract;
 import com.company.base.entity.PropertiesManager;
 import com.company.base.entity.RoomAsset;
 import com.company.base.entity.RoomManager;
+import com.company.base.entity.ServiceManager;
 import com.company.base.entity.Tenant;
 import com.company.base.exception.AppException;
 import com.company.base.repository.host.ContractRepository;
 import com.company.base.repository.host.PropertiesRepository;
 import com.company.base.repository.host.RoomAssetRepository;
 import com.company.base.repository.host.RoomManagementRepository;
+import com.company.base.repository.host.ServiceRepository;
 import com.company.base.repository.host.TenantRepository;
 import com.company.base.service.RoomManagementService;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +43,7 @@ public class RoomManagementServiceImpl implements RoomManagementService {
     private final RoomAssetRepository roomAssetRepository;
     private final ContractRepository contractRepository;
     private final TenantRepository tenantRepository;
+    private final ServiceRepository serviceRepository;
     @Override
     @Transactional
     public String createRoom(RoomManagerCreateReqDTO roomManagerCreateReqDTO) {
@@ -209,6 +212,13 @@ public class RoomManagementServiceImpl implements RoomManagementService {
                 .map(this::toAssetDetail)
                 .toList();
 
+        List<RoomDetailResDTO.ServiceItem> services = room.getPropertiesId() == null
+                ? List.of()
+                : serviceRepository.findByPropertyIdOrderByNameAsc(room.getPropertiesId())
+                .stream()
+                .map(this::toServiceItem)
+                .toList();
+
         return RoomDetailResDTO.builder()
                 .roomId(room.getId())
                 .propertyId(room.getPropertiesId())
@@ -223,6 +233,7 @@ public class RoomManagementServiceImpl implements RoomManagementService {
                 .status(room.getStatus())
                 .type(room.getTypeRoom())
                 .assets(assets)
+                .services(services)
                 .build();
     }
 
@@ -291,6 +302,16 @@ public class RoomManagementServiceImpl implements RoomManagementService {
                 .build();
     }
 
+    private RoomDetailResDTO.ServiceItem toServiceItem(ServiceManager s) {
+        return RoomDetailResDTO.ServiceItem.builder()
+                .serviceId(s.getId())
+                .serviceName(s.getName())
+                .unitType(s.getUnitType())
+                .unitPrice(s.getUnitPrice())
+                .build();
+    }
+
+
     private TenantInfo getActiveTenantInfoByRoomId(String roomId) {
         if (roomId == null) {
             return new TenantInfo(null, null);
@@ -310,5 +331,3 @@ public class RoomManagementServiceImpl implements RoomManagementService {
     private record TenantInfo(String tenantId, String tenantFullName) {
     }
 }
-
-

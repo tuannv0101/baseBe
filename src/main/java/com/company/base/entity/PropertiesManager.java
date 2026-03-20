@@ -17,8 +17,8 @@ public class PropertiesManager extends BaseEntity {
     private String address;
     // Tổng số tầng.
     private Integer totalFloors;
-    // Trạng thái tòa nhà
-    private String status;
+
+    private String userId;
 
     @Override
     protected String getIdPrefix() {

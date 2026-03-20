@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Data
@@ -29,5 +30,17 @@ public class RoomDetailResDTO {
     private String type;
 
     private List<RoomAssetDetailResDTO> assets;
-}
 
+    private List<ServiceItem> services;
+
+    @Data
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ServiceItem {
+        private String serviceId;
+        private String serviceName;
+        private String unitType;
+        private BigDecimal unitPrice;
+    }
+}

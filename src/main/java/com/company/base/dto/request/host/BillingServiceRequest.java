@@ -18,6 +18,8 @@ import java.math.BigDecimal;
 public class BillingServiceRequest {
     private String name;
 
+    private String propertyId;
+
     private BigDecimal unitPrice;
 
     private String unitType;

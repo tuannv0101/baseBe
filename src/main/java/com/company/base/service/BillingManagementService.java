@@ -35,7 +35,7 @@ public interface BillingManagementService {
     /**
      * Lấy danh sách toàn bộ dịch vụ đang khai báo.
      */
-    PageResponse<BillingServiceResponse> getAllServices(Pageable pageable);
+    PageResponse<BillingServiceResponse> getAllServices(String propertyId, Pageable pageable);
 
     /**
      * Xóa dịch vụ theo ID.
@@ -87,4 +87,3 @@ public interface BillingManagementService {
      */
     PageResponse<PaymentReceiptResponse> getPaymentHistory(Pageable pageable);
 }
-

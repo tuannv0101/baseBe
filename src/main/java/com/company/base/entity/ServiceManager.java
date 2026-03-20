@@ -16,6 +16,8 @@ public class ServiceManager extends BaseEntity {
 // Tên dịch vụ.
     private String name;
 
+    private String propertyId;
+
     // Đơn giá dịch vụ.
     private BigDecimal unitPrice;
 

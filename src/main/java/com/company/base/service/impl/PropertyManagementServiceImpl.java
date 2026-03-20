@@ -11,6 +11,7 @@ import com.company.base.dto.response.host.RoomMatrixProjection;
 import com.company.base.dto.response.host.roomManager.ListRoomResDTO;
 import com.company.base.dto.response.host.roomManager.ListRoomResProjection;
 import com.company.base.entity.PropertiesManager;
+import com.company.base.entity.User;
 import com.company.base.exception.AppException;
 import com.company.base.repository.host.PropertiesRepository;
 import com.company.base.repository.host.RoomManagementRepository;
@@ -19,6 +20,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,9 +40,11 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
     @Override
     public PropertyResponse createProperty(PropertyRequest request) {
         PropertiesManager entity = new PropertiesManager();
+        entity.setUserId(getCurrentUserId());
         entity.setName(request.getName());
         entity.setAddress(request.getAddress());
         entity.setTotalFloors(request.getTotalFloors());
+
         return toPropertyResponse(propertiesRepository.save(entity));
     }
 
@@ -71,13 +76,6 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
         return PageResponse.of(dtoPage);
     }
 
-    @Override
-    public List<PropertyResponse> getAllProperties() {
-        return propertiesRepository.findAllByOrderByNameAsc()
-                .stream()
-                .map(this::toPropertyResponse)
-                .toList();
-    }
 
     @Override
     public PageDTO<PropertyResponse> getAllProperties(Pageable pageable) {
@@ -133,6 +131,7 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
                 .name(entity.getName())
                 .address(entity.getAddress())
                 .totalFloors(entity.getTotalFloors())
+                .userId(entity.getUserId())
                 .occupiedRooms(0L)
                 .maintenanceRooms(0L)
                 .availableRooms(0L)
@@ -148,10 +147,29 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
                 .name(p.getName())
                 .address(p.getAddress())
                 .totalFloors(p.getTotalFloors())
+                .userId(p.getUserId())
                 .occupiedRooms(p.getOccupiedRooms() != null ? p.getOccupiedRooms() : 0L)
                 .maintenanceRooms(p.getMaintenanceRooms() != null ? p.getMaintenanceRooms() : 0L)
                 .availableRooms(p.getAvailableRooms() != null ? p.getAvailableRooms() : 0L)
                 .build();
+    }
+
+    private String getCurrentUserId() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated()) {
+            throw new AppException(HttpStatus.UNAUTHORIZED.value(), "Unauthorized");
+        }
+
+        Object principal = auth.getPrincipal();
+        if (principal == null || "anonymousUser".equals(principal)) {
+            throw new AppException(HttpStatus.UNAUTHORIZED.value(), "Unauthorized");
+        }
+
+        if (principal instanceof User u) {
+            return u.getId();
+        }
+
+        throw new AppException(HttpStatus.UNAUTHORIZED.value(), "Unauthorized");
     }
 
     private PropertiesManager getPropertyEntity(String id) {

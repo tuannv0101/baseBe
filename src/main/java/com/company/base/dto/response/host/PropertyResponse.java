@@ -22,6 +22,8 @@ public class PropertyResponse {
 
     private Integer totalFloors;
 
+    private String userId;
+
     // Room stats for this property (building)
     private Long occupiedRooms;     // đang cho thuê
 

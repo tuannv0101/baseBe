@@ -29,6 +29,7 @@ public interface PropertiesRepository extends JpaRepository<PropertiesManager, S
                         p.name as name,
                         p.address as address,
                         p.total_floors as totalFloors,
+                        p.user_id as userId,
                         coalesce(sum(case when lower(r.status) = 'occupied' then 1 else 0 end), 0) as occupiedRooms,
                         coalesce(sum(case when lower(r.status) = 'maintenance' then 1 else 0 end), 0) as maintenanceRooms,
                         coalesce(sum(case when lower(r.status) = 'available' then 1 else 0 end), 0) as availableRooms
@@ -37,7 +38,7 @@ public interface PropertiesRepository extends JpaRepository<PropertiesManager, S
                       on r.properties_id = p.id
                      and (r.del_yn is null or r.del_yn <> 'Y')
                     where (p.del_yn is null or p.del_yn <> 'Y')
-                    group by p.id, p.name, p.address, p.total_floors
+                    group by p.id, p.name, p.address, p.total_floors, p.user_id
                     order by p.name asc
                     """,
             countQuery = """

@@ -12,11 +12,13 @@ import com.company.base.dto.response.host.PaymentReceiptResponse;
 import com.company.base.dto.response.host.ServiceUsageResponse;
 import com.company.base.entity.InvoiceManager;
 import com.company.base.entity.PaymentReceipt;
+import com.company.base.entity.PropertiesManager;
 import com.company.base.entity.ServiceManager;
 import com.company.base.entity.ServiceUsage;
 import com.company.base.exception.AppException;
 import com.company.base.repository.host.InvoiceRepository;
 import com.company.base.repository.host.PaymentReceiptRepository;
+import com.company.base.repository.host.PropertiesRepository;
 import com.company.base.repository.host.ServiceRepository;
 import com.company.base.repository.host.ServiceUsageRepository;
 import com.company.base.service.BillingManagementService;
@@ -46,6 +48,7 @@ public class BillingManagementServiceImpl implements BillingManagementService {
     private final ServiceUsageRepository serviceUsageRepository;
     private final InvoiceRepository invoiceRepository;
     private final PaymentReceiptRepository paymentReceiptRepository;
+    private final PropertiesRepository propertiesRepository;
 
     @Override
     public BillingServiceResponse createService(BillingServiceRequest request) {
@@ -67,8 +70,10 @@ public class BillingManagementServiceImpl implements BillingManagementService {
     }
 
     @Override
-    public PageResponse<BillingServiceResponse> getAllServices(Pageable pageable) {
-        Page<BillingServiceResponse> page = serviceRepository.findAllByOrderByNameAsc(pageable)
+    public PageResponse<BillingServiceResponse> getAllServices(String propertyId, Pageable pageable) {
+        Page<BillingServiceResponse> page = (propertyId == null || propertyId.isBlank()
+                ? serviceRepository.findAllByOrderByNameAsc(pageable)
+                : serviceRepository.findByPropertyIdOrderByNameAsc(propertyId, pageable))
                 .map(this::toServiceResponse);
         return PageResponse.of(page);
     }
@@ -196,6 +201,7 @@ public class BillingManagementServiceImpl implements BillingManagementService {
     }
 
     private void applyServiceUpdate(ServiceManager entity, BillingServiceRequest request) {
+        entity.setPropertyId(getProperty(request.getPropertyId()).getId());
         entity.setName(request.getName());
         entity.setUnitPrice(request.getUnitPrice());
         entity.setUnitType(request.getUnitType());
@@ -218,6 +224,14 @@ public class BillingManagementServiceImpl implements BillingManagementService {
                 .orElseThrow(() -> new AppException(HttpStatus.NOT_FOUND.value(), "Service not found"));
     }
 
+    private PropertiesManager getProperty(String propertyId) {
+        if (propertyId == null || propertyId.isBlank()) {
+            throw new AppException(HttpStatus.BAD_REQUEST.value(), "Property ID is required");
+        }
+        return propertiesRepository.findById(propertyId)
+                .orElseThrow(() -> new AppException(HttpStatus.NOT_FOUND.value(), "Property not found"));
+    }
+
     private InvoiceManager getInvoiceEntity(String id) {
         return invoiceRepository.findById(id)
                 .orElseThrow(() -> new AppException(HttpStatus.NOT_FOUND.value(), "Invoice not found"));
@@ -227,6 +241,7 @@ public class BillingManagementServiceImpl implements BillingManagementService {
         return BillingServiceResponse.builder()
                 .id(entity.getId())
                 .name(entity.getName())
+                .propertyId(entity.getPropertyId())
                 .unitPrice(entity.getUnitPrice())
                 .unitType(entity.getUnitType())
                 .build();

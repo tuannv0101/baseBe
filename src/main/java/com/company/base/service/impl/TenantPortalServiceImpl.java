@@ -16,6 +16,7 @@ import com.company.base.repository.host.InvoiceRepository;
 import com.company.base.repository.host.MaintenanceRequestRepository;
 import com.company.base.repository.host.OperationsDocumentRepository;
 import com.company.base.repository.host.PaymentReceiptRepository;
+import com.company.base.repository.host.RoomManagementRepository;
 import com.company.base.repository.host.ServiceRepository;
 import com.company.base.repository.host.ServiceUsageRepository;
 import com.company.base.repository.host.TenantRepository;
@@ -49,6 +50,7 @@ public class TenantPortalServiceImpl implements TenantPortalService {
     private final ContractRepository contractRepository;
     private final InvoiceRepository invoiceRepository;
     private final PaymentReceiptRepository paymentReceiptRepository;
+    private final RoomManagementRepository roomManagementRepository;
     private final ServiceUsageRepository serviceUsageRepository;
     private final ServiceRepository serviceRepository;
     private final MaintenanceRequestRepository maintenanceRequestRepository;
@@ -124,10 +126,11 @@ public class TenantPortalServiceImpl implements TenantPortalService {
         Contract contract = contractRepository.findById(invoiceManager.getContractId())
                 .orElseThrow(() -> new AppException(HttpStatus.NOT_FOUND.value(), "Contract not found"));
         String roomId = contract.getRoomId();
+        RoomManager room = getRoom(roomId);
         int month = invoiceManager.getDueDate() != null ? invoiceManager.getDueDate().getMonthValue() : LocalDate.now().getMonthValue();
         int year = invoiceManager.getDueDate() != null ? invoiceManager.getDueDate().getYear() : LocalDate.now().getYear();
 
-        Map<String, ServiceManager> serviceMap = serviceRepository.findAll().stream()
+        Map<String, ServiceManager> serviceMap = serviceRepository.findByPropertyIdOrderByNameAsc(room.getPropertiesId()).stream()
                 .collect(Collectors.toMap(ServiceManager::getId, s -> s, (a, b) -> a));
         List<TenantInvoiceDetailResponse.ServiceItem> items = serviceUsageRepository
                 .findByRoomIdAndMonthAndYearOrderByServiceIdAsc(roomId, month, year)
@@ -277,6 +280,11 @@ public class TenantPortalServiceImpl implements TenantPortalService {
     private Contract getActiveContract(String tenantId) {
         return contractRepository.findFirstByTenantIdAndStatusIgnoreCaseOrderByStartDateDescIdDesc(tenantId, "ACTIVE")
                 .orElse(null);
+    }
+
+    private RoomManager getRoom(String roomId) {
+        return roomManagementRepository.findById(roomId)
+                .orElseThrow(() -> new AppException(HttpStatus.NOT_FOUND.value(), "Room not found"));
     }
 
     private TenantInvoiceSummaryResponse toInvoiceSummary(InvoiceManager invoiceManager) {

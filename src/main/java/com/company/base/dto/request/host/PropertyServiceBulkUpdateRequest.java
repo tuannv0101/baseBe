@@ -1,4 +1,4 @@
-package com.company.base.dto.response.host;
+package com.company.base.dto.request.host;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,20 +7,14 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
-/**
- * Response DTO carrying output data for API operations.
- */
-
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class BillingServiceResponse {
-    private String id;
+public class PropertyServiceBulkUpdateRequest {
+    private String serviceId;
 
     private String name;
-
-    private String propertyId;
 
     private BigDecimal unitPrice;
 

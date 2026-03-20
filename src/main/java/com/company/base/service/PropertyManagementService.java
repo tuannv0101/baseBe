@@ -12,40 +12,39 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 /**
- * Service quáº£n lÃ½ báº¥t Ä‘á»™ng sáº£n/tÃ²a nhÃ  vÃ  phÃ²ng.
+ * Service quản lý bất động sản/tòa nhà và phòng.
  */
 public interface PropertyManagementService {
     /**
-     * Táº¡o má»›i tÃ²a nhÃ /báº¥t Ä‘á»™ng sáº£n.
+     * Tạo mới tòa nhà/bất động sản.
      */
     PropertyResponse createProperty(PropertyRequest request);
 
     /**
-     * Cáº­p nháº­t thÃ´ng tin tÃ²a nhÃ /báº¥t Ä‘á»™ng sáº£n theo ID.
+     * Cập nhật thông tin tòa nhà/bất động sản theo ID.
      */
     PropertyResponse updateProperty(String id, PropertyRequest request);
 
     /**
-     * Láº¥y chi tiáº¿t tÃ²a nhÃ /báº¥t Ä‘á»™ng sáº£n theo ID.
+     * Lấy chi tiết tòa nhà/bất động sản theo ID.
      */
     PropertyResponse getPropertyById(String id);
 
     /**
-     * Láº¥y danh sÃ¡ch toÃ n bá»™ tÃ²a nhÃ /báº¥t Ä‘á»™ng sáº£n.
+     * Lấy danh sách toàn bộ tòa nhà/bất động sản.
      */
     PageResponse<ListRoomResDTO> getAllProperties(PropertySearchRequest propertySearchRequest, Pageable pageable);
 
-    List<PropertyResponse> getAllProperties();
 
     PageDTO<PropertyResponse> getAllProperties(Pageable pageable);
 
     /**
-     * XÃ³a tÃ²a nhÃ /báº¥t Ä‘á»™ng sáº£n theo ID.
+     * Xóa tòa nhà/bất động sản theo ID.
      */
     void deleteProperty(String id);
 
     /**
-     * Láº¥y ma tráº­n phÃ²ng (táº§ng/phÃ²ng/tráº¡ng thÃ¡i) theo propertyId Ä‘á»ƒ hiá»ƒn thá»‹ dáº¡ng lÆ°á»›i.
+     * Lấy ma trận phòng (tầng/phòng/trạng thái) theo propertyId để hiển thị dạng lưới.
      */
     PageResponse<RoomBasicInfoResponse> getRoomMatrix(String propertyId, Pageable pageable);
 }

@@ -15,5 +15,9 @@ public interface ServiceRepository extends JpaRepository<ServiceManager, String>
     List<ServiceManager> findAllByOrderByNameAsc();
 
     Page<ServiceManager> findAllByOrderByNameAsc(Pageable pageable);
+
+    List<ServiceManager> findByPropertyIdOrderByNameAsc(String propertyId);
+
+    Page<ServiceManager> findByPropertyIdOrderByNameAsc(String propertyId, Pageable pageable);
 }
 

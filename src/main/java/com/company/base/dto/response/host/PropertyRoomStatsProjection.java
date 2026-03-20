@@ -13,6 +13,8 @@ public interface PropertyRoomStatsProjection {
 
     Integer getTotalFloors();
 
+    String getUserId();
+
     Long getOccupiedRooms();
 
     Long getMaintenanceRooms();
